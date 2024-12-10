@@ -9,4 +9,4 @@ updates:
     directory: "devops/github/allbooks" # Location of package manifests
     schedule:
       interval: "weekly"
-    target-branch: "devops-git"
+    target-branch: "main"
