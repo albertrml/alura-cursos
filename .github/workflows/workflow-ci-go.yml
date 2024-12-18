@@ -7,7 +7,7 @@ on:
     push:
         branches: [ "devops-ci" ]
     pull_request:
-        branches: [ "main" ]
+        branches: [ "main", "devops-ci" ]
     
 jobs:
     test:
@@ -19,6 +19,11 @@ jobs:
           uses: actions/setup-go@v3
           with:
             go-version: 1.18
+
+        - name: Install Docker Compose
+          run: |
+            sudo apt-get update
+            sudo apt-get install -y docker-compose
 
         - name: Build-DB
           run: docker-compose build
