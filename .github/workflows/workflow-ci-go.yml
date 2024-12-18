@@ -5,9 +5,9 @@ name: Workflow curso de ci
 
 on:
     push:
-        branches: [ "devops-ci" ]
+        branches: [ '*' ]
     pull_request:
-        branches: [ "main", "devops-ci" ]
+        branches: [ '*' ]
     
 jobs:
     test:
