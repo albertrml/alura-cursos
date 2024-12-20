@@ -6,7 +6,7 @@ on:
     
 jobs:
     docker:
-        name: Teste com Go ${{ matrix.go_version }} em S.O. ${{ matrix.os }}
+        name: Docker em S.O. ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         environment: Teste_ci
         strategy:
