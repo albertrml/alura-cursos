@@ -62,6 +62,9 @@ jobs:
           run: go build -v main.go
           working-directory: devops/ci/projeto-go-testes-main
 
+        - name: Verify Artifact
+          run: ls -l devops/ci/projeto-go-testes-main/main
+
         - name: Upload a Build Artifact
           uses: actions/upload-artifact@v4.5.0
           with: 
