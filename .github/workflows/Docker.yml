@@ -22,7 +22,7 @@ jobs:
         - name: Docker Login
           uses: docker/login-action@v3.3.0
           with:
-            username: ${{ secrets.DOCKER_USERNAME }}
+            username: albertrml
             password: ${{ secrets.DOCKER_PASSWORD }}
 
         - name: Build and push Docker images
@@ -31,5 +31,5 @@ jobs:
               context: devops/ci/projeto-go-testes-main
               file: ./Dockerfile
               push: true
-              tags: ${{ secrets.DOCKER_USERNAME }}/go_ci:${{ github.ref_name }}
+              tags: albertrml/go_ci:${{ github.ref_name }}
           
