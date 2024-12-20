@@ -23,6 +23,7 @@ jobs:
           uses: download-artifact@v4.1.8
           with:
               name: programa
+              path: devops/ci/projeto-go-testes-main/
 
         - name: Docker Login
           uses: docker/login-action@v3.3.0
