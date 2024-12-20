@@ -73,5 +73,5 @@ jobs:
               
     docker:
         needs: build
-        uses: albertrml/alura-cursos/.github/workflows/Docker.yml@main
+        uses: albertrml/alura-cursos/.github/workflows/Docker.yml@devops-ci
         secrets: inherit
