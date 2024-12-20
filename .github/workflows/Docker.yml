@@ -23,11 +23,21 @@ jobs:
           uses: actions/download-artifact@v4.1.8
           with:
               name: programa
-              path: devops/ci/projeto-go-testes-main/  
+              path: devops/ci/projeto-go-testes-main/
+              
+        - name: Verify Artifact Download
+          run: ls -l devops/ci/projeto-go-testes-main/
 
         - name: Docker Login
           uses: docker/login-action@v3.3.0
           with:
             username: albertrml
             password: ${{ secrets.DOCKER_PASSWORD }}
-          
+
+        - name: Build and push Docker images
+          uses: docker/build-push-action@v6.10.0
+          with: 
+              context: devops/ci/projeto-go-testes-main
+              file: devops/ci/projeto-go-testes-main/Dockerfile
+              push: true
+              tags: albertrml/go-ci:${{ github.ref_name }}
