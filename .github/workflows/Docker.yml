@@ -37,5 +37,5 @@ jobs:
               context: devops/ci/projeto-go-testes-main
               file: devops/ci/projeto-go-testes-main/Dockerfile
               push: true
-              tags: albertrml/go_ci:devops-ci
+              tags: albertrml/go-ci:${{github_ref_name}}
           
