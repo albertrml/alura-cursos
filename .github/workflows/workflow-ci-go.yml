@@ -72,7 +72,7 @@ jobs:
               path: devops/ci/projeto-go-testes-main/main
               
 
-    docker:
-        needs: build
-        uses: ./.github/workflows/Docker.yml
-        secrets: inherit
+    #docker:
+    #    needs: build
+    #    uses: ./.github/workflows/Docker.yml
+    #    secrets: inherit
