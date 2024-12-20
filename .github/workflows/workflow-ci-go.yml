@@ -61,3 +61,7 @@ jobs:
         - name: Build
           run: go build -v main.go
           working-directory: devops/ci/projeto-go-testes-main
+
+    docker:
+        needs: build
+        uses: ./.github/workflows/Docker.yml
