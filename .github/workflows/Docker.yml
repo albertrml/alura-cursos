@@ -34,10 +34,13 @@ jobs:
             username: albertrml
             password: ${{ secrets.DOCKER_PASSWORD }}
 
+        - name: Sanitize tag
+          run: echo "SANITIZED_TAG=$(echo '${{ github.ref_name }}' | sed 's/[^a-zA-Z0-9._-]/-/g')" >> $GITHUB_ENV
+
         - name: Build and push Docker images
           uses: docker/build-push-action@v6.10.0
           with: 
               context: devops/ci/projeto-go-testes-main
               file: devops/ci/projeto-go-testes-main/Dockerfile
               push: true
-              tags: albertrml/go-ci:${{ github.ref_name }}
+              tags: albertrml/go-ci:${{ env.SANITIZED_TAG }}
