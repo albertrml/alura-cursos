@@ -40,4 +40,4 @@ jobs:
               context: devops/ci/projeto-go-testes-main
               file: devops/ci/projeto-go-testes-main/Dockerfile
               push: true
-              tags: albertrml/go-ci:${{ github.ref_name }}
+              tags: albertrml/go-ci:${{ github.ref_name && github.ref_name.replace(/\//g, '-') || 'latest' }}
