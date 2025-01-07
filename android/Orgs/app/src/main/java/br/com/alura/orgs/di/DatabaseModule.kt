@@ -1,7 +1,6 @@
 package br.com.alura.orgs.di
 
 import android.content.Context
-import androidx.room.Room
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.ItemRoomDatabase
 import dagger.Module
