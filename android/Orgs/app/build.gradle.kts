@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.ksp)
     id("org.jetbrains.kotlin.kapt")
 }
 
@@ -41,15 +43,20 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.navigation.ui.ktx)
-
-    implementation(libs.androidx.navigation.fragment)
-    kapt(libs.androidx.databinding.compiler)
-
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.hilt.android)
+    implementation(libs.material)
+
+    kapt(libs.androidx.databinding.compiler)
+    ksp(libs.androidx.room.compiler)
+    ksp(libs.hilt.android.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

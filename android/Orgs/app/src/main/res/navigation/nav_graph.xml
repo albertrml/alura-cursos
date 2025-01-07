@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="br.com.alura.orgs.view.HomeFragment"
+        android:name="br.com.alura.orgs.view.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home"/>
 
