@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
@@ -19,9 +18,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
 class ItemRepositoryTest {
 
     private lateinit var itemRepository: ItemRepository
@@ -54,7 +51,7 @@ class ItemRepositoryTest {
         itemRepository.insertItem(mockItems[0]).collect { result ->
             when (result) {
                 is Response.Success -> {
-                    val item = itemDao.getItemById(1).first()
+                    val item = itemDao.getItemById(1)
                     assertEquals(item.itemName, mockItems[0].itemName)
                 }
                 is Response.Loading -> assert(true)
@@ -66,7 +63,7 @@ class ItemRepositoryTest {
     @Test
     fun testInsertItemWhenAlreadyExistsThrowsError() = runTest {
         itemDao.insert(mockItems[0])
-        val item = itemDao.getItemById(1).first()
+        val item = itemDao.getItemById(1)
         itemRepository.insertItem(item).collect { result ->
             when (result) {
                 is Response.Success -> assert(false)
@@ -103,7 +100,7 @@ class ItemRepositoryTest {
     fun testDeleteItemRemovesItemCorrectly() = runTest {
         val item = mockItems[0]
         itemDao.insert(item)
-        val itemForDelete = itemDao.getItemById(1).first()
+        val itemForDelete = itemDao.getItemById(1)
 
 
         itemRepository.deleteItem(itemForDelete).collect {
@@ -120,7 +117,7 @@ class ItemRepositoryTest {
 
     @Test
     fun testUpdateItemUpdatesItemCorrectly() = runTest {
-        itemDao.insert(mockItems[2])
+        itemDao.insert(mockItems[0])
         val itemBeforeUpdate = itemDao.getItems().first().first().copy(
             itemName = mockItems[1].itemName,
             itemDescription = mockItems[1].itemDescription,
@@ -130,7 +127,7 @@ class ItemRepositoryTest {
         itemRepository.updateItem(itemBeforeUpdate).collect {
             when (it) {
                 is Response.Success -> {
-                    val itemAfterUpdate = itemDao.getItemById(1).first()
+                    val itemAfterUpdate = itemDao.getItemById(1)
                     assertEquals(itemBeforeUpdate, itemAfterUpdate)
                 }
 

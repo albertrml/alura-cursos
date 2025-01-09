@@ -4,7 +4,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.source.ItemDAO
@@ -17,10 +16,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import java.io.IOException
 
-@RunWith(AndroidJUnit4::class)
+
 class ItemDatabaseTest {
     private lateinit var itemDAO: ItemDAO
     private lateinit var db: ItemRoomDatabase
@@ -61,7 +59,7 @@ class ItemDatabaseTest {
     @Throws(Exception::class)
     fun testInsertDuplicateItemThrowsException() = runTest {
         itemDAO.insert(mockItems[0])
-        val item = itemDAO.getItemById(1).first()
+        val item = itemDAO.getItemById(1)
         assertThrows(SQLiteConstraintException::class.java) {
             runBlocking { itemDAO.insert(item) }
         }
@@ -72,9 +70,7 @@ class ItemDatabaseTest {
     fun testGetItemByIdReturnsCorrectItem() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
 
-        val secondItem = itemDAO
-            .getItemById(2)
-            .first()
+        val secondItem = itemDAO.getItemById(2)
 
         assert(secondItem.id == 2)
         assert(
@@ -91,14 +87,14 @@ class ItemDatabaseTest {
     @Throws(Exception::class)
     fun testUpdateItemCorrectly() = runTest {
         itemDAO.insert(mockItems[2])
-        val itemBeforeUpdate = itemDAO.getItemById(1).first().copy(
+        val itemBeforeUpdate = itemDAO.getItemById(1).copy(
             itemName = mockItems[1].itemName,
             itemDescription = mockItems[1].itemDescription,
             itemValue = mockItems[1].itemValue,
             quantityInStock = mockItems[1].quantityInStock
         )
         itemDAO.update(itemBeforeUpdate)
-        val itemAfterUpdate = itemDAO.getItemById(1).first()
+        val itemAfterUpdate = itemDAO.getItemById(1)
 
         assert(itemDAO.getItems().first().size == 1)
         assert(
@@ -117,7 +113,7 @@ class ItemDatabaseTest {
     fun testDeleteItemRemovesCorrectly() = runTest {
         val item = mockItems[0]
         itemDAO.insert(item)
-        val itemForDelete = itemDAO.getItemById(1).first()
+        val itemForDelete = itemDAO.getItemById(1)
         assertEquals(1, itemDAO.getItems().first().size)
         itemDAO.delete(itemForDelete)
         assert(itemDAO.getItems().first().isEmpty())

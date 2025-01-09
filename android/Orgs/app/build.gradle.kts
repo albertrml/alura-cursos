@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
-    id("org.jetbrains.kotlin.kapt")
+    /*id("org.jetbrains.kotlin.kapt")*/
     alias(libs.plugins.ksp)
 }
 
@@ -31,18 +31,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            /*hilt {
-                enableAggregatingTask = false
-            }*/
         }
 
         debug {
             isMinifyEnabled = false
-
-            /*hilt {
-                enableAggregatingTask = false
-            }*/
         }
     }
     compileOptions {
@@ -53,6 +45,15 @@ android {
         jvmTarget = "11"
     }
 
+    android {
+        packaging {
+            resources {
+                excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                merges += "META-INF/LICENSE.md"
+                merges += "META-INF/LICENSE-notice.md"
+            }
+        }
+    }
 
 }
 
@@ -60,27 +61,32 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.hilt.android)
     implementation(libs.material)
-    implementation(libs.androidx.junit.ktx)
 
-    kapt(libs.androidx.databinding.compiler)
+    /*kapt(libs.androidx.databinding.compiler)*/
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
 
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-
-    // Hilt para testes instrumentados
-    androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
 
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
+
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.mockk.android)
 }

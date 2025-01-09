@@ -5,7 +5,6 @@ import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.utils.Response
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -47,7 +46,7 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
 
     fun getItemById(id: Int): Flow<Response<Item>> = flow {
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.getItemById(id).first() })
+        emit(performDatabaseOperation { itemDao.getItemById(id) })
     }
 
 }
