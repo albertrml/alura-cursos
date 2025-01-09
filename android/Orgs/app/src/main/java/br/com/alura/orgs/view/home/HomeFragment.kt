@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import br.com.alura.orgs.R
+import br.com.alura.orgs.view.viemodel.ItemViewModel
 
 
 class HomeFragment : Fragment() {

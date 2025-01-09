@@ -1,0 +1,100 @@
+package br.com.alura.orgs.view.viemodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import br.com.alura.orgs.model.entity.Item
+import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.utils.Response
+import br.com.alura.orgs.utils.handleResponse
+import br.com.alura.orgs.utils.mapTo
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+class ItemViewModel @Inject constructor(private val repository: ItemRepository): ViewModel() {
+    private val _uiState = MutableStateFlow(ItemUiState())
+    val uiState = _uiState.asStateFlow()
+
+    fun onEvent(event: ItemUiEvent){
+        when(event){
+            is ItemUiEvent.OnDecreaseQuantity -> {
+                val item = event.item.copy(quantityInStock = event.item.quantityInStock - 1)
+                updateItem(item)
+            }
+            is ItemUiEvent.OnDeleteItem -> deleteItem(event.item)
+            is ItemUiEvent.OnFetchAllItems -> fetchAllItems()
+            is ItemUiEvent.OnFetchItemById -> fetchItemById(event.itemId)
+            is ItemUiEvent.OnIncreaseQuantity -> {
+                val item = event.item.copy(quantityInStock = event.item.quantityInStock + 1)
+                updateItem(item)
+            }
+            is ItemUiEvent.OnInsertItem -> {
+                val item  = event.run {
+                    Item(
+                        itemName = itemName,
+                        itemDescription = itemDescription,
+                        itemValue = itemValue.toDouble(),
+                        quantityInStock = quantityInStock.toInt()
+                    )
+                }
+                insertItem(item)
+            }
+            is ItemUiEvent.OnUpdateItem -> updateItem(event.item)
+        }
+    }
+
+    private fun deleteItem(item: Item){
+        viewModelScope.launch {
+            repository.deleteItem(item).collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(deleteState = res)
+                }
+            }
+        }
+    }
+
+    private fun fetchAllItems() {
+        viewModelScope.launch {
+            repository.getAllItems().collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(
+                        items = if (res is Response.Success) res.result else state.items,
+                        fetchState = res.mapTo(Unit)
+                    )
+                }
+            }
+        }
+    }
+
+
+    private fun fetchItemById(id: Int) {
+        viewModelScope.launch {
+            repository.getItemById(id).collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(fetchByIdState = res)
+                }
+            }
+        }
+    }
+
+    private fun insertItem(item: Item) {
+        viewModelScope.launch {
+            repository.insertItem(item).collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(insertState = res)
+                }
+            }
+        }
+    }
+
+    private fun updateItem(item: Item) {
+        viewModelScope.launch {
+            repository.updateItem(item).collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(updateState = res)
+                }
+            }
+        }
+    }
+}
