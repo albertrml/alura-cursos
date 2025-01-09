@@ -4,8 +4,10 @@ import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.utils.Response
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
@@ -17,10 +19,14 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
 
     fun getAllItems(): Flow<Response<List<Item>>> = flow {
         emit(Response.Loading)
-        val initialData = performDatabaseOperation { itemDao.getItems().first() }
-        emit(initialData) // Emit initial data
-        if (initialData is Response.Success) {
-            itemDao.getItems().collect { emit(Response.Success(it)) } // Emit updates
+        try {
+            emitAll(
+                itemDao.getItems().map {
+                    Response.Success(it)
+                }
+            )
+        }catch (e: Exception){
+            Response.Failure(e)
         }
     }
 

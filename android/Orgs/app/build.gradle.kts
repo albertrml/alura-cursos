@@ -31,6 +31,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            /*hilt {
+                enableAggregatingTask = false
+            }*/
+        }
+
+        debug {
+            isMinifyEnabled = false
+
+            /*hilt {
+                enableAggregatingTask = false
+            }*/
         }
     }
     compileOptions {
@@ -40,6 +52,8 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+
 }
 
 dependencies {
@@ -59,7 +73,14 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
 
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+
+    // Hilt para testes instrumentados
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.android.compiler)
+
 }

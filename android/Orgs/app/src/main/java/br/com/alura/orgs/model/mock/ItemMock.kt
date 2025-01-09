@@ -1,4 +1,6 @@
-package br.com.alura.orgs.model.entity
+package br.com.alura.orgs.model.mock
+
+import br.com.alura.orgs.model.entity.Item
 
 val mockItems = listOf(
     Item(
