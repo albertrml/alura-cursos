@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -103,13 +104,89 @@ class ItemViewModelTest {
     }
 
     @Test
-    fun onInsertItemTriggersSuccess() = runTest {}
+    fun onInsertItemTriggersSuccess() = runTest {
+        mockItems[0].apply {
+            viewModel.onEvent(
+                ItemUiEvent.OnInsertItem(
+                    itemName = itemName,
+                    itemDescription = itemDescription,
+                    itemValue = itemValue.toString(),
+                    quantityInStock = quantityInStock.toString()
+                )
+            )
+        }
+
+        viewModel.uiState.take(2).collect { uiState ->
+            when (uiState.insertState) {
+                is Response.Success -> {
+                    val itemFromViewModel = itemDao.getItemById(1).copy(
+                        id = mockItems[0].id
+                    )
+                    assertEquals(mockItems[0], itemFromViewModel)
+                }
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(false)
+            }
+
+        }
+    }
 
     @Test
-    fun onInsertDuplicateItemTriggersFailure() = runTest {}
+    fun onInsertDuplicateItemButDifferentID() = runTest {
+        mockItems[0].apply {
+            viewModel.onEvent(
+                ItemUiEvent.OnInsertItem(
+                    itemName = itemName,
+                    itemDescription = itemDescription,
+                    itemValue = itemValue.toString(),
+                    quantityInStock = quantityInStock.toString()
+                )
+            )
+        }
+        val item = itemDao.getItemById(1)
+
+        item.apply {
+            viewModel.onEvent(
+                ItemUiEvent.OnInsertItem(
+                    itemName = itemName,
+                    itemDescription = itemDescription,
+                    itemValue = itemValue.toString(),
+                    quantityInStock = quantityInStock.toString()
+                )
+            )
+        }
+
+        viewModel.uiState.take(2).collect { uiState ->
+            when (uiState.insertState) {
+                is Response.Success -> {
+                    val itemFromViewModel = itemDao.getItems().first()
+                    assertEquals(itemFromViewModel.size,2)
+                    assertEquals(item, itemFromViewModel[0])
+                    assertNotEquals(item, itemFromViewModel[1])
+                }
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(false)
+            }
+        }
+    }
 
     @Test
-    fun onDeleteItemDeletesItem() = runTest {}
+    fun onDeleteItemDeletesItem() = runTest {
+        itemDao.insert(mockItems[0])
+        val item = itemDao.getItemById(1)
+        viewModel.onEvent(ItemUiEvent.OnDeleteItem(item))
+
+        viewModel.uiState.take(2).collect{ uiState ->
+            when(uiState.deleteState){
+                is Response.Success -> {
+                    val itemFromViewModel = itemDao.getItems().first()
+                    assertEquals(emptyList<Item>(), itemFromViewModel)
+                }
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(false)
+            }
+        }
+    }
 
     @Test
     fun fetchAllItemsUpdatesItemsInState() = runTest {
