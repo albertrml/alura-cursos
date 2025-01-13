@@ -1,5 +1,5 @@
 # Create dynamic lists with RecyclerView
-Link: https://developer.android.com/develop/ui/views/layout/recyclerview#kotlin
+Link: https://developer.android.com/develop/ui/views/layout/recyclerview
 Date: 2025-01-12
 
 In the view system, the RecyclerView library efficiently displays large sets of data, how they look, and dynamically creates the elements only when needed. As the name implies, the library doesn't destroy the its view when items scrolls off the screen but instead recycles them for news ones. To do so, several classes work together to build the dynamic list: **RecyclerView**, **RecyclerView.ViewHolder**, **RecyclerView.Adapter**, and **LayoutManager**
