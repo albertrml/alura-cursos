@@ -11,11 +11,11 @@ The **RecyclerView** is a ViewGroup that contains the views corresponding to the
 ```kotlin
 dependencies{
     val recyclerview_ver="1.3.2"
-    val recyclerview_selection="1.1.0"
+    val recyclerview_selection_ver="1.1.0"
     
     implementation("androidx.recyclerview:recyclerview:$recyclerview_ver")
     // For control over item selection of both touch and mouse driven selection
-    implementation("androidx.recyclerview:recyclerview-selection:$recyclerview_selection")
+    implementation("androidx.recyclerview:recyclerview-selection:$recyclerview_selection_ver")
 }
 ```
 
