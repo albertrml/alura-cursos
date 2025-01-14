@@ -4,8 +4,7 @@ import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.utils.Response
 
 data class ItemUiState(
-    val items: List<Item> = emptyList(),
-    val fetchAllItemsState: Response<Unit> = Response.Loading,
+    val fetchAllItemsState: Response<List<Item>> = Response.Loading,
     val fetchItemByIdState: Response<Item> = Response.Loading,
     val deleteState: Response<Unit> = Response.Loading,
     val insertState: Response<Unit> = Response.Loading,

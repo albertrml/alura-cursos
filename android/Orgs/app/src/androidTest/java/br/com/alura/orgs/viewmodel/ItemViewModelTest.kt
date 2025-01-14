@@ -191,21 +191,24 @@ class ItemViewModelTest {
     @Test
     fun fetchAllItemsUpdatesItemsInState() = runTest {
         mockItems.forEach { itemDao.insert(it) }
-        assertEquals(viewModel.uiState.value.items, emptyList<Item>())
-        assertEquals(viewModel.uiState.value.fetchAllItemsState, Response.Loading)
 
         viewModel.onEvent(ItemUiEvent.OnFetchAllItems)
         viewModel.uiState.take(2).collect { uiState ->
             when (uiState.fetchAllItemsState) {
                 is Response.Success -> {
-                    val itemsFromViewModel = uiState.items.map {
-                        Item(
-                            itemName = it.itemName,
-                            itemDescription = it.itemDescription,
-                            itemValue = it.itemValue,
-                            quantityInStock = it.quantityInStock
-                        )
-                    }
+
+                    val itemsFromViewModel = (
+                            uiState.fetchAllItemsState as Response.Success<List<Item>>
+                        ).result
+                        .sortedBy { it.id }
+                        .map {
+                            Item(
+                                itemName = it.itemName,
+                                itemDescription = it.itemDescription,
+                                itemValue = it.itemValue,
+                                quantityInStock = it.quantityInStock
+                            )
+                        }
                     assertEquals(mockItems, itemsFromViewModel)
                 }
                 is Response.Loading -> assert(true)

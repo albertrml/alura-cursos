@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.repository.ItemRepository
-import br.com.alura.orgs.utils.Response
 import br.com.alura.orgs.utils.handleResponse
-import br.com.alura.orgs.utils.mapTo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -58,13 +56,25 @@ class ItemViewModel @Inject constructor(private val repository: ItemRepository):
         }
     }
 
-    private fun fetchAllItems() {
+    /*private fun fetchAllItems() {
         viewModelScope.launch {
             repository.getAllItems().collect { response ->
                 response.handleResponse(_uiState) { state, res ->
                     state.copy(
                         items = if (res is Response.Success) res.result.sortedBy(Item::id) else state.items,
                         fetchAllItemsState = res.mapTo(Unit)
+                    )
+                }
+            }
+        }
+    }*/
+
+    private fun fetchAllItems() {
+        viewModelScope.launch {
+            repository.getAllItems().collect { response ->
+                response.handleResponse(_uiState) { state, res ->
+                    state.copy(
+                        fetchAllItemsState = res
                     )
                 }
             }
