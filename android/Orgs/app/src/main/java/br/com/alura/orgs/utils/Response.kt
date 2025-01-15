@@ -18,9 +18,3 @@ fun <T, S> Response<T>.handleResponse(
         updateState(state, this)
     }
 }
-
-fun <T,S> Response<T>.mapTo(data: S) = when(this){
-    is Response.Success -> Response.Success(data)
-    is Response.Failure -> Response.Failure(this.exception)
-    is Response.Loading -> Response.Loading
-}

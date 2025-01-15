@@ -1,13 +1,17 @@
 package br.com.alura.orgs
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import br.com.alura.orgs.databinding.ActivityMainBinding
+import br.com.alura.orgs.view.viemodel.ItemViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -16,6 +20,8 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val viewModel: ItemViewModel by viewModels()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navHostFragment = supportFragmentManager

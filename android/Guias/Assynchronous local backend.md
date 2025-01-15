@@ -16,7 +16,8 @@ In build.gradle.kts, project level
 ```kotlin
 
 plugins {
-    id("com.google.devtools.ksp") version "2.0.21-1.0.27" apply false
+    id("org.jetbrains.kotlin.android") version "2.0.20" apply false
+    id("com.google.devtools.ksp") version "2.0.20-1.0.25" apply false
 }
 ```
 
@@ -25,6 +26,7 @@ In build.gradle.kts, module level
 ```kotlin
 
 plugins {
+    id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
 }
 
@@ -50,7 +52,8 @@ dependencies {
 }
 ```
 ### Data Entity
-For example, we will use Orgs project to explain how to implement room and so on. In the `br.com.alura.orgs/model/entity`, we create `Item.kt`, the data entity. This entity is composed by five fields, with just one key field. When a field name does not match the corresponding a variable name, we need to use @ColumnInfo with name in the database. Each entity must be annotated with @Entity and specify its tableName, following the SQL naming conventions. 
+For example, we will use Orgs project to explain how to implement room and so on. In the `br.com.alura.orgs/model/entity`, we'll create the data entity in the `Item.kt`. This entity is composed by five fields, with just one key field. When a field name does not match the corresponding variable name, we need to use @ColumnInfo with name in the database. Each entity must be annotated with @Entity and specify its tableName, following the SQL naming conventions. 
+
 ```kotlin
 @Entity(tableName = "item")
 data class Item(
@@ -68,7 +71,7 @@ data class Item(
 ```
 
 ### Data access object (DAO)
-In `br.com.alura.orgs/model/source/`, we create the `ItemDAO.kt`, the data access object (DAO). Each DAO must have the **@DAO** annotation to be recognized as a DAO. The methods that interact with the database must also have an annotation. Some operations is predefined, such as `@update` and `@delete`, but others require additional options. For example, `@Insert` requires an insertion strategy for handling conflicts. In this project, we choose `ABORT` as part of a failure scenario test, which will be explained shortly. For better understanding, we can choose among `ABORT`, `IGNORE`, and `REPLACE`. Besides predefind operations, we can create a custom operation using `@Query` with some SQLight command.
+The Data Access Object (DAO) is an interface that defines the methods used by the app to interact with the data entities. In the br.com.alura.orgs/model/source/ package, we'll create our ItemDAO.kt. Each DAO must be annotated with @DAO to be recognized as a DAO by Room. Additionally, its methods must be annotated with the appropriate annotations to be recognized as valid database operations. Some operations is predefined, such as `@update` and `@delete`, but others require additional options. For example, `@Insert` requires an insertion strategy for handling conflicts. In this project, we choose `ABORT` as part of a failure scenario test, which will be explained shortly. For better understanding, we can choose among `ABORT`, `IGNORE`, and `REPLACE`. Besides predefind operations, we can create a custom operation using `@Query` with some SQLight command.
 
 ```kotlin
 @Dao
@@ -87,9 +90,10 @@ interface ItemDAO {
 ```
 
 ### Database
-In `br.com.alura.orgs/model/source/`, we also create the `ItemDatabase.kt`, the database class that defines the database configuration and serves as the app's main access point to the persisted data. This classe must be annotated with `@Database`, followed by entities, version, and exportSchema parameters. The entities define all the entity classes that the database operates on. The version defines the database version and needs to be changed when the database structure is altered. Finally, the exportSchema defines the room library will automatically export the database schema to a .json file whenever the database is created or upgraded. 
 
-Since each RoomDatabase instance is fairly expensive, and we rarely need access to multiple instances within a single process, the singleton design pattern is a good way to create and expose the database. The database instance requires an application context, the database class, and a database name. For this example, we decided to apply `fallbackToDestructiveMigration()`, which, when upgrading the database, means that all existing data will be deleted and the database will be reset, starting from a fresh state with the new schema.
+The database class defines the database configuration and serves as the app's main access point to the persisted data. We'll create our in the `br.com.alura.orgs/model/source/ItemDatabase.kt`. This class must be annotated with `@Database`, followed by entities, version, and exportSchema parameters. The entities define all the entity classes that the database operates on. The version defines the database version and needs to be changed when the database structure is altered. Finally, the exportSchema defines the room library will automatically export the database schema to a .json file whenever the database is created or upgraded. 
+
+Since each RoomDatabase instance is fairly expensive, and we rarely need access to multiple instances within a single process, the singleton design pattern is a good way to create and expose the database. The database instance requires an application context, the database class, and a database name. In this case, we decided to apply `fallbackToDestructiveMigration()`, which, when upgrading the database, means that all existing data will be deleted and the database will be reset, starting from a fresh state with the new schema.
 
 ```kotlin
 @Database(entities = [Item::class], version = 1, exportSchema = false)
@@ -254,7 +258,7 @@ sealed class Response <out T>{
 }
 ```
 
-After that, we create the repository with the corresponding `ItemDAO`. Since the `Response` class has three possible outcomes, we create an auxiliary method to handle the Response without repeating code. Each repository method first emits a `Loading` state, followed by another Response, which can either be `Success` or `Failure`. 
+After that, we create the repository with the corresponding `ItemDAO`. Since the `Response` class has three possible outcomes, we create an auxiliary method called `performDatabaseOperation()` to handle the `Response` without repeating code. Each repository method first emits a `Loading` state, followed by another Response, which can either be `Success` or `Failure`. 
 
 ```kotlin
 class ItemRepository (private val itemDao: ItemDAO) {
@@ -453,7 +457,7 @@ class ItemRepositoryTest {
 </div>
 <br>
 
-In this project, we implement `ItemUIEvent.kt` and `ItemUIState.kt`, both stored in the `br.com.alura.orgs/view/viewmodel` package. The `ItemUIEvent` class maps the possible actions that will be permitted to the user from the UI. When the user triggers one of the mapped events, the `viewmodel` will properly handle the event and change the current state, which is defined by `ItemUIState`. Each event has a corresponding state, except for `OnIncreaseQuantity` and `OnDecreaseQuantity`, which do not have their own states, as they share the `updateState` with `OnUpdateItem`.
+In this project, we'll implement `ItemUIEvent.kt` and `ItemUIState.kt`, both stored in the `br.com.alura.orgs/view/viewmodel` package, to handle the UDF. The `ItemUIEvent` class maps the possible actions that will be permitted to the user from the UI. When the user triggers one of the mapped events, the `viewmodel` will properly handle the event and change the current state, which is defined by `ItemUIState`. Each event has a corresponding state, except for `OnIncreaseQuantity` and `OnDecreaseQuantity`, which do not have their own states, as they share the `updateState` with `OnUpdateItem`.
 
 <br>
 
@@ -485,7 +489,7 @@ data class ItemUiState(
 
 ### 4. Viewmodel
 
-The `ViewModel` class acts as a business logic or screen-level state holder. It exposes the state to the UI while encapsulating the associated business logic. In other words, it manages states and makes them available to the app, while events are triggered by external actions. In this project, we create `ItemViewModel.kt` in the `br.com.alura.orgs/view/viewmodel` package. The app interacts with the `ViewModel` exclusively through the `onEvent` method, passing it an `ItemUIEvent`. As explained earlier, all events trigger changes in the state, which is stored in `_uiState` (mutable) and exposed via `uiState` (immutable). 
+The `ViewModel` class acts as a business logic or screen-level state holder. It exposes the state to the UI while encapsulating the associated business logic. In other words, it manages states and makes them available to the app, while events are triggered by external actions. In this project, we'll create it in the `br.com.alura.orgs/view/viewmodel/ItemViewModel.kt`. The app interacts with the `ViewModel` exclusively through the `onEvent` method, passing it an `ItemUIEvent`. As explained earlier, all events trigger changes in the state, which is stored in `_uiState` (mutable) and exposed via `uiState` (immutable). 
 
 ```kotlin
 class ItemViewModel (private val repository: ItemRepository): ViewModel() {
@@ -539,8 +543,7 @@ class ItemViewModel (private val repository: ItemRepository): ViewModel() {
             repository.getAllItems().collect { response ->
                 response.handleResponse(_uiState) { state, res ->
                     state.copy(
-                        items = if (res is Response.Success) res.result.sortedBy(Item::id) else state.items,
-                        fetchAllItemsState = res.mapTo(Unit)
+                        fetchAllItemsState = res
                     )
                 }
             }
@@ -839,9 +842,9 @@ class ItemViewModelTest {
 ```
 ## 4. Hilt - Dependency Injection
 
-Hilt is a dependency injection library for Android that reduces the boilerplate of doing manual dependency injection in your project. Doing manual dependency injection requires you to construct every class and its dependencies by hand, and to use containers to reuse and manage dependencies. 
+Hilt is a dependency injection (DI) library for Android that simplifies the process of managing dependencies by reducing the boilerplate code associated with manual dependency injection. Manual dependency injection involves constructing each class and its dependencies manually and using containers to manage and reuse these dependencies. 
 
-Hilt provides a standard way to use DI in your application by providing containers for every Android class in your project and managing their lifecycles automatically. 
+Hilt provides a standardized approach to implementing DI in Android applications by offering containers for each Android class in the project. It also automatically manages the lifecycles of these containers, ensuring efficient resource management and simplifying the dependency injection process.
 
 ### Dependencies
 Considering we have already imported KSP, the first step is to add the hilt-android-gradle-plugin to your project's root build.gradle file:
@@ -898,16 +901,31 @@ object DatabaseModule {
 }
 ```
 
-All apps using Hilt must include an Application class annotated with @HiltAndroidApp to trigger Hilt's code generation. Internally, we instantiate the database using @Inject. Afterward, we can apply dependency injection to ItemViewModel and ItemRepository by adding the @Inject annotation to their constructors.
+All apps using Hilt must include an Application class annotated with @HiltAndroidApp to trigger Hilt's code generation. Once Hilt is set up in the Application class and an application-level component is available, it can provide dependencies to other Android classes annotated with @AndroidEntryPoint. If an Android class is annotated with @AndroidEntryPoint, any Android class that depends on it must also be annotated with @AndroidEntryPoint. In our example, this means annotating MainActivity and all associated fragments. 
+
+Afterward, we can apply dependency injection in the ViewModel and Repository by adding the @Inject annotation to their constructors. However, the ViewModel must also be annotated with @HiltViewModel to enable Hilt's dependency injection mechanism.
 
 ```kotlin
 @HiltAndroidApp
-class ItemApplication : Application() {
-    @Inject
-    lateinit var database: ItemRoomDatabase
+class ItemApplication : Application()
+
+@AndroidEntryPoint
+class MainActivity: AppCompatActivity() {
+    
+    ...
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val viewModel: ItemViewModel by viewModels()
+
+        ...
+    }
 }
 
+@HiltViewModel
 class ItemViewModel @Inject constructor(private val repository: ItemRepository): ViewModel(){ ... }
+
 
 class ItemRepository @Inject constructor(private val itemDao: ItemDAO){ ... }
 ```

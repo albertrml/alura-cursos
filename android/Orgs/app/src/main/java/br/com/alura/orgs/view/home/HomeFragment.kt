@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import br.com.alura.orgs.R
 import br.com.alura.orgs.view.viemodel.ItemViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     val itemViewModel: ItemViewModel by viewModels ()
 
