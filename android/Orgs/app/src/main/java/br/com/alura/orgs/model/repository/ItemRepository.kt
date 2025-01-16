@@ -1,6 +1,7 @@
 package br.com.alura.orgs.model.repository
 
 import br.com.alura.orgs.model.entity.Item
+import br.com.alura.orgs.model.entity.isValid
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.utils.Response
 import kotlinx.coroutines.flow.Flow
@@ -30,13 +31,23 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
     }
 
     fun insertItem(item: Item): Flow<Response<Unit>> = flow {
+        val exception = item.isValid()
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.insert(item) })
+        if (exception != null) {
+            emit(Response.Failure(exception))
+        } else {
+            emit(performDatabaseOperation { itemDao.insert(item) })
+        }
     }
 
     fun updateItem(item: Item): Flow<Response<Unit>> = flow {
+        val exception = item.isValid()
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.update(item) })
+        if (exception != null) {
+            emit(Response.Failure(exception))
+        } else {
+            emit(performDatabaseOperation { itemDao.update(item) })
+        }
     }
 
     fun deleteItem(item: Item): Flow<Response<Unit>> = flow {
@@ -48,5 +59,4 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
         emit(Response.Loading)
         emit(performDatabaseOperation { itemDao.getItemById(id) })
     }
-
 }

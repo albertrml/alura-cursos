@@ -18,4 +18,8 @@ data class Item(
     val quantityInStock: Int
 )
 
-fun Item.isInStock(): Boolean = quantityInStock > 0
+fun Item.isValid(): Exception? = when{
+    itemValue < 0 -> Exception("Invalid value")
+    quantityInStock < 0 -> Exception("Invalid quantity")
+    else -> null
+}

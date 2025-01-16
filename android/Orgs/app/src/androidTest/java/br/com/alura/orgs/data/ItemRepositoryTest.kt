@@ -20,7 +20,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ItemRepositoryTest {
-
     private lateinit var itemRepository: ItemRepository
     private lateinit var itemDao: ItemDAO
     private lateinit var db: ItemRoomDatabase
@@ -36,15 +35,10 @@ class ItemRepositoryTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
-
+    fun setupTestData() = runTest { db.clearAllTables() }
 
     @After
-    fun tearDown() {
-        db.close()
-    }
+    fun tearDown() { db.close() }
 
     @Test
     fun testInsertItemSucceeds() = runTest {
@@ -56,6 +50,30 @@ class ItemRepositoryTest {
                 }
                 is Response.Loading -> assert(true)
                 is Response.Failure -> assert(false)
+            }
+        }
+    }
+
+    @Test
+    fun testInsertItemWithNegativeQuantityFail() = runTest {
+        val item = mockItems[0].copy(quantityInStock = -1)
+        itemRepository.insertItem(item).collect{
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
+            }
+        }
+    }
+
+    @Test
+    fun testInsertItemWithNegativeValueFail() = runTest {
+        val item = mockItems[0].copy(itemValue = -1.0)
+        itemRepository.insertItem(item).collect{
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
             }
         }
     }
@@ -146,6 +164,34 @@ class ItemRepositoryTest {
                 is Response.Success -> assert(true)
                 is Response.Loading -> assert(true)
                 is Response.Failure -> assert(false)
+            }
+        }
+    }
+
+    @Test
+    fun testUpdateItemWithNegativeValueFails() = runTest {
+        itemDao.insert(mockItems[2])
+        val updateItemWithNegativeValue = itemDao
+            .getItems().first().first().copy(itemValue = -1.0)
+        itemRepository.updateItem(updateItemWithNegativeValue).collect {
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
+            }
+        }
+    }
+
+    @Test
+    fun testUpdateItemWithNegativeQuantityFails() = runTest {
+        itemDao.insert(mockItems[2])
+        val updateItemWithNegativeValue = itemDao
+            .getItems().first().first().copy(quantityInStock = -1)
+        itemRepository.updateItem(updateItemWithNegativeValue).collect {
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
             }
         }
     }

@@ -141,18 +141,12 @@ class ItemDatabaseTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
+    fun setupTestData() = runTest {  db.clearAllTables() }
 
     @After
-    @Throws(IOException::class)
-    fun closeDb(){
-        db.close()
-    }
+    fun closeDb(){ db.close() }
 
     @Test
-    @Throws(Exception::class)
     fun testInsertItemAndRetrieveSuccessfully() = runTest {
         assertEquals(emptyList<Item>(), itemDAO.getItems().first())
         val item = mockItems[0]
@@ -163,7 +157,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testInsertDuplicateItemThrowsException() = runTest {
         itemDAO.insert(mockItems[0])
         val item = itemDAO.getItemById(1)
@@ -173,7 +166,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemByIdReturnsCorrectItem() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
 
@@ -191,7 +183,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUpdateItemCorrectly() = runTest {
         itemDAO.insert(mockItems[2])
         val itemBeforeUpdate = itemDAO.getItemById(1).copy(
@@ -216,7 +207,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteItemRemovesCorrectly() = runTest {
         val item = mockItems[0]
         itemDAO.insert(item)
@@ -228,7 +218,6 @@ class ItemDatabaseTest {
 
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemsReturnsCorrectlyAllItems() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
         val allItems = itemDAO.getItems().first().map {
@@ -242,7 +231,6 @@ class ItemDatabaseTest {
         assert(allItems.size == mockItems.size)
         assert(allItems.containsAll(mockItems))
     }
-
 }
 ```
 
@@ -282,13 +270,23 @@ class ItemRepository (private val itemDao: ItemDAO) {
     }
 
     fun insertItem(item: Item): Flow<Response<Unit>> = flow {
+        val exception = item.isValid()
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.insert(item) })
+        if (exception != null) {
+            emit(Response.Failure(exception))
+        } else {
+            emit(performDatabaseOperation { itemDao.insert(item) })
+        }
     }
 
     fun updateItem(item: Item): Flow<Response<Unit>> = flow {
+        val exception = item.isValid()
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.update(item) })
+        if (exception != null) {
+            emit(Response.Failure(exception))
+        } else {
+            emit(performDatabaseOperation { itemDao.update(item) })
+        }
     }
 
     fun deleteItem(item: Item): Flow<Response<Unit>> = flow {
@@ -300,7 +298,6 @@ class ItemRepository (private val itemDao: ItemDAO) {
         emit(Response.Loading)
         emit(performDatabaseOperation { itemDao.getItemById(id) })
     }
-
 }
 ```
 
@@ -310,7 +307,6 @@ First, let's take a look at the `testGetAllItemsReturnsCorrectItems()` method, w
 
 ```kotlin
 class ItemRepositoryTest {
-
     private lateinit var itemRepository: ItemRepository
     private lateinit var itemDao: ItemDAO
     private lateinit var db: ItemRoomDatabase
@@ -326,15 +322,10 @@ class ItemRepositoryTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
-
+    fun setupTestData() = runTest { db.clearAllTables() }
 
     @After
-    fun tearDown() {
-        db.close()
-    }
+    fun tearDown() { db.close() }
 
     @Test
     fun testInsertItemSucceeds() = runTest {
@@ -346,6 +337,30 @@ class ItemRepositoryTest {
                 }
                 is Response.Loading -> assert(true)
                 is Response.Failure -> assert(false)
+            }
+        }
+    }
+
+    @Test
+    fun testInsertItemWithNegativeQuantityFail() = runTest {
+        val item = mockItems[0].copy(quantityInStock = -1)
+        itemRepository.insertItem(item).collect{
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
+            }
+        }
+    }
+
+    @Test
+    fun testInsertItemWithNegativeValueFail() = runTest {
+        val item = mockItems[0].copy(itemValue = -1.0)
+        itemRepository.insertItem(item).collect{
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
             }
         }
     }
@@ -436,6 +451,34 @@ class ItemRepositoryTest {
                 is Response.Success -> assert(true)
                 is Response.Loading -> assert(true)
                 is Response.Failure -> assert(false)
+            }
+        }
+    }
+
+    @Test
+    fun testUpdateItemWithNegativeValueFails() = runTest {
+        itemDao.insert(mockItems[2])
+        val updateItemWithNegativeValue = itemDao
+            .getItems().first().first().copy(itemValue = -1.0)
+        itemRepository.updateItem(updateItemWithNegativeValue).collect {
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
+            }
+        }
+    }
+
+    @Test
+    fun testUpdateItemWithNegativeQuantityFails() = runTest {
+        itemDao.insert(mockItems[2])
+        val updateItemWithNegativeValue = itemDao
+            .getItems().first().first().copy(quantityInStock = -1)
+        itemRepository.updateItem(updateItemWithNegativeValue).collect {
+            when (it) {
+                is Response.Success -> assert(false)
+                is Response.Loading -> assert(true)
+                is Response.Failure -> assert(true)
             }
         }
     }
@@ -599,7 +642,6 @@ The tests for `ViewModel` are written in `ItemViewModel.kt`, located in the `br.
 
 ```kotlin
 class ItemViewModelTest {
-
     private lateinit var viewModel: ItemViewModel
     private lateinit var repository: ItemRepository
     private lateinit var itemDao: ItemDAO
@@ -617,15 +659,10 @@ class ItemViewModelTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
-
+    fun setupTestData() = runTest { db.clearAllTables() }
 
     @After
-    fun tearDown() {
-        db.close()
-    }
+    fun tearDown() { db.close() }
 
     @Test
     fun onDecreaseQuantityUpdatesItemQuantity() = runTest {
@@ -842,7 +879,7 @@ class ItemViewModelTest {
 ```
 ## 4. Hilt - Dependency Injection
 
-Hilt is a dependency injection (DI) library for Android that simplifies the process of managing dependencies by reducing the boilerplate code associated with manual dependency injection. Manual dependency injection involves constructing each class and its dependencies manually and using containers to manage and reuse these dependencies. 
+Hilt is a dependency injection (DI) library for Android that simplifies the process of managing dependencies by reducing the boilerplate code associated with manual dependency injection. Manual dependency injection involves constructing each class and its dependencies manually and using containers to manage and reuse these dependencies.
 
 Hilt provides a standardized approach to implementing DI in Android applications by offering containers for each Android class in the project. It also automatically manages the lifecycles of these containers, ensuring efficient resource management and simplifying the dependency injection process.
 

@@ -16,7 +16,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
-import java.io.IOException
 
 
 class ItemDatabaseTest {
@@ -34,18 +33,12 @@ class ItemDatabaseTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
+    fun setupTestData() = runTest {  db.clearAllTables() }
 
     @After
-    @Throws(IOException::class)
-    fun closeDb(){
-        db.close()
-    }
+    fun closeDb(){ db.close() }
 
     @Test
-    @Throws(Exception::class)
     fun testInsertItemAndRetrieveSuccessfully() = runTest {
         assertEquals(emptyList<Item>(), itemDAO.getItems().first())
         val item = mockItems[0]
@@ -56,7 +49,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testInsertDuplicateItemThrowsException() = runTest {
         itemDAO.insert(mockItems[0])
         val item = itemDAO.getItemById(1)
@@ -66,7 +58,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemByIdReturnsCorrectItem() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
 
@@ -84,7 +75,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testUpdateItemCorrectly() = runTest {
         itemDAO.insert(mockItems[2])
         val itemBeforeUpdate = itemDAO.getItemById(1).copy(
@@ -109,7 +99,6 @@ class ItemDatabaseTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun testDeleteItemRemovesCorrectly() = runTest {
         val item = mockItems[0]
         itemDAO.insert(item)
@@ -121,7 +110,6 @@ class ItemDatabaseTest {
 
 
     @Test
-    @Throws(Exception::class)
     fun testGetItemsReturnsCorrectlyAllItems() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
         val allItems = itemDAO.getItems().first().map {
@@ -135,5 +123,4 @@ class ItemDatabaseTest {
         assert(allItems.size == mockItems.size)
         assert(allItems.containsAll(mockItems))
     }
-
 }

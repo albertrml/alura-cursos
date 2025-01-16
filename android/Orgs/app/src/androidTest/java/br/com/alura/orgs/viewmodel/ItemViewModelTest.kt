@@ -21,7 +21,6 @@ import org.junit.Before
 import org.junit.Test
 
 class ItemViewModelTest {
-
     private lateinit var viewModel: ItemViewModel
     private lateinit var repository: ItemRepository
     private lateinit var itemDao: ItemDAO
@@ -39,15 +38,10 @@ class ItemViewModelTest {
     }
 
     @Before
-    fun setupTestData() = runTest {
-        db.clearAllTables()
-    }
-
+    fun setupTestData() = runTest { db.clearAllTables() }
 
     @After
-    fun tearDown() {
-        db.close()
-    }
+    fun tearDown() { db.close() }
 
     @Test
     fun onDecreaseQuantityUpdatesItemQuantity() = runTest {

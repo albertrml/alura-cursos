@@ -70,7 +70,6 @@ class ItemViewModel @Inject constructor(private val repository: ItemRepository):
         }
     }
 
-
     private fun fetchItemById(id: Int) {
         viewModelScope.launch {
             repository.getItemById(id).collect { response ->
