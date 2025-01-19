@@ -1,5 +1,8 @@
 package br.com.alura.orgs.utils
 
+import android.os.Handler
+import android.os.Looper
+import android.view.ViewGroup
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import java.lang.Exception
@@ -16,5 +19,44 @@ fun <T, S> Response<T>.handleResponse(
 ) {
     uiState.update { state ->
         updateState(state, this)
+    }
+}
+
+fun <T> Response<T>.showResults(
+    successViewGroup: ViewGroup,
+    loadingViewGroup: ViewGroup,
+    failureViewGroup: ViewGroup,
+    actionOnSuccess: (T) -> Unit,
+    actionOnFailure: (Exception) -> Unit,
+    delay: Long = 1500
+){
+    when(this){
+        is Response.Success -> {
+            Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    successViewGroup.visibility = ViewGroup.VISIBLE
+                    loadingViewGroup.visibility = ViewGroup.GONE
+                    failureViewGroup.visibility = ViewGroup.GONE
+                    actionOnSuccess(this.result)
+                },
+                delay
+            )
+        }
+        is Response.Loading -> {
+            successViewGroup.visibility = ViewGroup.GONE
+            loadingViewGroup.visibility = ViewGroup.VISIBLE
+            failureViewGroup.visibility = ViewGroup.GONE
+        }
+        is Response.Failure -> {
+            Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    successViewGroup.visibility = ViewGroup.GONE
+                    loadingViewGroup.visibility = ViewGroup.GONE
+                    failureViewGroup.visibility = ViewGroup.VISIBLE
+                    actionOnFailure(this.exception)
+                }
+                ,delay
+            )
+        }
     }
 }

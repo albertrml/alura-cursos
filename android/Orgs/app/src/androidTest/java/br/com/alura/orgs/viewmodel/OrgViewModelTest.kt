@@ -9,8 +9,8 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.ItemRoomDatabase
 import br.com.alura.orgs.utils.Response
-import br.com.alura.orgs.view.viemodel.ItemUiEvent
-import br.com.alura.orgs.view.viemodel.ItemViewModel
+import br.com.alura.orgs.view.udf.UiEvent
+import br.com.alura.orgs.viemodel.OrgViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
@@ -20,8 +20,8 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 
-class ItemViewModelTest {
-    private lateinit var viewModel: ItemViewModel
+class OrgViewModelTest {
+    private lateinit var viewModel: OrgViewModel
     private lateinit var repository: ItemRepository
     private lateinit var itemDao: ItemDAO
     private lateinit var db: ItemRoomDatabase
@@ -34,7 +34,7 @@ class ItemViewModelTest {
             .build()
         itemDao = db.itemDao()
         repository = ItemRepository(itemDao)
-        viewModel = ItemViewModel(repository)
+        viewModel = OrgViewModel(repository)
     }
 
     @Before
@@ -51,7 +51,7 @@ class ItemViewModelTest {
         val itemBeforeDecrease = itemDao.getItemById(1)
         val itemQuantityBeforeDecrease = itemBeforeDecrease.quantityInStock
 
-        viewModel.onEvent(ItemUiEvent.OnDecreaseQuantity(itemBeforeDecrease))
+        viewModel.onEvent(UiEvent.OnDecreaseQuantity(itemBeforeDecrease))
         viewModel.uiState.take(2).collect{ uiState ->
             when(uiState.updateState){
                 is Response.Success -> {
@@ -78,7 +78,7 @@ class ItemViewModelTest {
         val itemBeforeIncrease = itemDao.getItemById(1)
         val itemQuantityBeforeIncrease = itemBeforeIncrease.quantityInStock
 
-        viewModel.onEvent(ItemUiEvent.OnIncreaseQuantity(itemBeforeIncrease))
+        viewModel.onEvent(UiEvent.OnIncreaseQuantity(itemBeforeIncrease))
         viewModel.uiState.take(2).collect{ uiState ->
             when(uiState.updateState){
                 is Response.Success -> {
@@ -101,7 +101,7 @@ class ItemViewModelTest {
     fun onInsertItemTriggersSuccess() = runTest {
         mockItems[0].apply {
             viewModel.onEvent(
-                ItemUiEvent.OnInsertItem(
+                UiEvent.OnInsert(
                     itemName = itemName,
                     itemDescription = itemDescription,
                     itemValue = itemValue.toString(),
@@ -129,7 +129,7 @@ class ItemViewModelTest {
     fun onInsertDuplicateItemButDifferentID() = runTest {
         mockItems[0].apply {
             viewModel.onEvent(
-                ItemUiEvent.OnInsertItem(
+                UiEvent.OnInsert(
                     itemName = itemName,
                     itemDescription = itemDescription,
                     itemValue = itemValue.toString(),
@@ -141,7 +141,7 @@ class ItemViewModelTest {
 
         item.apply {
             viewModel.onEvent(
-                ItemUiEvent.OnInsertItem(
+                UiEvent.OnInsert(
                     itemName = itemName,
                     itemDescription = itemDescription,
                     itemValue = itemValue.toString(),
@@ -168,7 +168,7 @@ class ItemViewModelTest {
     fun onDeleteItemDeletesItem() = runTest {
         itemDao.insert(mockItems[0])
         val item = itemDao.getItemById(1)
-        viewModel.onEvent(ItemUiEvent.OnDeleteItem(item))
+        viewModel.onEvent(UiEvent.OnDelete(item))
 
         viewModel.uiState.take(2).collect{ uiState ->
             when(uiState.deleteState){
@@ -186,7 +186,7 @@ class ItemViewModelTest {
     fun fetchAllItemsUpdatesItemsInState() = runTest {
         mockItems.forEach { itemDao.insert(it) }
 
-        viewModel.onEvent(ItemUiEvent.OnFetchAllItems)
+        viewModel.onEvent(UiEvent.OnFetchAllItems)
         viewModel.uiState.take(2).collect { uiState ->
             when (uiState.fetchAllItemsState) {
                 is Response.Success -> {
@@ -215,7 +215,7 @@ class ItemViewModelTest {
     fun onFetchItemByIdUpdatesFetchByIdStateInState() = runTest {
         val item = mockItems[0]
         itemDao.insert(item)
-        viewModel.onEvent(ItemUiEvent.OnFetchItemById(1))
+        viewModel.onEvent(UiEvent.OnFetchById(1))
         viewModel.uiState.take(2).collect{ uiState ->
             when(uiState.fetchItemByIdState) {
                 is Response.Success -> {
@@ -242,7 +242,7 @@ class ItemViewModelTest {
             itemValue = mockItems[1].itemValue,
             quantityInStock = mockItems[1].quantityInStock
         )
-        viewModel.onEvent(ItemUiEvent.OnUpdateItem(itemBeforeUpdate))
+        viewModel.onEvent(UiEvent.OnUpdate(itemBeforeUpdate))
         viewModel.uiState.take(2).collect { uiState ->
             when (uiState.updateState) {
                 is Response.Success -> {

@@ -18,8 +18,13 @@ data class Item(
     val quantityInStock: Int
 )
 
-fun Item.isValid(): Exception? = when{
-    itemValue < 0 -> Exception("Invalid value")
-    quantityInStock < 0 -> Exception("Invalid quantity")
-    else -> null
+fun Item.onCheck(
+    isValid: (Item) -> Unit,
+    isInvalid: (Exception) -> Unit
+) = when{
+    itemName.isBlank() -> isInvalid(Exception("Invalid name"))
+    itemDescription.isBlank() -> isInvalid(Exception("Invalid description"))
+    itemValue < 0 -> isInvalid(Exception("Invalid value"))
+    quantityInStock < 0 -> isInvalid(Exception("Invalid quantity"))
+    else -> isValid(this)
 }

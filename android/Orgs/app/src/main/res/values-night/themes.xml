@@ -2,15 +2,32 @@
     <!-- Base application theme. -->
     <style name="Theme.Orgs" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryDark</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainerDark</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainerDark</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSecondary">@color/colorSecondaryDark</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryDark</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainerDark</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainerDark</item>
+
+        <item name="colorTertiary">@color/colorTertiaryDark</item>
+        <item name="colorOnTertiary">@color/colorOnTertiaryDark</item>
+        <item name="colorTertiaryContainer">@color/colorTertiaryContainerDark</item>
+        <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainerDark</item>
+
+        <item name="colorError">@color/colorErrorDark</item>
+        <item name="colorOnError">@color/colorOnErrorDark</item>
+        <item name="colorErrorContainer">@color/colorErrorContainerDark</item>
+        <item name="colorOnErrorContainer">@color/colorOnErrorContainerDark</item>
+
+        <item name="colorSurface">@color/colorSecondaryDark</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
+        <item name="colorSurfaceContainer">@color/colorSecondaryDark</item>
+        <item name="colorSurfaceContainerHighest">@color/colorSurfaceContainerHighestDark</item>
+
+        <item name="android:colorBackground">@color/colorBackgroundDark</item>
+        <item name="android:textColor">@color/colorOnBackgroundDark</item>
     </style>
 </resources>

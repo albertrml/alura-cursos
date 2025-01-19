@@ -1,9 +1,9 @@
-package br.com.alura.orgs.view.viemodel
+package br.com.alura.orgs.view.udf
 
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.utils.Response
 
-data class ItemUiState(
+data class UiState(
     val fetchAllItemsState: Response<List<Item>> = Response.Loading,
     val fetchItemByIdState: Response<Item> = Response.Loading,
     val deleteState: Response<Unit> = Response.Loading,

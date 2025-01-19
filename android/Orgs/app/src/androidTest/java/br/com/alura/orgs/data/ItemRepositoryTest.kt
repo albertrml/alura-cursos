@@ -55,30 +55,6 @@ class ItemRepositoryTest {
     }
 
     @Test
-    fun testInsertItemWithNegativeQuantityFail() = runTest {
-        val item = mockItems[0].copy(quantityInStock = -1)
-        itemRepository.insertItem(item).collect{
-            when (it) {
-                is Response.Success -> assert(false)
-                is Response.Loading -> assert(true)
-                is Response.Failure -> assert(true)
-            }
-        }
-    }
-
-    @Test
-    fun testInsertItemWithNegativeValueFail() = runTest {
-        val item = mockItems[0].copy(itemValue = -1.0)
-        itemRepository.insertItem(item).collect{
-            when (it) {
-                is Response.Success -> assert(false)
-                is Response.Loading -> assert(true)
-                is Response.Failure -> assert(true)
-            }
-        }
-    }
-
-    @Test
     fun testInsertItemWhenAlreadyExistsThrowsError() = runTest {
         itemDao.insert(mockItems[0])
         val item = itemDao.getItemById(1)
@@ -164,34 +140,6 @@ class ItemRepositoryTest {
                 is Response.Success -> assert(true)
                 is Response.Loading -> assert(true)
                 is Response.Failure -> assert(false)
-            }
-        }
-    }
-
-    @Test
-    fun testUpdateItemWithNegativeValueFails() = runTest {
-        itemDao.insert(mockItems[2])
-        val updateItemWithNegativeValue = itemDao
-            .getItems().first().first().copy(itemValue = -1.0)
-        itemRepository.updateItem(updateItemWithNegativeValue).collect {
-            when (it) {
-                is Response.Success -> assert(false)
-                is Response.Loading -> assert(true)
-                is Response.Failure -> assert(true)
-            }
-        }
-    }
-
-    @Test
-    fun testUpdateItemWithNegativeQuantityFails() = runTest {
-        itemDao.insert(mockItems[2])
-        val updateItemWithNegativeValue = itemDao
-            .getItems().first().first().copy(quantityInStock = -1)
-        itemRepository.updateItem(updateItemWithNegativeValue).collect {
-            when (it) {
-                is Response.Success -> assert(false)
-                is Response.Loading -> assert(true)
-                is Response.Failure -> assert(true)
             }
         }
     }

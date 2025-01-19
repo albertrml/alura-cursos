@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.hilt.android)
     /*id("org.jetbrains.kotlin.kapt")*/
     alias(libs.plugins.ksp)
+    alias(libs.plugins.navigation.safe.args.ktx)
 }
 
 android {
@@ -41,20 +42,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
 
-    android {
-        packaging {
-            resources {
-                excludes += "/META-INF/{AL2.0,LGPL2.1}"
-                merges += "META-INF/LICENSE.md"
-                merges += "META-INF/LICENSE-notice.md"
-            }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
         }
     }
-
 }
 
 dependencies {
@@ -64,10 +63,13 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.recyclerview.selection)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.hilt.android)
     implementation(libs.material)
+    implementation(libs.androidx.material3)
 
     /*kapt(libs.androidx.databinding.compiler)*/
     ksp(libs.androidx.room.compiler)
@@ -77,16 +79,10 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.mockk)
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(libs.mockito.core)
-    androidTestImplementation(libs.mockito.kotlin)
-    androidTestImplementation(libs.mockk.android)
 }

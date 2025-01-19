@@ -1,10 +1,12 @@
-package br.com.alura.orgs.view.viemodel
+package br.com.alura.orgs.viemodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.utils.handleResponse
+import br.com.alura.orgs.view.udf.UiEvent
+import br.com.alura.orgs.view.udf.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,18 +14,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ItemViewModel @Inject constructor(private val repository: ItemRepository): ViewModel() {
-    private val _uiState = MutableStateFlow(ItemUiState())
+class OrgViewModel @Inject constructor(private val repository: ItemRepository): ViewModel() {
+    private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
-    fun onEvent(event: ItemUiEvent){
+    init {
+        onEvent(UiEvent.OnFetchAllItems)
+    }
+
+    fun onEvent(event: UiEvent){
         when(event){
-            is ItemUiEvent.OnDecreaseQuantity -> decreaseQuantity(event.item)
-            is ItemUiEvent.OnDeleteItem -> deleteItem(event.item)
-            is ItemUiEvent.OnFetchAllItems -> fetchAllItems()
-            is ItemUiEvent.OnFetchItemById -> fetchItemById(event.itemId)
-            is ItemUiEvent.OnIncreaseQuantity -> increaseQuantity(event.item)
-            is ItemUiEvent.OnInsertItem -> {
+            is UiEvent.OnDecreaseQuantity -> decreaseQuantity(event.item)
+            is UiEvent.OnDelete -> deleteItem(event.item)
+            is UiEvent.OnFetchAllItems -> fetchAllItems()
+            is UiEvent.OnFetchById -> fetchItemById(event.itemId)
+            is UiEvent.OnIncreaseQuantity -> increaseQuantity(event.item)
+            is UiEvent.OnInsert -> {
                 val item  = event.run {
                     Item(
                         itemName = itemName,
@@ -34,7 +40,7 @@ class ItemViewModel @Inject constructor(private val repository: ItemRepository):
                 }
                 insertItem(item)
             }
-            is ItemUiEvent.OnUpdateItem -> updateItem(event.item)
+            is UiEvent.OnUpdate -> updateItem(event.item)
         }
     }
 

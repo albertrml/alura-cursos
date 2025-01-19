@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#032378</color>
+    <color name="colorOnPrimary">#FDFDFD</color>
+    <color name="colorPrimaryContainer">#608EFB</color>
+    <color name="colorOnPrimaryContainer">#032378</color>
+
+    <color name="colorSecondary">#324254</color>
+    <color name="colorOnSecondary">#A8C6F4</color>
+    <color name="colorSecondaryContainer">#7CCDFB</color>
+    <color name="colorOnSecondaryContainer">#010C26</color>
+
+    <color name="colorTertiary">#386AF4</color>
+    <color name="colorOnTertiary">#FF03DAC5</color>
+    <color name="colorTertiaryContainer">#FF03DAC5</color>
+    <color name="colorOnTertiaryContainer">#FF03DAC5</color>
+
+    <color name="colorSurface">#5BACF0</color>
+    <color name="colorOnSurface">#020B5B</color>
+    <color name="colorSurfaceVariant">#F3F3F6</color>
+    <color name="colorOnSurfaceVariant">#493F7A</color>
+    <color name="colorSurfaceContainerHighest">#6CA2F8</color>
+
+    <color name="colorError">#F40000</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorErrorContainer">#F09EA3</color>
+    <color name="colorOnErrorContainer">#3A0202</color>
+
+    <color name="colorBackground">#FDFDFD</color>
+    <color name="colorOnBackground">#000000</color>
+
+
+
+
+    <color name="colorPrimaryDark">#032378</color>
+    <color name="colorOnPrimaryDark">#FDFDFD</color>
+    <color name="colorPrimaryContainerDark">#608EFB</color>
+    <color name="colorOnPrimaryContainerDark">#032378</color>
+
+    <color name="colorSecondaryDark">#324254</color>
+    <color name="colorOnSecondaryDark">#A8C6F4</color>
+    <color name="colorSecondaryContainerDark">#7CCDFB</color>
+    <color name="colorOnSecondaryContainerDark">#010C26</color>
+
+    <color name="colorTertiaryDark">#386AF4</color>
+    <color name="colorOnTertiaryDark">#FF03DAC5</color>
+    <color name="colorTertiaryContainerDark">#FF03DAC5</color>
+    <color name="colorOnTertiaryContainerDark">#FF03DAC5</color>
+
+    <color name="colorSurfaceDark">#E0E3F8</color>
+    <color name="colorOnSurfaceDark">#010149</color>
+    <color name="colorSurfaceVariantDark">#F3F3F6</color>
+    <color name="colorOnSurfaceVariantDark">#493F7A</color>
+    <color name="colorSurfaceContainerHighestDark">#6CA2F8</color>
+
+
+    <color name="colorErrorDark">#F40000</color>
+    <color name="colorOnErrorDark">#FFFFFF</color>
+    <color name="colorErrorContainerDark">#F09EA3</color>
+    <color name="colorOnErrorContainerDark">#3A0202</color>
+
+    <color name="colorBackgroundDark">#FDFDFD</color>
+    <color name="colorOnBackgroundDark">#1D1C1C</color>
+
 </resources>
