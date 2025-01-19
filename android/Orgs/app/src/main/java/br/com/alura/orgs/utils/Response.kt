@@ -28,7 +28,7 @@ fun <T> Response<T>.showResults(
     failureViewGroup: ViewGroup,
     actionOnSuccess: (T) -> Unit,
     actionOnFailure: (Exception) -> Unit,
-    delay: Long = 1500
+    delay: Long = 500
 ){
     when(this){
         is Response.Success -> {
@@ -46,6 +46,7 @@ fun <T> Response<T>.showResults(
             successViewGroup.visibility = ViewGroup.GONE
             loadingViewGroup.visibility = ViewGroup.VISIBLE
             failureViewGroup.visibility = ViewGroup.GONE
+            Handler(Looper.getMainLooper()).postDelayed({},delay)
         }
         is Response.Failure -> {
             Handler(Looper.getMainLooper()).postDelayed(

@@ -21,4 +21,6 @@
     <string name="return_button">Return</string>
     <string name="back_button_description">Back button</string>
     <string name="update_button">Update</string>
+    <string name="success_update">Update concluded</string>
+    <string name="success_insert">Insert concluded</string>
 </resources>

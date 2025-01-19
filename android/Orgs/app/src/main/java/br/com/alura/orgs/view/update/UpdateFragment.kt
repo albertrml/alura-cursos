@@ -27,6 +27,11 @@ class UpdateFragment : Fragment() {
     private val orgViewModel: OrgViewModel by viewModels()
     private val binding by lazy { FragmentUpdateBinding.inflate(layoutInflater) }
     private val args: UpdateFragmentArgs by navArgs()
+    private val navigateToHome: (Unit) -> Unit = {
+        this@UpdateFragment.findNavController().navigate(
+            R.id.action_updateFragment_to_homeFragment
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,28 +56,21 @@ class UpdateFragment : Fragment() {
 
     private fun setupListeners() {
         binding.updateButton.setOnClickListener {
-            val itemToUpdate = getItemToUpdate()
-            itemToUpdate.onCheck(
-                isValid = { update(it) },
-                isInvalid = { exception ->
-                    Toast.makeText(
-                        requireContext(),
-                        exception.message, Toast.LENGTH_SHORT
-                    ).show()
-                }
-            )
+                val itemToUpdate = getItemToUpdate()
+                itemToUpdate.onCheck(
+                    isValid = { update(it) },
+                    isInvalid = { exception ->
+                        Toast.makeText(
+                            requireContext(),
+                            exception.message, Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
         }
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
-            this@UpdateFragment.findNavController().navigate(
-                R.id.action_updateFragment_to_homeFragment
-            )
-        }
-        binding.returnButton.setOnClickListener {
-            this@UpdateFragment.findNavController().navigate(
-                R.id.action_updateFragment_to_homeFragment
-            )
-        }
+
+        binding.backButton.setOnClickListener { navigateToHome(Unit) }
+        binding.failureReturnButton.setOnClickListener { navigateToHome(Unit) }
+        binding.successReturnButton.setOnClickListener { navigateToHome(Unit) }
     }
 
     private fun setupScreen(){
@@ -83,9 +81,11 @@ class UpdateFragment : Fragment() {
                     successViewGroup = binding.updateLayout,
                     loadingViewGroup = binding.loadingLayout,
                     failureViewGroup = binding.failureLayout,
-                    actionOnSuccess = { itemBeforeUpdate -> screenItem(itemBeforeUpdate) },
+                    actionOnSuccess = { itemBeforeUpdate ->
+                        screenItem(itemBeforeUpdate)
+                    },
                     actionOnFailure = { exception ->
-                        binding.failLoadingText.text = exception.message
+                        binding.failureTextview.text = exception.message
                     }
                 )
             }
@@ -102,23 +102,17 @@ class UpdateFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun update(itemToUpdate:Item){
         orgViewModel.onEvent(UiEvent.OnUpdate(itemToUpdate))
         orgViewModel.viewModelScope.launch {
             orgViewModel.uiState.collect{ state ->
                 state.updateState.showResults(
-                    successViewGroup = binding.updateLayout,
+                    successViewGroup = binding.successLayout,
                     loadingViewGroup = binding.loadingLayout,
                     failureViewGroup = binding.updateLayout,
                     actionOnSuccess = { data ->
-                        findNavController().navigate(
-                            R.id.action_updateFragment_to_homeFragment
-                        )
-                        Toast.makeText(
-                            requireContext(),
-                            findNavController().currentDestination?.toString(),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        binding.successTextview.text = getString(R.string.success_update)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(

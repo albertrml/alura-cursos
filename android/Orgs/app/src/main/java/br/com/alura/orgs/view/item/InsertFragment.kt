@@ -25,6 +25,11 @@ class InsertFragment : Fragment() {
 
     private val orgViewModel: OrgViewModel by viewModels()
     private val binding by lazy { FragmentInsertBinding.inflate(layoutInflater) }
+    private val navigateToHome: (Unit) -> Unit = {
+        this@InsertFragment.findNavController().navigate(
+            R.id.action_insertFragment_to_homeFragment
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,13 +64,12 @@ class InsertFragment : Fragment() {
         orgViewModel.viewModelScope.launch {
             orgViewModel.uiState.collect{ state ->
                 state.insertState.showResults(
-                    successViewGroup = binding.insertLayout,
+                    successViewGroup = binding.successLayout,
                     loadingViewGroup = binding.loadingLayout,
-                    failureViewGroup = binding.insertLayout,
+                    failureViewGroup = binding.failureLayout,
                     actionOnSuccess = {
-                        this@InsertFragment.findNavController().navigate(
-                            R.id.action_itemFragment_to_homeFragment
-                        )
+                        binding.insertLayout.visibility = View.GONE
+                        binding.successTextview.text = getString(R.string.success_insert)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(
@@ -102,17 +106,9 @@ class InsertFragment : Fragment() {
             )
         }
 
-        binding.backButton.setOnClickListener {
-            this@InsertFragment.findNavController().navigate(
-                R.id.action_itemFragment_to_homeFragment
-            )
-        }
-
-        binding.returnButton.setOnClickListener {
-            this@InsertFragment.findNavController().navigate(
-                R.id.action_itemFragment_to_homeFragment
-            )
-        }
+        binding.backButton.setOnClickListener { navigateToHome(Unit) }
+        binding.successReturnButton.setOnClickListener { navigateToHome(Unit) }
+        binding.failureReturnButton.setOnClickListener { navigateToHome(Unit) }
     }
 
 }

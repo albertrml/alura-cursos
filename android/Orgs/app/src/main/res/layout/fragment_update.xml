@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
-            tools:visibility="visible"
+            tools:visibility="gone"
             >
 
             <ImageButton
@@ -33,7 +33,7 @@
                 android:hint="@string/name_textview"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@id/description_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
                 android:hint="@string/description_edittext"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@id/price_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
                 android:hint="@string/price_edittext"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@id/quantity_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
                 android:id="@+id/quantity_layout"
                 android:hint="@string/quantity_edittext"
                 android:layout_height="wrap_content"
-                android:layout_width="370dp"
+                android:layout_width="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -134,11 +134,56 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/success_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/success_image"
+                android:contentDescription="@string/fail_loading_image"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/light_success_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/success_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/success_image"
+                android:text="@string/success_update"
+                />
+
+            <Button
+                android:id="@+id/success_return_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/return_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/success_textview"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <LinearLayout
             android:id="@+id/loading_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:visibility="visible"
             >
 
             <ProgressBar
@@ -157,7 +202,7 @@
             >
 
             <ImageView
-                android:id="@+id/fail_loading_image"
+                android:id="@+id/failure_imageview"
                 android:contentDescription="@string/fail_loading_image"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -169,26 +214,26 @@
                 />
 
             <TextView
-                android:id="@+id/fail_loading_text"
+                android:id="@+id/failure_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fail_loading_image"
+                app:layout_constraintTop_toBottomOf="@id/failure_imageview"
                 tools:text="Unknown failure"
                 />
 
             <Button
-                android:id="@+id/return_button"
+                android:id="@+id/failure_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fail_loading_text"
+                app:layout_constraintTop_toBottomOf="@id/failure_textview"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

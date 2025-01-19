@@ -11,20 +11,20 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_itemFragment"
-            app:destination="@id/itemFragment" />
+            android:id="@+id/action_homeFragment_to_InsertFragment"
+            app:destination="@id/insertFragment" />
         <action
             android:id="@+id/action_homeFragment_to_updateFragment"
             app:destination="@id/updateFragment"
             />
     </fragment>
     <fragment
-        android:id="@+id/itemFragment"
+        android:id="@+id/insertFragment"
         android:name="br.com.alura.orgs.view.item.InsertFragment"
         android:label="fragment_item"
         tools:layout="@layout/fragment_insert" >
         <action
-            android:id="@+id/action_itemFragment_to_homeFragment"
+            android:id="@+id/action_insertFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/homeFragment"
             />

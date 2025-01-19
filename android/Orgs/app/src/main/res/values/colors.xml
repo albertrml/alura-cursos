@@ -32,26 +32,26 @@
 
 
 
-    <color name="colorPrimaryDark">#032378</color>
-    <color name="colorOnPrimaryDark">#FDFDFD</color>
-    <color name="colorPrimaryContainerDark">#608EFB</color>
-    <color name="colorOnPrimaryContainerDark">#032378</color>
+    <color name="colorPrimaryDark">#45ADF0</color>
+    <color name="colorOnPrimaryDark">#00000B</color>
+    <color name="colorPrimaryContainerDark">#92DFF2</color>
+    <color name="colorOnPrimaryContainerDark">#000A1B</color>
 
-    <color name="colorSecondaryDark">#324254</color>
-    <color name="colorOnSecondaryDark">#A8C6F4</color>
-    <color name="colorSecondaryContainerDark">#7CCDFB</color>
-    <color name="colorOnSecondaryContainerDark">#010C26</color>
+    <color name="colorSecondaryDark">#78B4F2</color>
+    <color name="colorOnSecondaryDark">#FFFFFF</color>
+    <color name="colorSecondaryContainerDark">#183556</color>5
+    <color name="colorOnSecondaryContainerDark">#B8BCC5</color>
 
-    <color name="colorTertiaryDark">#386AF4</color>
-    <color name="colorOnTertiaryDark">#FF03DAC5</color>
-    <color name="colorTertiaryContainerDark">#FF03DAC5</color>
-    <color name="colorOnTertiaryContainerDark">#FF03DAC5</color>
+    <color name="colorTertiaryDark">#015950</color>
+    <color name="colorOnTertiaryDark">#FDFDFD</color>
+    <color name="colorTertiaryContainerDark">#10394B</color>
+    <color name="colorOnTertiaryContainerDark">#FBFBFB</color>
 
-    <color name="colorSurfaceDark">#E0E3F8</color>
-    <color name="colorOnSurfaceDark">#010149</color>
-    <color name="colorSurfaceVariantDark">#F3F3F6</color>
-    <color name="colorOnSurfaceVariantDark">#493F7A</color>
-    <color name="colorSurfaceContainerHighestDark">#6CA2F8</color>
+    <color name="colorSurfaceDark">#FFFFFF</color>
+    <color name="colorOnSurfaceDark">#FFFFFF</color>
+    <color name="colorSurfaceVariantDark">#FFFFFF</color>
+    <color name="colorOnSurfaceVariantDark">#FFFFFF</color>
+    <color name="colorSurfaceContainerHighestDark">#FFFFFF</color>
 
 
     <color name="colorErrorDark">#F40000</color>
@@ -59,7 +59,7 @@
     <color name="colorErrorContainerDark">#F09EA3</color>
     <color name="colorOnErrorContainerDark">#3A0202</color>
 
-    <color name="colorBackgroundDark">#FDFDFD</color>
-    <color name="colorOnBackgroundDark">#1D1C1C</color>
+    <color name="colorBackgroundDark">#000000</color>
+    <color name="colorOnBackgroundDark">#FFFFFF</color>
 
 </resources>
