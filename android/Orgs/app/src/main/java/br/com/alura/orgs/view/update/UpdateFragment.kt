@@ -111,7 +111,7 @@ class UpdateFragment : Fragment() {
                     successViewGroup = binding.successLayout,
                     loadingViewGroup = binding.loadingLayout,
                     failureViewGroup = binding.updateLayout,
-                    actionOnSuccess = { data ->
+                    actionOnSuccess = { _ ->
                         binding.successTextview.text = getString(R.string.success_update)
                     },
                     actionOnFailure = { exception ->

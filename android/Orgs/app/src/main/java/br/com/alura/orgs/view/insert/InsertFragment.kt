@@ -1,4 +1,4 @@
-package br.com.alura.orgs.view.item
+package br.com.alura.orgs.view.insert
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

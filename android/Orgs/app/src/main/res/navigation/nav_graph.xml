@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/insertFragment"
-        android:name="br.com.alura.orgs.view.item.InsertFragment"
+        android:name="br.com.alura.orgs.view.insert.InsertFragment"
         android:label="fragment_item"
         tools:layout="@layout/fragment_insert" >
         <action

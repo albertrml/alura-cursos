@@ -34,13 +34,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        setListeners()
-        setScreen()
+        setupListeners()
+        setupScreen()
 
         return binding.root
     }
 
-    private fun setListeners() {
+    private fun setupListeners() {
         onEditListener = { item ->
             val action = HomeFragmentDirections
                 .actionHomeFragmentToUpdateFragment(item.id)
@@ -63,7 +63,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun setScreen(){
+    private fun setupScreen(){
         orgViewModel.onEvent(UiEvent.OnFetchAllItems)
         orgViewModel.viewModelScope.launch {
             orgViewModel.uiState.collect { state ->

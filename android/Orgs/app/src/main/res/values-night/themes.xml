@@ -22,10 +22,11 @@
         <item name="colorErrorContainer">@color/colorErrorContainerDark</item>
         <item name="colorOnErrorContainer">@color/colorOnErrorContainerDark</item>
 
-        <item name="colorSurface">@color/colorSecondaryDark</item>
+        <item name="colorSurface">@color/colorSurfaceDark</item>
         <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
-        <item name="colorSurfaceContainer">@color/colorSecondaryDark</item>
-        <item name="colorSurfaceContainerHighest">@color/colorSurfaceContainerHighestDark</item>
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariantDark</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariantDark</item>
+        <item name="colorOnSurfaceInverse">#000000</item>
 
         <item name="android:colorBackground">@color/colorBackgroundDark</item>
         <item name="android:textColor">@color/colorOnBackgroundDark</item>

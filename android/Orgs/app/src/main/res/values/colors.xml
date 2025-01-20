@@ -2,21 +2,21 @@
 <resources>
     <color name="colorPrimary">#032378</color>
     <color name="colorOnPrimary">#FDFDFD</color>
-    <color name="colorPrimaryContainer">#608EFB</color>
+    <color name="colorPrimaryContainer">#9AC8F4</color>
     <color name="colorOnPrimaryContainer">#032378</color>
 
-    <color name="colorSecondary">#324254</color>
-    <color name="colorOnSecondary">#A8C6F4</color>
-    <color name="colorSecondaryContainer">#7CCDFB</color>
-    <color name="colorOnSecondaryContainer">#010C26</color>
+    <color name="colorSecondary">#4D10B3</color>
+    <color name="colorOnSecondary">#F5FB00</color>
+    <color name="colorSecondaryContainer">#BD9CF4</color>
+    <color name="colorOnSecondaryContainer">#614E03</color>
 
     <color name="colorTertiary">#386AF4</color>
     <color name="colorOnTertiary">#FF03DAC5</color>
     <color name="colorTertiaryContainer">#FF03DAC5</color>
     <color name="colorOnTertiaryContainer">#FF03DAC5</color>
 
-    <color name="colorSurface">#5BACF0</color>
-    <color name="colorOnSurface">#020B5B</color>
+    <color name="colorSurface">#7DD0F2</color>
+    <color name="colorOnSurface">#021238</color>
     <color name="colorSurfaceVariant">#F3F3F6</color>
     <color name="colorOnSurfaceVariant">#493F7A</color>
     <color name="colorSurfaceContainerHighest">#6CA2F8</color>
@@ -47,11 +47,11 @@
     <color name="colorTertiaryContainerDark">#10394B</color>
     <color name="colorOnTertiaryContainerDark">#FBFBFB</color>
 
-    <color name="colorSurfaceDark">#FFFFFF</color>
+    <color name="colorSurfaceDark">#28024D</color>
     <color name="colorOnSurfaceDark">#FFFFFF</color>
-    <color name="colorSurfaceVariantDark">#FFFFFF</color>
-    <color name="colorOnSurfaceVariantDark">#FFFFFF</color>
-    <color name="colorSurfaceContainerHighestDark">#FFFFFF</color>
+    <color name="colorSurfaceVariantDark">#DCBD39</color>
+    <color name="colorOnSurfaceVariantDark">#040404</color>
+    <color name="colorSurfaceContainerHighestDark">#B7F6F8</color>
 
 
     <color name="colorErrorDark">#F40000</color>

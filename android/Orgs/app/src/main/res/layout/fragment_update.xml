@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
-            tools:visibility="gone"
+            tools:visibility="visible"
             >
 
             <ImageButton
@@ -46,7 +46,6 @@
                     android:id="@+id/name_edittext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorOnSurface"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +70,6 @@
                     android:layout_width="match_parent"
                     android:lines="5"
                     android:scrollbars="vertical"
-                    android:textColor="@color/colorOnSurface"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -94,7 +92,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:inputType="numberDecimal"
-                    android:textColor="@color/colorOnSurface"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -116,7 +113,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:inputType="number"
-                    android:textColor="@color/colorOnSurface"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
