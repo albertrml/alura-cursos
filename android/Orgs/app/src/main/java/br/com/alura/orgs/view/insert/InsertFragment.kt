@@ -15,6 +15,8 @@ import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.emptyItem
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
+import br.com.alura.orgs.view.ImageDialog
+import coil.load
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -60,6 +62,18 @@ class InsertFragment : Fragment() {
                         exception.message, Toast.LENGTH_SHORT
                     ).show()
                 }
+            )
+        }
+
+        binding.itemImageview.setOnClickListener {
+            ImageDialog.show(
+                context = requireContext(),
+                onConfirm = { url ->
+                    insertScreenViewModel.fromItem(
+                        insertScreenViewModel.toItem().copy(itemUrl = url)
+                    )
+                },
+                onCancel = {}
             )
         }
 

@@ -7,14 +7,16 @@ data class ItemUi(
     val itemName: MutableStateFlow<String> = MutableStateFlow(""),
     val itemDescription: MutableStateFlow<String> = MutableStateFlow(""),
     val itemValue: MutableStateFlow<String> = MutableStateFlow(""),
-    val quantityInStock: MutableStateFlow<String> = MutableStateFlow("")
+    val quantityInStock: MutableStateFlow<String> = MutableStateFlow(""),
+    val itemUrl: MutableStateFlow<String> = MutableStateFlow("")
 ) {
     fun toItem() = Item(
         id = id,
         itemName = itemName.value,
         itemDescription = itemDescription.value,
         itemValue = itemValue.value.toDoubleOrNull() ?: 0.0,
-        quantityInStock = quantityInStock.value.toIntOrNull() ?: 0
+        quantityInStock = quantityInStock.value.toIntOrNull() ?: 0,
+        itemUrl = itemUrl.value
     )
 
     companion object {
@@ -23,7 +25,8 @@ data class ItemUi(
             itemName = MutableStateFlow(item.itemName),
             itemDescription = MutableStateFlow(item.itemDescription),
             itemValue = MutableStateFlow(item.itemValue.toString()),
-            quantityInStock = MutableStateFlow(item.quantityInStock.toString())
+            quantityInStock = MutableStateFlow(item.quantityInStock.toString()),
+            itemUrl = MutableStateFlow(item.itemUrl)
         )
     }
 }

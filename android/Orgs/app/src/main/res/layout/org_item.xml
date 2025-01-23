@@ -129,6 +129,7 @@
                             android:layout_marginStart="4dp"
                             android:layout_weight="3"
                             android:layout_width="0dp"
+                            android:ellipsize="end"
                             tools:ignore="VisualLintLongText"
                             tools:text="@string/coriander_description"
                             />

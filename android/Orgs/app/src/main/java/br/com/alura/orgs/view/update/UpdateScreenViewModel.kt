@@ -15,4 +15,5 @@ class UpdateScreenViewModel : ViewModel() {
     }
 
     fun toItem(): Item = _itemUi.value.toItem()
+
 }

@@ -16,6 +16,7 @@ import br.com.alura.orgs.databinding.FragmentUpdateBinding
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
+import br.com.alura.orgs.view.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -76,6 +77,18 @@ class UpdateFragment : Fragment() {
                         exception.message, Toast.LENGTH_SHORT
                     ).show()
                 }
+            )
+        }
+
+        binding.itemImageview.setOnClickListener {
+            ImageDialog.show(
+                context = requireContext(),
+                onConfirm = { url ->
+                    updateScreenViewModel.fromItem(
+                        updateScreenViewModel.toItem().copy(itemUrl = url)
+                    )
+                },
+                onCancel = {}
             )
         }
         binding.backButton.setOnClickListener { navigateToHome() }

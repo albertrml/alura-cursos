@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/OrgCardView"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:contentDescription="@string/org_image"
+            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:src="@drawable/light_success_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3"
+            />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:layout_marginStart="8dp"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:text="@string/name_textview"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/item_description"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/description_textview"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/item_price"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            app:layout_constraintTop_toBottomOf="@id/item_name" />
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/price_textview"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/item_name"
+            app:layout_constraintTop_toBottomOf="@id/item_description" />
+
+
+        <ImageView
+                android:id="@+id/edit_button"
+                android:contentDescription="@string/edit_item_button"
+                android:layout_height="0dp"
+                android:layout_margin="4dp"
+                android:layout_width="0dp"
+                app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintWidth_percent="0.1"
+                android:src="@drawable/edit_item"
+                app:layout_constraintBottom_toBottomOf=""
+                app:layout_constraintEnd_toStartOf="@id/remove_button"
+                app:layout_constraintStart_toEndOf="@id/item_image"
+                app:layout_constraintTop_toBottomOf="@id/item_price"
+                />
+
+        <ImageView
+            android:id="@+id/remove_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:contentDescription="@string/edit_item_button"
+            android:src="@drawable/remove_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_price"
+            app:layout_constraintHeight_percent="0.3"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

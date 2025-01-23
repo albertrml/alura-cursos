@@ -70,7 +70,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.hilt.android)
     implementation(libs.material)
-    implementation(libs.androidx.material3)
+    implementation(libs.coil)
 
     //kapt(libs.androidx.databinding.compiler)
     ksp(libs.androidx.databinding.compiler)

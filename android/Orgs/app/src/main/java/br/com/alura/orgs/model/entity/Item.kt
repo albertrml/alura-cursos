@@ -15,7 +15,9 @@ data class Item(
     @ColumnInfo(name="value")
     val itemValue: Double,
     @ColumnInfo(name="quantity")
-    val quantityInStock: Int
+    val quantityInStock: Int,
+    @ColumnInfo(name="url_image")
+    val itemUrl: String
 )
 
 fun Item.onCheck(
@@ -33,5 +35,6 @@ fun emptyItem() = Item(
     itemName = "",
     itemDescription = "",
     itemValue = 0.0,
-    quantityInStock = 0
+    quantityInStock = 0,
+    itemUrl = ""
 )

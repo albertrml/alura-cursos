@@ -24,4 +24,7 @@
     <string name="success_update">Update concluded</string>
     <string name="success_insert">Insert concluded</string>
     <string name="org_image">Org Image</string>
+    <string name="image_url_layout">Image url</string>
+    <string name="org_image_description">Org Image</string>
+    <string name="preview_button">Preview</string>
 </resources>
