@@ -8,7 +8,6 @@ import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.ItemRoomDatabase
-import br.com.alura.orgs.utils.Response
 import br.com.alura.orgs.utils.Response.Failure
 import br.com.alura.orgs.utils.Response.Loading
 import br.com.alura.orgs.utils.Response.Success
@@ -19,7 +18,6 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 

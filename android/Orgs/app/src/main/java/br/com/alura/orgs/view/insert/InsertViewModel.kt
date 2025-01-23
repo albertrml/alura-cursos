@@ -17,9 +17,6 @@ class InsertViewModel @Inject constructor(private val repository: ItemRepository
     private val _uiState = MutableStateFlow(InsertUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _itemForInsert = MutableStateFlow(emptyItem())
-    val itemForInsert = _itemForInsert.asStateFlow()
-
     fun onEvent(event: InsertUiEvent){
         when(event) {
             is InsertUiEvent.OnInsert -> onInsert(event.item)

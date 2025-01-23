@@ -9,8 +9,6 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.ItemRoomDatabase
 import br.com.alura.orgs.utils.Response
-import br.com.alura.orgs.view.home.HomeUiEvent
-import br.com.alura.orgs.view.home.HomeViewModel
 import br.com.alura.orgs.view.update.UpdateUiEvent
 import br.com.alura.orgs.view.update.UpdateViewModel
 import kotlinx.coroutines.flow.first

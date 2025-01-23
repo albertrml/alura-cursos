@@ -3,7 +3,6 @@ package br.com.alura.orgs.view.update
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.model.entity.Item
-import br.com.alura.orgs.model.entity.emptyItem
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.utils.handleResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
