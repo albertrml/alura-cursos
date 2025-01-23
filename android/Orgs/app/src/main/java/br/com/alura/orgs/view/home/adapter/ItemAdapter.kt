@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.model.entity.Item
+import java.text.NumberFormat
+import java.util.Locale
 
 class ItemAdapter(
     private val items: List<Item>,
@@ -23,13 +25,14 @@ class ItemAdapter(
         private val descriptionTextView: TextView by lazy { view.findViewById(R.id.description_textview) }
         private val priceTextView: TextView by lazy { view.findViewById(R.id.price_textview) }
         private val inStockTextView: TextView by lazy { view.findViewById(R.id.in_stock_textview) }
+        private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
         @SuppressLint("SetTextI18n")
         fun bind(item: Item){
             nameTextView.text = item.itemName
             descriptionTextView.text = item.itemDescription
-            priceTextView.text = item.itemValue.toString()
-            inStockTextView.text = item.quantityInStock.toString()
+            priceTextView.text = currencyFormatter.format(item.itemValue)
+            inStockTextView.text = "${item.quantityInStock} pct"
         }
 
         fun bindListeners(

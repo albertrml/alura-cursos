@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewmodel"
+            type="br.com.alura.orgs.view.insert.InsertScreenViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,101 +29,134 @@
                 android:layout_height="48dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/name_layout"
-                app:layout_constraintVertical_bias="0.0"
                 android:src="@drawable/light_back_button"
                 android:backgroundTint="@color/colorPrimary"
                 android:contentDescription="@string/back_button_description"
                 />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/name_layout"
-                android:hint="@string/name_textview"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                app:layout_constraintBottom_toTopOf="@id/description_layout"
-                app:layout_constraintEnd_toEndOf="parent"
+            <ImageView
+                android:id="@+id/item_imageview"
+                android:contentDescription="@string/org_image"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_chainStyle="packed"
-                style="@style/OrgOutlinedTextInputLayout"
+                app:layout_constraintBottom_toTopOf="@id/forms_scrollview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_imageview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintHeight_percent="0.3"
+                android:layout_marginBottom="16dp"
+                />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/forms_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/insert_button"
+                app:layout_constraintTop_toBottomOf="@id/item_imageview"
                 >
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/name_edittext"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Teste"
-                    />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/name_layout"
+                        android:hint="@string/name_textview"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/description_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/description_layout"
-                android:hint="@string/description_edittext"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                app:layout_constraintBottom_toTopOf="@id/price_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_layout"
-                style="@style/OrgOutlinedTextInputLayout"
-                >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/name_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@={viewmodel.itemUi.itemName}"
+                            />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/description_edittext"
-                    android:inputType="textMultiLine"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:lines="5"
-                    android:scrollbars="vertical"
-                    />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/description_layout"
+                        android:hint="@string/description_edittext"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/price_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/name_layout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/price_layout"
-                android:hint="@string/price_edittext"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_width="match_parent"
-                app:layout_constraintBottom_toTopOf="@id/quantity_layout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_layout"
-                style="@style/OrgOutlinedTextInputLayout"
-                >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/description_edittext"
+                            android:inputType="textMultiLine"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:lines="5"
+                            android:scrollbars="vertical"
+                            android:text="@={viewmodel.itemUi.itemDescription}"
+                            />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/price_edittext"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:inputType="numberDecimal"
-                    />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/price_layout"
+                        android:hint="@string/price_edittext"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/quantity_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/description_layout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/quantity_layout"
-                android:hint="@string/quantity_edittext"
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/price_layout"
-                style="@style/OrgOutlinedTextInputLayout"
-                >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/price_edittext"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:inputType="numberDecimal"
+                            android:text="@={viewmodel.itemUi.itemValue}"
+                            />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/quantity_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/quantity_layout"
+                        android:hint="@string/quantity_edittext"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/price_layout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/quantity_edittext"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:inputType="number"
+                            android:text="@={viewmodel.itemUi.quantityInStock}"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/insert_button"
@@ -127,8 +166,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/quantity_layout"
-                app:layout_constraintVertical_bias="0.5"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

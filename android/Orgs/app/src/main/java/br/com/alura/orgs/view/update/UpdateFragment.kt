@@ -16,18 +16,17 @@ import br.com.alura.orgs.databinding.FragmentUpdateBinding
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.viemodel.OrgViewModel
-import br.com.alura.orgs.view.udf.UiEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UpdateFragment : Fragment() {
 
-    private val orgViewModel: OrgViewModel by viewModels()
+    private val updateViewModel: UpdateViewModel by viewModels()
+    private val updateScreenViewModel: UpdateScreenViewModel by viewModels()
     private val binding by lazy { FragmentUpdateBinding.inflate(layoutInflater) }
     private val args: UpdateFragmentArgs by navArgs()
-    private val navigateToHome: (Unit) -> Unit = {
+    private val navigateToHome: () -> Unit = {
         this@UpdateFragment.findNavController().navigate(
             R.id.action_updateFragment_to_homeFragment
         )
@@ -44,45 +43,19 @@ class UpdateFragment : Fragment() {
         return binding.root
     }
 
-    private fun getItemToUpdate(): Item{
-        return Item(
-            id = args.itemId,
-            itemName = binding.nameEdittext.text.toString(),
-            itemDescription = binding.descriptionEdittext.text.toString(),
-            itemValue = binding.priceEdittext.text.toString().toDouble(),
-            quantityInStock = binding.quantityEdittext.text.toString().toInt()
-        )
-    }
-
-    private fun setupListeners() {
-        binding.updateButton.setOnClickListener {
-                val itemToUpdate = getItemToUpdate()
-                itemToUpdate.onCheck(
-                    isValid = { update(it) },
-                    isInvalid = { exception ->
-                        Toast.makeText(
-                            requireContext(),
-                            exception.message, Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                )
-        }
-
-        binding.backButton.setOnClickListener { navigateToHome(Unit) }
-        binding.failureReturnButton.setOnClickListener { navigateToHome(Unit) }
-        binding.successReturnButton.setOnClickListener { navigateToHome(Unit) }
-    }
-
     private fun setupScreen(){
-        orgViewModel.onEvent(UiEvent.OnFetchById(args.itemId))
-        orgViewModel.viewModelScope.launch {
-            orgViewModel.uiState.collect{ state ->
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = updateScreenViewModel
+
+        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemById(args.itemId))
+        updateViewModel.viewModelScope.launch {
+            updateViewModel.uiState.collect{ state ->
                 state.fetchItemByIdState.showResults(
                     successViewGroup = binding.updateLayout,
                     loadingViewGroup = binding.loadingLayout,
                     failureViewGroup = binding.failureLayout,
                     actionOnSuccess = { itemBeforeUpdate ->
-                        screenItem(itemBeforeUpdate)
+                        updateScreenViewModel.fromItem(itemBeforeUpdate)
                     },
                     actionOnFailure = { exception ->
                         binding.failureTextview.text = exception.message
@@ -92,21 +65,29 @@ class UpdateFragment : Fragment() {
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun screenItem(itemBeforeUpdate: Item){
-        with(binding){
-            nameEdittext.setText(itemBeforeUpdate.itemName)
-            descriptionEdittext.setText(itemBeforeUpdate.itemDescription)
-            priceEdittext.setText(itemBeforeUpdate.itemValue.toString())
-            quantityEdittext.setText(itemBeforeUpdate.quantityInStock.toString())
+    private fun setupListeners() {
+        binding.updateButton.setOnClickListener {
+            val itemToUpdate = updateScreenViewModel.toItem()
+            itemToUpdate.onCheck(
+                isValid = { update(it) },
+                isInvalid = { exception ->
+                    Toast.makeText(
+                        requireContext(),
+                        exception.message, Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
         }
+        binding.backButton.setOnClickListener { navigateToHome() }
+        binding.failureReturnButton.setOnClickListener { navigateToHome() }
+        binding.successReturnButton.setOnClickListener { navigateToHome() }
     }
 
     @SuppressLint("SetTextI18n")
     private fun update(itemToUpdate:Item){
-        orgViewModel.onEvent(UiEvent.OnUpdate(itemToUpdate))
-        orgViewModel.viewModelScope.launch {
-            orgViewModel.uiState.collect{ state ->
+        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemToUpdate))
+        updateViewModel.viewModelScope.launch {
+            updateViewModel.uiState.collect{ state ->
                 state.updateState.showResults(
                     successViewGroup = binding.successLayout,
                     loadingViewGroup = binding.loadingLayout,

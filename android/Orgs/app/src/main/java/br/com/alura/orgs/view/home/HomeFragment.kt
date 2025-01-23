@@ -14,15 +14,13 @@ import br.com.alura.orgs.databinding.FragmentHomeBinding
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.utils.showResults
 import br.com.alura.orgs.view.home.adapter.ItemAdapter
-import br.com.alura.orgs.view.udf.UiEvent
-import br.com.alura.orgs.viemodel.OrgViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val orgViewModel: OrgViewModel by viewModels ()
+    private val homeViewModel: HomeViewModel by viewModels ()
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var onEditListener: (Item) -> Unit
     private lateinit var onRemoveListener: (Item) -> Unit
@@ -48,7 +46,7 @@ class HomeFragment : Fragment() {
         }
 
         onRemoveListener = { item ->
-            orgViewModel.onEvent(UiEvent.OnDelete(item))
+            homeViewModel.onEvent(HomeUiEvent.OnDelete(item))
         }
 
         binding.addItemButton.setOnClickListener{
@@ -58,15 +56,15 @@ class HomeFragment : Fragment() {
         }
 
         binding.tryAgainButton.setOnClickListener {
-            orgViewModel.onEvent(UiEvent.OnFetchAllItems)
+            homeViewModel.onEvent(HomeUiEvent.OnFetchAllItems)
         }
 
     }
 
     private fun setupScreen(){
-        orgViewModel.onEvent(UiEvent.OnFetchAllItems)
-        orgViewModel.viewModelScope.launch {
-            orgViewModel.uiState.collect { state ->
+        homeViewModel.onEvent(HomeUiEvent.OnFetchAllItems)
+        homeViewModel.viewModelScope.launch {
+            homeViewModel.uiState.collect { state ->
                 state.fetchAllItemsState.showResults(
                     successViewGroup = binding.successLayout,
                     loadingViewGroup = binding.loadingLayout,

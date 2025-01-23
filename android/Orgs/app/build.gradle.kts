@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
     alias(libs.plugins.navigation.safe.args.ktx)
 }
 
@@ -71,7 +72,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.material3)
 
-    /*kapt(libs.androidx.databinding.compiler)*/
+    //kapt(libs.androidx.databinding.compiler)
+    ksp(libs.androidx.databinding.compiler)
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
 

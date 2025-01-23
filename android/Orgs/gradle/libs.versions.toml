@@ -2,12 +2,14 @@
 agp = "8.7.3"
 appcompat = "1.7.0"
 coreKtx = "1.15.0"
+databinding = "8.8.0"
 espressoCore = "3.6.1"
 fragmentKtx = "1.8.5"
 hiltAndroid = "2.49"
 junit = "4.13.2"
 junitKtx = "1.2.1"
 kotlin = "2.0.20"
+kotlin_kapt = "2.1.0"
 kotlinxCoroutinesTest = "1.9.0"
 ksp = "2.0.20-1.0.25"
 lifecycleRuntimeKtx = "2.8.7"
@@ -21,6 +23,7 @@ roomKtx = "2.6.1"
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-databinding-compiler = { module = "androidx.databinding:databinding-compiler", version.ref = "databinding" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitKtx" }
@@ -47,5 +50,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid"  }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"  }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 navigation-safe-args-ktx = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 
