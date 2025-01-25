@@ -10,5 +10,5 @@ fun loadImage(view: ImageView, url: String) {
     if (url.isNotBlank())
         view.load(url)
     else
-        view.load(R.drawable.light_success_icon)
+        view.load(R.drawable.ic_image_not_found)
 }

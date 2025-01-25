@@ -10,52 +10,50 @@
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_width="match_parent"
         android:orientation="vertical"
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/insert_layout"
-            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="16dp"
+            android:layout_width="match_parent"
             android:visibility="visible"
             >
 
             <ImageButton
-                android:id="@+id/back_button"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:id="@+id/insert_back_button"
+                android:contentDescription="@string/back_button_description"
+                android:src="@drawable/ic_back_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/light_back_button"
-                android:backgroundTint="@color/colorPrimary"
-                android:contentDescription="@string/back_button_description"
+                style="@style/OrgImageButton"
                 />
 
             <ImageView
-                android:id="@+id/item_imageview"
+                android:id="@+id/insert_image_imageview"
                 android:contentDescription="@string/org_image"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/forms_scrollview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/back_button"
-                app:imageUrl="@{viewmodel.itemUi.itemUrl}"
-                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.3"
                 android:layout_marginBottom="16dp"
+                android:layout_width="match_parent"
+                app:imageUrl="@{viewmodel.itemUi.itemUrl}"
+                app:layout_constraintBottom_toTopOf="@id/insert_forms_scrollview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/insert_back_button"
                 />
 
             <androidx.core.widget.NestedScrollView
-                android:id="@+id/forms_scrollview"
-                android:layout_width="match_parent"
+                android:id="@+id/insert_forms_scrollview"
                 android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
                 app:layout_constraintBottom_toTopOf="@id/insert_button"
-                app:layout_constraintTop_toBottomOf="@id/item_imageview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/insert_image_imageview"
                 >
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,12 +62,12 @@
 
                     >
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/name_layout"
+                        android:id="@+id/insert_name_textInputLayout"
                         android:hint="@string/name_textview"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
-                        app:layout_constraintBottom_toTopOf="@id/description_layout"
+                        app:layout_constraintBottom_toTopOf="@id/insert_description_textInputLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -78,23 +76,24 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/name_edittext"
-                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
                             android:text="@={viewmodel.itemUi.itemName}"
+                            style="@style/OutlinedTextInputEditText"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/description_layout"
+                        android:id="@+id/insert_description_textInputLayout"
                         android:hint="@string/description_edittext"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
-                        app:layout_constraintBottom_toTopOf="@id/price_layout"
+                        app:layout_constraintBottom_toTopOf="@id/insert_price_textInputLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/name_layout"
+                        app:layout_constraintTop_toBottomOf="@id/insert_name_textInputLayout"
                         style="@style/OrgOutlinedTextInputLayout"
                         >
 
@@ -106,51 +105,53 @@
                             android:lines="5"
                             android:scrollbars="vertical"
                             android:text="@={viewmodel.itemUi.itemDescription}"
+                            style="@style/OutlinedTextInputEditText"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/price_layout"
+                        android:id="@+id/insert_price_textInputLayout"
                         android:hint="@string/price_edittext"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
-                        app:layout_constraintBottom_toTopOf="@id/quantity_layout"
+                        app:layout_constraintBottom_toTopOf="@id/insert_quantity_textInputLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/description_layout"
+                        app:layout_constraintTop_toBottomOf="@id/insert_description_textInputLayout"
                         style="@style/OrgOutlinedTextInputLayout"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/price_edittext"
+                            android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:inputType="numberDecimal"
                             android:text="@={viewmodel.itemUi.itemValue}"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/quantity_layout"
+                        android:id="@+id/insert_quantity_textInputLayout"
                         android:hint="@string/quantity_edittext"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/price_layout"
+                        app:layout_constraintTop_toBottomOf="@id/insert_price_textInputLayout"
                         style="@style/OrgOutlinedTextInputLayout"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/quantity_edittext"
+                            android:inputType="number"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:inputType="number"
                             android:text="@={viewmodel.itemUi.quantityInStock}"
+                            style="@style/OutlinedTextInputEditText"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -172,15 +173,15 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/success_layout"
+            android:id="@+id/insert_success_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:visibility="gone"
             >
 
             <ImageView
-                android:id="@+id/success_image"
-                android:contentDescription="@string/fail_loading_image"
+                android:id="@+id/insert_success_image_imageview"
+                android:contentDescription="@string/insert_image_description_imageview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/light_success_icon"
@@ -191,32 +192,32 @@
                 />
 
             <TextView
-                android:id="@+id/success_textview"
+                android:id="@+id/insert_success_name_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:text="@string/success_update"
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/success_image"
-                android:text="@string/success_update"
+                app:layout_constraintTop_toBottomOf="@id/insert_success_image_imageview"
                 />
 
             <Button
-                android:id="@+id/success_return_button"
+                android:id="@+id/insert_success_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/success_textview"
+                app:layout_constraintTop_toBottomOf="@id/insert_success_name_textview"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/loading_layout"
+            android:id="@+id/insert_loading_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -224,23 +225,23 @@
             >
 
             <ProgressBar
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 tools:visibility="gone"
                 />
 
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/failure_layout"
+            android:id="@+id/insert_failure_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:visibility="gone"
             >
 
             <ImageView
-                android:id="@+id/failure_imageview"
-                android:contentDescription="@string/fail_loading_image"
+                android:id="@+id/insert_failure_imageview"
+                android:contentDescription="@string/home_fail_description_imageview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/response_failure"
@@ -251,26 +252,26 @@
                 />
 
             <TextView
-                android:id="@+id/failure_textview"
+                android:id="@+id/insert_failure_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/failure_imageview"
+                app:layout_constraintTop_toBottomOf="@id/insert_failure_imageview"
                 tools:text="Unknown failure"
                 />
 
             <Button
-                android:id="@+id/failure_return_button"
+                android:id="@+id/insert_failure_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/failure_textview"
+                app:layout_constraintTop_toBottomOf="@id/insert_failure_textview"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

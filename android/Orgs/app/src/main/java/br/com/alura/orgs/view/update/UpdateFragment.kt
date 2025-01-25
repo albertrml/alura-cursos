@@ -16,7 +16,7 @@ import br.com.alura.orgs.databinding.FragmentUpdateBinding
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.view.ImageDialog
+import br.com.alura.orgs.view.image.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -53,13 +53,13 @@ class UpdateFragment : Fragment() {
             updateViewModel.uiState.collect{ state ->
                 state.fetchItemByIdState.showResults(
                     successViewGroup = binding.updateLayout,
-                    loadingViewGroup = binding.loadingLayout,
-                    failureViewGroup = binding.failureLayout,
+                    loadingViewGroup = binding.updateLoadingLayout,
+                    failureViewGroup = binding.updateFailureLayout,
                     actionOnSuccess = { itemBeforeUpdate ->
                         updateScreenViewModel.fromItem(itemBeforeUpdate)
                     },
                     actionOnFailure = { exception ->
-                        binding.failureTextview.text = exception.message
+                        binding.updateFailureTextview.text = exception.message
                     }
                 )
             }
@@ -80,7 +80,7 @@ class UpdateFragment : Fragment() {
             )
         }
 
-        binding.itemImageview.setOnClickListener {
+        binding.updateImageImageview.setOnClickListener {
             ImageDialog.show(
                 context = requireContext(),
                 onConfirm = { url ->
@@ -91,9 +91,9 @@ class UpdateFragment : Fragment() {
                 onCancel = {}
             )
         }
-        binding.backButton.setOnClickListener { navigateToHome() }
-        binding.failureReturnButton.setOnClickListener { navigateToHome() }
-        binding.successReturnButton.setOnClickListener { navigateToHome() }
+        binding.updateBackButton.setOnClickListener { navigateToHome() }
+        binding.updateFailureReturnButton.setOnClickListener { navigateToHome() }
+        binding.updateSuccessReturnButton.setOnClickListener { navigateToHome() }
     }
 
     @SuppressLint("SetTextI18n")
@@ -102,11 +102,11 @@ class UpdateFragment : Fragment() {
         updateViewModel.viewModelScope.launch {
             updateViewModel.uiState.collect{ state ->
                 state.updateState.showResults(
-                    successViewGroup = binding.successLayout,
-                    loadingViewGroup = binding.loadingLayout,
+                    successViewGroup = binding.updateSuccessLayout,
+                    loadingViewGroup = binding.updateLoadingLayout,
                     failureViewGroup = binding.updateLayout,
                     actionOnSuccess = { _ ->
-                        binding.successTextview.text = getString(R.string.success_update)
+                        binding.updateSuccessTextview.text = getString(R.string.success_update)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(

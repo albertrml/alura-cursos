@@ -1,4 +1,4 @@
-package br.com.alura.orgs.view
+package br.com.alura.orgs.view.image
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -16,12 +16,12 @@ object ImageDialog {
     ) {
         var urlImage = ""
         val binding = FragmentImageBinding.inflate(LayoutInflater.from(context))
-        showImage(urlImage, binding.itemImageview)
+        showImage(urlImage, binding.imageImageView)
         setPreview(binding)
         AlertDialog.Builder(context)
             .setView(binding.root)
             .setPositiveButton("Confirmar") { _, _ ->
-                urlImage = binding.urlImageEdittext.text.toString()
+                urlImage = binding.imageUrlEdittext.text.toString()
                 onConfirm(urlImage)
             }
             .setNegativeButton("Cancelar") { _, _ -> onCancel() }
@@ -29,10 +29,10 @@ object ImageDialog {
     }
 
     private fun setPreview(binding: FragmentImageBinding){
-        binding.previewButton.setOnClickListener{
+        binding.imagePreviewButton.setOnClickListener{
             showImage(
-                binding.urlImageEdittext.text.toString(),
-                binding.itemImageview
+                binding.imageUrlEdittext.text.toString(),
+                binding.imageImageView
             )
         }
     }
@@ -41,6 +41,6 @@ object ImageDialog {
         if(url.isNotBlank())
             imageView.load(url)
         else
-            imageView.load(R.drawable.light_success_icon)
+            imageView.load(R.drawable.ic_image_not_found)
     }
 }

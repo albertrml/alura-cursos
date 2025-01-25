@@ -15,8 +15,7 @@ import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.emptyItem
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.view.ImageDialog
-import coil.load
+import br.com.alura.orgs.view.image.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -65,7 +64,7 @@ class InsertFragment : Fragment() {
             )
         }
 
-        binding.itemImageview.setOnClickListener {
+        binding.insertImageImageview.setOnClickListener {
             ImageDialog.show(
                 context = requireContext(),
                 onConfirm = { url ->
@@ -77,9 +76,9 @@ class InsertFragment : Fragment() {
             )
         }
 
-        binding.backButton.setOnClickListener { navigateToHome(Unit) }
-        binding.successReturnButton.setOnClickListener { navigateToHome(Unit) }
-        binding.failureReturnButton.setOnClickListener { navigateToHome(Unit) }
+        binding.insertBackButton.setOnClickListener { navigateToHome(Unit) }
+        binding.insertSuccessReturnButton.setOnClickListener { navigateToHome(Unit) }
+        binding.insertFailureReturnButton.setOnClickListener { navigateToHome(Unit) }
     }
 
     private fun insert(itemToInsert: Item){
@@ -87,12 +86,12 @@ class InsertFragment : Fragment() {
         insertViewModel.viewModelScope.launch {
             insertViewModel.uiState.collect{ state ->
                 state.insertState.showResults(
-                    successViewGroup = binding.successLayout,
-                    loadingViewGroup = binding.loadingLayout,
-                    failureViewGroup = binding.failureLayout,
+                    successViewGroup = binding.insertSuccessLayout,
+                    loadingViewGroup = binding.insertLoadingLayout,
+                    failureViewGroup = binding.insertFailureLayout,
                     actionOnSuccess = {
                         binding.insertLayout.visibility = View.GONE
-                        binding.successTextview.text = getString(R.string.success_insert)
+                        binding.insertSuccessNameTextview.text = getString(R.string.success_insert)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(

@@ -8,9 +8,9 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/success_layout"
-            android:layout_width="match_parent"
+            android:id="@+id/home_success_layout"
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
             tools:visibility="visible"
             >
 
@@ -22,56 +22,57 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintVertical_bias="0.0"
+                >
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
+                    android:id="@+id/home_list_recyclerview"
                     android:layout_height="match_parent"
-                    tools:listitem="@layout/org_item" />
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/org_item"
+                    />
 
             </androidx.core.widget.NestedScrollView>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/add_item_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/home_add_item_button"
                 android:contentDescription="@string/add_new_org_item_button"
+                android:elevation="16dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_add_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_margin="8dp"
-                android:src="@drawable/add_button"
-                app:borderWidth="2dp"
-                android:elevation="16dp"
+                style="@style/OrgFloatingActionButton"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/loading_layout"
+            android:id="@+id/home_loading_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             android:orientation="vertical"
             >
 
             <ProgressBar
-                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_width="match_parent"
                 tools:visibility="gone"
                 />
 
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/failure_layout"
+            android:id="@+id/home_failure_layout"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             tools:visibility="gone"
             >
 
             <ImageView
-                android:id="@+id/fail_loading_image"
-                android:contentDescription="@string/fail_loading_image"
+                android:id="@+id/home_failure_imageview"
+                android:contentDescription="@string/home_fail_description_imageview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/response_failure"
@@ -82,26 +83,26 @@
                 />
 
             <TextView
-                android:id="@+id/fail_loading_text"
+                android:id="@+id/home_failure_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fail_loading_image"
+                app:layout_constraintTop_toBottomOf="@id/home_failure_imageview"
                 tools:text="Unknown failure"
                 />
 
             <Button
-                android:id="@+id/try_again_button"
+                android:id="@+id/home_try_again_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/fail_loading_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fail_loading_text"
+                app:layout_constraintTop_toBottomOf="@id/home_failure_textview"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

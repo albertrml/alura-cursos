@@ -21,10 +21,10 @@ class ItemAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val editButton: ImageView by lazy { view.findViewById(R.id.edit_button) }
         private val removeButton: ImageView by lazy { view.findViewById(R.id.remove_button) }
-        private val nameTextView: TextView by lazy { view.findViewById(R.id.name_textview) }
-        private val descriptionTextView: TextView by lazy { view.findViewById(R.id.description_textview) }
-        private val priceTextView: TextView by lazy { view.findViewById(R.id.price_textview) }
-        private val inStockTextView: TextView by lazy { view.findViewById(R.id.in_stock_textview) }
+        private val nameTextView: TextView by lazy { view.findViewById(R.id.item_name_textview) }
+        private val descriptionTextView: TextView by lazy { view.findViewById(R.id.item_description_textview) }
+        private val priceTextView: TextView by lazy { view.findViewById(R.id.item_price_textview) }
+        private val inStockTextView: TextView by lazy { view.findViewById(R.id.item_quantity_textview) }
         private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
         @SuppressLint("SetTextI18n")

@@ -49,13 +49,13 @@ class HomeFragment : Fragment() {
             homeViewModel.onEvent(HomeUiEvent.OnDelete(item))
         }
 
-        binding.addItemButton.setOnClickListener{
+        binding.homeAddItemButton.setOnClickListener{
             val action = HomeFragmentDirections
                 .actionHomeFragmentToInsertFragment()
             this@HomeFragment.findNavController().navigate(action)
         }
 
-        binding.tryAgainButton.setOnClickListener {
+        binding.homeTryAgainButton.setOnClickListener {
             homeViewModel.onEvent(HomeUiEvent.OnFetchAllItems)
         }
 
@@ -66,14 +66,14 @@ class HomeFragment : Fragment() {
         homeViewModel.viewModelScope.launch {
             homeViewModel.uiState.collect { state ->
                 state.fetchAllItemsState.showResults(
-                    successViewGroup = binding.successLayout,
-                    loadingViewGroup = binding.loadingLayout,
-                    failureViewGroup = binding.failureLayout,
+                    successViewGroup = binding.homeSuccessLayout,
+                    loadingViewGroup = binding.homeLoadingLayout,
+                    failureViewGroup = binding.homeFailureLayout,
                     actionOnSuccess = { items ->
                         setRecyclerView(items)
                     },
                     actionOnFailure = { exception ->
-                        binding.failLoadingText.text = exception.toString()
+                        binding.homeFailureTextview.text = exception.toString()
                     }
                 )
             }
@@ -89,8 +89,8 @@ class HomeFragment : Fragment() {
             onEditClick = onEditListener,
             onRemoveClick = onRemoveListener
         )
-        binding.recyclerView.adapter = itemAdapter
-        binding.recyclerView.layoutManager = layoutManager
+        binding.homeListRecyclerview.adapter = itemAdapter
+        binding.homeListRecyclerview.layoutManager = layoutManager
     }
 
 }

@@ -13,7 +13,7 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="fail_loading_button">TRY AGAIN</string>
-    <string name="fail_loading_image">Fail Loading Image</string>
+    <string name="home_fail_description_imageview">Fail Loading Image</string>
     <string name="insert_button">Insert</string>
     <string name="price_edittext">Price (US$)</string>
     <string name="quantity_edittext">Quantity (pct)</string>
@@ -27,4 +27,6 @@
     <string name="image_url_layout">Image url</string>
     <string name="org_image_description">Org Image</string>
     <string name="preview_button">Preview</string>
+    <string name="insert_image_description_imageview">Org\'s image</string>
+    <string name="update_success_description">Org image description</string>
 </resources>
