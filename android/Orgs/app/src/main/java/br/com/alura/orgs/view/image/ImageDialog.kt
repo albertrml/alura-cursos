@@ -16,7 +16,7 @@ object ImageDialog {
     ) {
         var urlImage = ""
         val binding = FragmentImageBinding.inflate(LayoutInflater.from(context))
-        showImage(urlImage, binding.imageImageView)
+        loadImage(urlImage, binding.imageImageView)
         setPreview(binding)
         AlertDialog.Builder(context)
             .setView(binding.root)
@@ -30,14 +30,14 @@ object ImageDialog {
 
     private fun setPreview(binding: FragmentImageBinding){
         binding.imagePreviewButton.setOnClickListener{
-            showImage(
+            loadImage(
                 binding.imageUrlEdittext.text.toString(),
                 binding.imageImageView
             )
         }
     }
 
-    private fun showImage(url: String, imageView: ImageView){
+    fun loadImage(url: String, imageView: ImageView){
         if(url.isNotBlank())
             imageView.load(url)
         else

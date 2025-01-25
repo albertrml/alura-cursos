@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.model.entity.Item
+import br.com.alura.orgs.view.image.ImageDialog
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -27,12 +28,15 @@ class ItemAdapter(
         private val inStockTextView: TextView by lazy { view.findViewById(R.id.item_quantity_textview) }
         private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
 
+        private val imageView: ImageView by lazy { view.findViewById(R.id.item_imageview) }
+
         @SuppressLint("SetTextI18n")
         fun bind(item: Item){
             nameTextView.text = item.itemName
             descriptionTextView.text = item.itemDescription
             priceTextView.text = currencyFormatter.format(item.itemValue)
             inStockTextView.text = "${item.quantityInStock} pct"
+            ImageDialog.loadImage(item.itemUrl, imageView)
         }
 
         fun bindListeners(
@@ -61,8 +65,10 @@ class ItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        /*val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.org_item, parent, false)*/
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.org_item, parent, false)
+            .inflate(R.layout.item_list, parent, false)
 
         return ViewHolder(view)
     }

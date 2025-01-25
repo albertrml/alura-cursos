@@ -29,4 +29,6 @@
     <string name="preview_button">Preview</string>
     <string name="insert_image_description_imageview">Org\'s image</string>
     <string name="update_success_description">Org image description</string>
+    <string name="item_image_description">Item Image</string>
+    <string name="remove_button_description">Remove button</string>
 </resources>

@@ -1,97 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/OrgCardView"
-    >
-
-    <!--<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         >
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:contentDescription="@string/org_image"
-            android:layout_height="0dp"
-            android:layout_width="0dp"
-            android:src="@drawable/light_success_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3"
-            />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                >
 
-        <TextView
-            android:id="@+id/item_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/montserrat_bold"
-            android:layout_marginStart="8dp"
-            app:layout_constraintVertical_chainStyle="packed"
-            android:text="@string/name_textview"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/item_description"
-            app:layout_constraintVertical_bias="0.1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_image"
-            app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/item_imageview"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintWidth_percent="0.3"
+                    android:scaleType="fitXY"
+                    tools:src="@drawable/ic_image_not_found"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:contentDescription="@string/item_image_description"
+                    />
 
-        <TextView
-            android:id="@+id/item_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/description_textview"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/item_price"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/item_name"
-            app:layout_constraintTop_toBottomOf="@id/item_name" />
+                <TextView
+                    android:id="@+id/item_name_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toEndOf="@id/item_imageview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/item_description_textview"
+                    tools:text="Salada de Fruta"
+                    style="@style/NameCardView"
+                    />
 
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/price_textview"
-            android:textSize="18sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/item_name"
-            app:layout_constraintTop_toBottomOf="@id/item_description" />
+                <TextView
+                    android:id="@+id/item_description_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="@id/item_name_textview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_name_textview"
+                    tools:text="Contém maçã, uva, pêra e laranja"
+                    style="@style/DescriptionCardView"
+                    />
 
+                <TextView
+                    android:id="@+id/item_price_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="@id/item_name_textview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_description_textview"
+                    tools:text="R$10,00"
+                    style="@style/PriceCardView"
+                    />
 
-        <ImageView
-                android:id="@+id/edit_button"
-                android:contentDescription="@string/edit_item_button"
-                android:layout_height="0dp"
-                android:layout_margin="4dp"
-                android:layout_width="0dp"
-                app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintWidth_percent="0.1"
-                android:src="@drawable/edit_item"
-                app:layout_constraintBottom_toBottomOf=""
-                app:layout_constraintEnd_toStartOf="@id/remove_button"
-                app:layout_constraintStart_toEndOf="@id/item_image"
-                app:layout_constraintTop_toBottomOf="@id/item_price"
-                />
+                <TextView
+                    android:id="@+id/item_quantity_textview"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintStart_toStartOf="@id/item_name_textview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_price_textview"
+                    tools:text="100"
+                    style="@style/QuantityCardView"
+                    />
 
-        <ImageView
-            android:id="@+id/remove_button"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_margin="4dp"
-            android:contentDescription="@string/edit_item_button"
-            android:src="@drawable/remove_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/item_price"
-            app:layout_constraintHeight_percent="0.3"
-            />
+                <LinearLayout
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    app:layout_constraintWidth_percent="0.3"
+                    app:layout_constraintTop_toBottomOf="@id/item_quantity_textview"
+                    app:layout_constraintStart_toStartOf="@id/item_name_textview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1"
+                    android:weightSum="2"
+                    >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>-->
+                    <ImageView
+                        android:id="@+id/edit_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_edit_item"
+                        android:contentDescription="@string/edit_item_button"
+                        />
 
-</androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:id="@+id/remove_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:contentDescription="@string/remove_button_description"
+                        android:src="@drawable/ic_remove_item"
+                        tools:ignore="RedundantDescriptionCheck" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</layout>
