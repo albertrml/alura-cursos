@@ -91,7 +91,7 @@ class InsertFragment : Fragment() {
                     failureViewGroup = binding.insertFailureLayout,
                     actionOnSuccess = {
                         binding.insertLayout.visibility = View.GONE
-                        binding.insertSuccessNameTextview.text = getString(R.string.success_insert)
+                        binding.insertSuccessNameTextview.text = getString(R.string.insert_success_message)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(

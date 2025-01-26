@@ -106,7 +106,7 @@ class UpdateFragment : Fragment() {
                     loadingViewGroup = binding.updateLoadingLayout,
                     failureViewGroup = binding.updateLayout,
                     actionOnSuccess = { _ ->
-                        binding.updateSuccessTextview.text = getString(R.string.success_update)
+                        binding.updateSuccessTextview.text = getString(R.string.update_success_message)
                     },
                     actionOnFailure = { exception ->
                         Toast.makeText(

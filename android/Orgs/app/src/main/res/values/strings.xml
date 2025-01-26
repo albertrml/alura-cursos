@@ -1,38 +1,63 @@
 <resources>
     <string name="app_name">Orgs</string>
-    <string name="coriander_description">"It is a soft plant growing to 50 cm (20 in) tall. The leaves are variable in shape, broadly lobed at the base of the plant, and slender and feathery higher on the flowering stems. "</string>
-    <string name="coriander_name">Coriander</string>
-    <string name="coriander_price">$0.68</string>
-    <string name="coriander_in_stock">100 pct</string>
-    <string name="name_textview">Name</string>
-    <string name="description_textview">Description</string>
-    <string name="price_textview">Price</string>
-    <string name="in_stock_textview">In Stock</string>
-    <string name="add_new_org_item_button">Add new org item</string>
-    <string name="edit_item_button">Edit item</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="fail_loading_button">TRY AGAIN</string>
-    <string name="home_fail_description_imageview">Fail Loading Image</string>
+    <!-- IMAGE LAYOUT -->
+    <string name="image_description">Product Image</string>
+    <string name="image_preview_button">Preview</string>
+    <string name="image_url_field">Image url</string>
+
+    <!-- ITEM LIST LAYOUT -->
+    <string name="item_image_description">Click here for details</string>
+    <string name="item_name">Salada de Fruta</string>
+    <string name="item_description">Contém maçã, uva, pêra e laranja</string>
+    <string name="item_price">R$ 10,00</string>
+    <string name="item_quantity">100</string>
+    <string name="item_edit_button">Edit item</string>
+    <string name="item_remove_button">Remove button</string>
+
+    <!-- HOME LAYOUT -->
+    <string name="home_failure_button">TRY AGAIN</string>
+    <string name="home_failure_image_description">Fail Loading Image</string>
+    <string name="home_failure_message">Unknown failure</string>
+    <string name="home_add_button">Add new org item</string>
+
+    <!-- INSERT LAYOUT -->
+    <string name="insert_success_message">Insert concluded</string>
+    <string name="insert_success_image_description">Org\'s image</string>
+    <string name="insert_success_return_button">Return</string>
+    <string name="insert_failure_image_description">Fail Loading Image</string>
+    <string name="insert_failure_message">Unknown failure</string>
     <string name="insert_button">Insert</string>
-    <string name="price_edittext">Price (US$)</string>
-    <string name="quantity_edittext">Quantity (pct)</string>
-    <string name="description_edittext">Description</string>
-    <string name="return_button">Return</string>
-    <string name="back_button_description">Back button</string>
+    <string name="insert_back_button_description">Back button</string>
+
+    <!-- UPDATE LAYOUT -->
+    <string name="update_success_message">Update concluded</string>
+    <string name="update_success_image_description">Org\'s image</string>
+    <string name="update_success_return_button">Return</string>
+    <string name="update_failure_image_description">Fail Loading Image</string>
+    <string name="update_failure_message">Unknown failure</string>
     <string name="update_button">Update</string>
-    <string name="success_update">Update concluded</string>
-    <string name="success_insert">Insert concluded</string>
-    <string name="org_image">Org Image</string>
-    <string name="image_url_layout">Image url</string>
-    <string name="org_image_description">Org Image</string>
-    <string name="preview_button">Preview</string>
-    <string name="insert_image_description_imageview">Org\'s image</string>
-    <string name="update_success_description">Org image description</string>
-    <string name="item_image_description">Item Image</string>
-    <string name="remove_button_description">Remove button</string>
-    <string name="details_image_description">Product image</string>
-    <string name="details_description">Coentro (Coriandrum sativum, do grego κορίαννον) é uma planta glabra, da família Apiaceae, de flores róseas ou alvas, pequenas e aromáticas, cujo fruto é diaquênio e cuja folha, usada como tempero ou condimento, exala odor característico.\n\nPara a maioria das pessoas, o coentro tem um sabor azedo mas, para aproximadamente um quarto da população, as folhas têm um sabor que lembra sabão. Esta diferença está relacionada com um gene que detecta certos aldeídos presentes nas folhas</string>
+    <string name="update_back_button_description">Back button</string>
+
+    <!-- DETAILS LAYOUT -->
+    <string name="details_image_information">Product image</string>
+    <string name="details_description">Coentro (Coriandrum sativum, do grego κορίαννον) é uma
+        planta glabra, da família Apiaceae, de flores róseas ou alvas, pequenas e aromáticas,
+        cujo fruto é diaquênio e cuja folha, usada como tempero ou condimento, exala odor
+        característico.\n\nPara a maioria das pessoas, o coentro tem um sabor azedo mas, para
+        aproximadamente um quarto da população, as folhas têm um sabor que lembra sabão. Esta
+        diferença está relacionada com um gene que detecta certos aldeídos presentes nas folhas
+    </string>
     <string name="details_name">Coentro</string>
     <string name="details_price">R$ 1299,99</string>
+    <string name="details_failure_image_description">Fail Loading Image</string>
+    <string name="details_failure_return_button">Return</string>
+
+    <!-- FORM FIELDS -->
+    <string name="forms_image_field">Product image</string>
+    <string name="forms_name_field">Name</string>
+    <string name="forms_description_field">Description</string>
+    <string name="forms_price_field">Price (US$)</string>
+    <string name="forms_quantity_field">Quantity (pct)</string>
+
 </resources>

@@ -36,7 +36,7 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/home_add_item_button"
-                android:contentDescription="@string/add_new_org_item_button"
+                android:contentDescription="@string/home_add_button"
                 android:elevation="16dp"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
 
             <ImageView
                 android:id="@+id/home_failure_imageview"
-                android:contentDescription="@string/home_fail_description_imageview"
+                android:contentDescription="@string/home_failure_image_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/response_failure"
@@ -91,14 +91,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/home_failure_imageview"
-                tools:text="Unknown failure"
+                tools:text="@string/home_failure_message"
                 />
 
             <Button
                 android:id="@+id/home_try_again_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/fail_loading_button"
+                android:text="@string/home_failure_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -25,7 +25,7 @@
 
             <ImageButton
                 android:id="@+id/update_back_button"
-                android:contentDescription="@string/back_button_description"
+                android:contentDescription="@string/update_back_button_description"
                 android:src="@drawable/ic_back_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,7 +34,7 @@
 
             <ImageView
                 android:id="@+id/update_image_imageview"
-                android:contentDescription="@string/org_image"
+                android:contentDescription="@string/forms_image_field"
                 android:layout_height="0dp"
                 android:layout_marginBottom="16dp"
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                     >
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/update_name_textInputLayout"
-                        android:hint="@string/name_textview"
+                        android:hint="@string/forms_name_field"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/update_description_textInputLayout"
-                        android:hint="@string/description_edittext"
+                        android:hint="@string/forms_description_field"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
@@ -111,7 +111,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/update_price_textInputLayout"
-                        android:hint="@string/price_edittext"
+                        android:hint="@string/forms_price_field"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:layout_width="match_parent"
@@ -135,7 +135,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/update_quantity_textInputLayout"
-                        android:hint="@string/quantity_edittext"
+                        android:hint="@string/forms_quantity_field"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -181,7 +181,7 @@
 
             <ImageView
                 android:id="@+id/update_success_image"
-                android:contentDescription="@string/update_success_description"
+                android:contentDescription="@string/update_success_image_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/light_success_icon"
@@ -195,7 +195,7 @@
                 android:id="@+id/update_success_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/success_update"
+                android:text="@string/update_success_message"
                 android:textSize="20sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -207,7 +207,7 @@
                 android:id="@+id/update_success_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/return_button"
+                android:text="@string/update_success_return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -241,7 +241,7 @@
 
             <ImageView
                 android:id="@+id/update_failure_imageview"
-                android:contentDescription="@string/home_fail_description_imageview"
+                android:contentDescription="@string/update_failure_image_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/response_failure"
@@ -260,14 +260,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/update_failure_imageview"
-                tools:text="Unknown failure"
+                tools:text="@string/update_failure_message"
                 />
 
             <Button
                 android:id="@+id/update_failure_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/return_button"
+                android:text="@string/update_success_return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

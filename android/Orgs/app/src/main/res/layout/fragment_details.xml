@@ -25,7 +25,7 @@
 
             <ImageView
                 android:id="@+id/details_image_imageview"
-                android:contentDescription="@string/details_image_description"
+                android:contentDescription="@string/details_image_information"
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
                 android:scaleType="fitXY"
@@ -141,7 +141,7 @@
 
             <ImageView
                 android:id="@+id/details_failure_imageview"
-                android:contentDescription="@string/home_fail_description_imageview"
+                android:contentDescription="@string/details_failure_image_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:src="@drawable/response_failure"
@@ -167,7 +167,7 @@
                 android:id="@+id/details_failure_return_button"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/return_button"
+                android:text="@string/details_failure_return_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
