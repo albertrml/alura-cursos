@@ -24,6 +24,7 @@ class HomeFragment : Fragment() {
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
     private lateinit var onEditListener: (Item) -> Unit
     private lateinit var onRemoveListener: (Item) -> Unit
+    private lateinit var onDetailsListener: (Item) -> Unit
     private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreateView(
@@ -47,6 +48,12 @@ class HomeFragment : Fragment() {
 
         onRemoveListener = { item ->
             homeViewModel.onEvent(HomeUiEvent.OnDelete(item))
+        }
+
+        onDetailsListener = { item ->
+            val action = HomeFragmentDirections
+                .actionHomeFragmentToDetailsFragment(item.id)
+            this@HomeFragment.findNavController().navigate(action)
         }
 
         binding.homeAddItemButton.setOnClickListener{
@@ -87,7 +94,8 @@ class HomeFragment : Fragment() {
         itemAdapter = ItemAdapter(
             items = items,
             onEditClick = onEditListener,
-            onRemoveClick = onRemoveListener
+            onRemoveClick = onRemoveListener,
+            onDetailsClick = onDetailsListener
         )
         binding.homeListRecyclerview.adapter = itemAdapter
         binding.homeListRecyclerview.layoutManager = layoutManager

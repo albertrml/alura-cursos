@@ -23,32 +23,32 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class UpdateFragment : Fragment() {
 
-    private val updateViewModel: UpdateViewModel by viewModels()
-    private val updateScreenViewModel: UpdateScreenViewModel by viewModels()
-    private val binding by lazy { FragmentUpdateBinding.inflate(layoutInflater) }
     private val args: UpdateFragmentArgs by navArgs()
+    private val binding by lazy { FragmentUpdateBinding.inflate(layoutInflater) }
     private val navigateToHome: () -> Unit = {
         this@UpdateFragment.findNavController().navigate(
             R.id.action_updateFragment_to_homeFragment
         )
     }
+    private val updateScreenViewModel: UpdateScreenViewModel by viewModels()
+    private val updateViewModel: UpdateViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        setupScreen()
+        setupScreen(args.itemId)
         setupListeners()
 
         return binding.root
     }
 
-    private fun setupScreen(){
+    private fun setupScreen(itemId:Int){
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = updateScreenViewModel
 
-        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemById(args.itemId))
+        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemById(itemId))
         updateViewModel.viewModelScope.launch {
             updateViewModel.uiState.collect{ state ->
                 state.fetchItemByIdState.showResults(
@@ -114,7 +114,7 @@ class UpdateFragment : Fragment() {
                             exception.message,
                             Toast.LENGTH_SHORT
                         ).show()
-                    },
+                    }
                 )
             }
         }

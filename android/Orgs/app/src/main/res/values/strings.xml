@@ -31,4 +31,8 @@
     <string name="update_success_description">Org image description</string>
     <string name="item_image_description">Item Image</string>
     <string name="remove_button_description">Remove button</string>
+    <string name="details_image_description">Product image</string>
+    <string name="details_description">Coentro (Coriandrum sativum, do grego κορίαννον) é uma planta glabra, da família Apiaceae, de flores róseas ou alvas, pequenas e aromáticas, cujo fruto é diaquênio e cuja folha, usada como tempero ou condimento, exala odor característico.\n\nPara a maioria das pessoas, o coentro tem um sabor azedo mas, para aproximadamente um quarto da população, as folhas têm um sabor que lembra sabão. Esta diferença está relacionada com um gene que detecta certos aldeídos presentes nas folhas</string>
+    <string name="details_name">Coentro</string>
+    <string name="details_price">R$ 1299,99</string>
 </resources>

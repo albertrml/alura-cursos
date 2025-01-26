@@ -16,7 +16,8 @@ import java.util.Locale
 class ItemAdapter(
     private val items: List<Item>,
     private val onEditClick: (Item) -> Unit,
-    private val onRemoveClick: (Item) -> Unit
+    private val onRemoveClick: (Item) -> Unit,
+    private val onDetailsClick: (Item) -> Unit
 ): RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,7 +28,6 @@ class ItemAdapter(
         private val priceTextView: TextView by lazy { view.findViewById(R.id.item_price_textview) }
         private val inStockTextView: TextView by lazy { view.findViewById(R.id.item_quantity_textview) }
         private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
-
         private val imageView: ImageView by lazy { view.findViewById(R.id.item_imageview) }
 
         @SuppressLint("SetTextI18n")
@@ -41,14 +41,19 @@ class ItemAdapter(
 
         fun bindListeners(
             item: Item,
-            onEditClick: (Item) -> Unit,
-            onRemoveClick: (Item) -> Unit
+            onEditClick: (Item) -> Unit = {},
+            onRemoveClick: (Item) -> Unit = {},
+            onDetailsClick: (Item) -> Unit = {}
         ){
             editButton.setOnClickListener {
                 onEditClick(item)
             }
             removeButton.setOnClickListener {
                 onRemoveClick(item)
+            }
+
+            imageView.setOnClickListener{
+                onDetailsClick(item)
             }
         }
     }
@@ -60,7 +65,8 @@ class ItemAdapter(
         holder.bindListeners(
             items[position],
             onEditClick,
-            onRemoveClick
+            onRemoveClick,
+            onDetailsClick
         )
     }
 

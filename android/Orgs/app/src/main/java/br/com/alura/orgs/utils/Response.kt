@@ -13,6 +13,14 @@ sealed class Response <out T>{
     data object Loading: Response<Nothing>()
 }
 
+fun <T, S> Response<T>.mapTo(transform: (T) -> S): Response<S>{
+    return when(this){
+        is Response.Success -> Response.Success(transform(this.result))
+        is Response.Failure -> Response.Failure(this.exception)
+        is Response.Loading -> Response.Loading
+    }
+}
+
 fun <T, S> Response<T>.handleResponse(
     uiState: MutableStateFlow<S>,
     updateState: (S, Response<T>) -> S
