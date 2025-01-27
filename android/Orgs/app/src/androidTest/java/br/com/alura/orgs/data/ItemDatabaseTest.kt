@@ -117,7 +117,8 @@ class ItemDatabaseTest {
                 itemName = it.itemName,
                 itemDescription = it.itemDescription,
                 itemValue = it.itemValue,
-                quantityInStock = it.quantityInStock
+                quantityInStock = it.quantityInStock,
+                itemUrl = it.itemUrl
             )
         }
         assert(allItems.size == mockItems.size)

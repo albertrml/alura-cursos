@@ -6,6 +6,7 @@ import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.utils.handleResponse
 import br.com.alura.orgs.utils.mapTo
+import currencyFormat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +29,11 @@ class DetailsViewModel @Inject constructor(private val repository: ItemRepositor
             repository.getItemById(itemId).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->
                     state.copy(
-                        fetchItemByIdState = res.mapTo { item -> ItemUi.fromItem(item) }
+                        fetchItemByIdState = res.mapTo { item ->
+                            ItemUi.fromItem(item).copy(
+                                itemValue = MutableStateFlow(currencyFormat(item.itemValue))
+                            )
+                        }
                     )
                 }
             }

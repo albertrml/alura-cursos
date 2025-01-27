@@ -15,10 +15,10 @@
     <color name="colorTertiaryContainer">#FF03DAC5</color>
     <color name="colorOnTertiaryContainer">#FF03DAC5</color>
 
-    <color name="colorSurface">#7DD0F2</color>
+    <color name="colorSurface">#A6F0F6</color>
     <color name="colorOnSurface">#021238</color>
-    <color name="colorSurfaceVariant">#F3F3F6</color>
-    <color name="colorOnSurfaceVariant">#493F7A</color>
+    <color name="colorSurfaceVariant">#5EC7F2</color>
+    <color name="colorOnSurfaceVariant">#00081B</color>
     <color name="colorSurfaceContainerHighest">#6CA2F8</color>
 
     <color name="colorError">#F40000</color>
@@ -39,7 +39,7 @@
 
     <color name="colorSecondaryDark">#78B4F2</color>
     <color name="colorOnSecondaryDark">#FFFFFF</color>
-    <color name="colorSecondaryContainerDark">#183556</color>5
+    <color name="colorSecondaryContainerDark">#183556</color>
     <color name="colorOnSecondaryContainerDark">#B8BCC5</color>
 
     <color name="colorTertiaryDark">#015950</color>
@@ -49,7 +49,7 @@
 
     <color name="colorSurfaceDark">#28024D</color>
     <color name="colorOnSurfaceDark">#FFFFFF</color>
-    <color name="colorSurfaceVariantDark">#DCBD39</color>
+    <color name="colorSurfaceVariantDark">#680FBD</color>
     <color name="colorOnSurfaceVariantDark">#040404</color>
     <color name="colorSurfaceContainerHighestDark">#B7F6F8</color>
 

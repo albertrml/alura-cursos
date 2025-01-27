@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.view.image.ImageDialog
+import currencyFormat
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -27,14 +28,13 @@ class ItemAdapter(
         private val descriptionTextView: TextView by lazy { view.findViewById(R.id.item_description_textview) }
         private val priceTextView: TextView by lazy { view.findViewById(R.id.item_price_textview) }
         private val inStockTextView: TextView by lazy { view.findViewById(R.id.item_quantity_textview) }
-        private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.US)
         private val imageView: ImageView by lazy { view.findViewById(R.id.item_imageview) }
 
         @SuppressLint("SetTextI18n")
         fun bind(item: Item){
             nameTextView.text = item.itemName
             descriptionTextView.text = item.itemDescription
-            priceTextView.text = currencyFormatter.format(item.itemValue)
+            priceTextView.text = currencyFormat(item.itemValue)
             inStockTextView.text = "${item.quantityInStock} pct"
             ImageDialog.loadImage(item.itemUrl, imageView)
         }
