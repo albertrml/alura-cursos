@@ -11,8 +11,6 @@ import br.com.alura.orgs.R
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.view.image.ImageDialog
 import currencyFormat
-import java.text.NumberFormat
-import java.util.Locale
 
 class ItemAdapter(
     private val items: List<Item>,
