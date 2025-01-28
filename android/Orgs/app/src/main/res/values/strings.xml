@@ -59,5 +59,9 @@
     <string name="forms_description_field">Description</string>
     <string name="forms_price_field">Price (US$)</string>
     <string name="forms_quantity_field">Quantity (pct)</string>
+    <string name="home_unsorted_filter_chip_description">Unsorted</string>
+    <string name="home_name_filter_chip_description">Name</string>
+    <string name="home_price_filter_chip_description">Price</string>
+    <string name="home_quantity_filter_chip_description">Quantity</string>
 
 </resources>

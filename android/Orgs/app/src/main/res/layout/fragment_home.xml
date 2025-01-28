@@ -14,14 +14,77 @@
             tools:visibility="visible"
             >
 
-            <androidx.core.widget.NestedScrollView
+            <HorizontalScrollView
+                android:id="@+id/home_filter_scrollview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/home_list_scrollview"
+                >
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/home_filter_chipGroup"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/baseline_component_align"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="@dimen/padding_space"
+                    app:chipSpacingHorizontal="@dimen/baseline_component_within_align"
+                    app:singleSelection="true"
+                    >
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_unsorted_filter_chip"
+                        android:checked="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_unsorted_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_name_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_name_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_price_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_price_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_quantity_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_quantity_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/home_list_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_filter_scrollview"
                 app:layout_constraintVertical_bias="0.0"
                 >
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.domain.HomeItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.utils.SortType
 import br.com.alura.orgs.utils.handleResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,13 +21,13 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        onEvent(HomeUiEvent.OnFetchAllItems)
+        onEvent(HomeUiEvent.OnFetchAllItems())
     }
 
     fun onEvent(event: HomeUiEvent){
         when(event){
             is HomeUiEvent.OnDelete -> deleteItem(event.itemUi)
-            is HomeUiEvent.OnFetchAllItems -> fetchAllItems()
+            is HomeUiEvent.OnFetchAllItems -> fetchAllItems(event.sortBy)
         }
     }
 
@@ -40,9 +41,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun fetchAllItems() {
+    private fun fetchAllItems(sortBy: SortType) {
         viewModelScope.launch {
-            repository.fetchAllItemUis().collect { response ->
+            repository.fetchAllItemUis(sortBy).collect { response ->
                 response.handleResponse(_uiState) { state, res ->
                     state.copy(fetchAllItemsState = res)
                 }

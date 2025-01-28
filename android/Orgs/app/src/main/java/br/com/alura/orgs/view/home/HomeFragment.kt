@@ -10,8 +10,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentHomeBinding
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.utils.SortType
 import br.com.alura.orgs.utils.showResults
 import br.com.alura.orgs.view.home.adapter.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,13 +65,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.homeTryAgainButton.setOnClickListener {
-            homeViewModel.onEvent(HomeUiEvent.OnFetchAllItems)
+            selectFilter()
         }
 
     }
 
     private fun setupScreen(){
-        homeViewModel.onEvent(HomeUiEvent.OnFetchAllItems)
+        selectFilter()
         homeViewModel.viewModelScope.launch {
             homeViewModel.uiState.collect { state ->
                 state.fetchAllItemsState.showResults(
@@ -83,6 +85,41 @@ class HomeFragment : Fragment() {
                         binding.homeFailureTextview.text = exception.toString()
                     }
                 )
+            }
+        }
+    }
+
+    private fun selectFilter(){
+        binding.homeFilterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            when{
+                checkedIds.contains(R.id.home_unsorted_filter_chip) -> {
+                    homeViewModel.onEvent(
+                        HomeUiEvent.OnFetchAllItems(
+                            sortBy = SortType.ByIdAscending
+                        )
+                    )
+                }
+                checkedIds.contains(R.id.home_name_filter_chip) -> {
+                    homeViewModel.onEvent(
+                        HomeUiEvent.OnFetchAllItems(
+                            sortBy = SortType.ByNameAscending
+                        )
+                    )
+                }
+                checkedIds.contains(R.id.home_price_filter_chip) -> {
+                    homeViewModel.onEvent(
+                        HomeUiEvent.OnFetchAllItems(
+                            sortBy = SortType.ByPriceAscending
+                        )
+                    )
+                }
+                checkedIds.contains(R.id.home_quantity_filter_chip) -> {
+                    homeViewModel.onEvent(
+                        HomeUiEvent.OnFetchAllItems(
+                            sortBy = SortType.ByQuantityDescending
+                        )
+                    )
+                }
             }
         }
     }
