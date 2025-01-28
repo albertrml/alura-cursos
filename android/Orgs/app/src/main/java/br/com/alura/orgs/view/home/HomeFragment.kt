@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.databinding.FragmentHomeBinding
-import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.showResults
 import br.com.alura.orgs.view.home.adapter.ItemAdapter
