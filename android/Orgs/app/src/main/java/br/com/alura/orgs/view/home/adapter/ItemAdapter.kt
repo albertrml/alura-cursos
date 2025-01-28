@@ -8,15 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
-import br.com.alura.orgs.model.entity.Item
-import br.com.alura.orgs.view.image.ImageDialog
-import currencyFormat
+import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.view.components.ImageDialog
 
 class ItemAdapter(
-    private val items: List<Item>,
-    private val onEditClick: (Item) -> Unit,
-    private val onRemoveClick: (Item) -> Unit,
-    private val onDetailsClick: (Item) -> Unit
+    private val items: List<ItemUi>,
+    private val onEditClick: (ItemUi) -> Unit,
+    private val onRemoveClick: (ItemUi) -> Unit,
+    private val onDetailsClick: (ItemUi) -> Unit
 ): RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -29,29 +28,29 @@ class ItemAdapter(
         private val imageView: ImageView by lazy { view.findViewById(R.id.item_imageview) }
 
         @SuppressLint("SetTextI18n")
-        fun bind(item: Item){
-            nameTextView.text = item.itemName
-            descriptionTextView.text = item.itemDescription
-            priceTextView.text = currencyFormat(item.itemValue)
-            inStockTextView.text = "${item.quantityInStock} pct"
-            ImageDialog.loadImage(item.itemUrl, imageView)
+        fun bind(itemUi: ItemUi){
+            nameTextView.text = itemUi.itemName
+            descriptionTextView.text = itemUi.itemDescription
+            priceTextView.text = itemUi.itemValue
+            inStockTextView.text = itemUi.quantityInStock
+            ImageDialog.loadImage(itemUi.itemUrl, imageView)
         }
 
         fun bindListeners(
-            item: Item,
-            onEditClick: (Item) -> Unit = {},
-            onRemoveClick: (Item) -> Unit = {},
-            onDetailsClick: (Item) -> Unit = {}
+            itemUi: ItemUi,
+            onEditClick: (ItemUi) -> Unit = {},
+            onRemoveClick: (ItemUi) -> Unit = {},
+            onDetailsClick: (ItemUi) -> Unit = {}
         ){
             editButton.setOnClickListener {
-                onEditClick(item)
+                onEditClick(itemUi)
             }
             removeButton.setOnClickListener {
-                onRemoveClick(item)
+                onRemoveClick(itemUi)
             }
 
             imageView.setOnClickListener{
-                onDetailsClick(item)
+                onDetailsClick(itemUi)
             }
         }
     }
@@ -69,8 +68,6 @@ class ItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        /*val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.org_item, parent, false)*/
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_list, parent, false)
 

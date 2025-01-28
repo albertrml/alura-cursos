@@ -11,11 +11,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentInsertBinding
-import br.com.alura.orgs.model.entity.Item
-import br.com.alura.orgs.model.entity.emptyItem
+import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.view.image.ImageDialog
+import br.com.alura.orgs.view.components.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -24,7 +23,6 @@ import kotlinx.coroutines.launch
 class InsertFragment : Fragment() {
 
     private val insertViewModel: InsertViewModel by viewModels()
-    private val insertScreenViewModel: InsertScreenViewModel by viewModels()
     private val binding by lazy { FragmentInsertBinding.inflate(layoutInflater) }
     private val navigateToHome: (Unit) -> Unit = {
         this@InsertFragment.findNavController().navigate(
@@ -46,15 +44,20 @@ class InsertFragment : Fragment() {
 
     private fun setupScreen(){
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = insertScreenViewModel
-        insertScreenViewModel.fromItem(emptyItem())
+        binding.viewmodel = insertViewModel
+        with(ItemUi()){
+            binding.nameEdittext.setText(itemName)
+            binding.descriptionEdittext.setText(itemDescription)
+            binding.priceEdittext.setText(itemValue)
+            binding.quantityEdittext.setText(quantityInStock)
+        }
     }
 
     private fun setupListeners() {
         binding.insertButton.setOnClickListener {
-            val itemToInsert: Item = insertScreenViewModel.toItem()
-            itemToInsert.onCheck(
-                isValid = { insert(it) },
+            val itemToInsert: ItemUi = getItemUiFromScreen()
+            itemToInsert.toItem().onCheck(
+                isValid = { insert(itemToInsert) },
                 isInvalid = { exception ->
                     Toast.makeText(
                         requireContext(),
@@ -68,9 +71,7 @@ class InsertFragment : Fragment() {
             ImageDialog.show(
                 context = requireContext(),
                 onConfirm = { url ->
-                    insertScreenViewModel.fromItem(
-                        insertScreenViewModel.toItem().copy(itemUrl = url)
-                    )
+                    insertViewModel.onEvent(InsertUiEvent.OnSaveUrlImage(url = url))
                 },
                 onCancel = {}
             )
@@ -81,8 +82,18 @@ class InsertFragment : Fragment() {
         binding.insertFailureReturnButton.setOnClickListener { navigateToHome(Unit) }
     }
 
-    private fun insert(itemToInsert: Item){
-        insertViewModel.onEvent(InsertUiEvent.OnInsert(itemToInsert))
+    private fun getItemUiFromScreen(): ItemUi {
+        return ItemUi(
+            itemName = binding.nameEdittext.text.toString(),
+            itemDescription = binding.descriptionEdittext.text.toString(),
+            itemValue = binding.priceEdittext.text.toString(),
+            quantityInStock = binding.quantityEdittext.text.toString(),
+            itemUrl = insertViewModel.uiState.value.urlImage,
+        )
+    }
+
+    private fun insert(itemUiToInsert: ItemUi){
+        insertViewModel.onEvent(InsertUiEvent.OnInsert(itemUiToInsert))
         insertViewModel.viewModelScope.launch {
             insertViewModel.uiState.collect{ state ->
                 state.insertState.showResults(

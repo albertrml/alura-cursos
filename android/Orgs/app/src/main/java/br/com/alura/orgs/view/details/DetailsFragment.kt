@@ -13,7 +13,7 @@ import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentDetailsBinding
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.view.image.ImageDialog
+import br.com.alura.orgs.view.components.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -61,10 +61,10 @@ class DetailsFragment : Fragment() {
 
     private fun setFields(itemUi: ItemUi){
         with(binding){
-            detailsNameTextview.text = itemUi.itemName.value
-            detailsDescriptionTextview.text = itemUi.itemDescription.value
-            detailsPriceTextview.text = itemUi.itemValue.value
-            ImageDialog.loadImage(itemUi.itemUrl.value, detailsImageImageview)
+            detailsNameTextview.text = itemUi.itemName
+            detailsDescriptionTextview.text = itemUi.itemDescription
+            detailsPriceTextview.text = itemUi.itemValue
+            ImageDialog.loadImage(itemUi.itemUrl, detailsImageImageview)
         }
     }
 

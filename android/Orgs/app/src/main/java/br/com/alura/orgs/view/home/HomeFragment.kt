@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.databinding.FragmentHomeBinding
 import br.com.alura.orgs.model.entity.Item
+import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.showResults
 import br.com.alura.orgs.view.home.adapter.ItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,9 +23,9 @@ import kotlinx.coroutines.launch
 class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels ()
     private val binding by lazy { FragmentHomeBinding.inflate(layoutInflater) }
-    private lateinit var onEditListener: (Item) -> Unit
-    private lateinit var onRemoveListener: (Item) -> Unit
-    private lateinit var onDetailsListener: (Item) -> Unit
+    private lateinit var onEditListener: (ItemUi) -> Unit
+    private lateinit var onRemoveListener: (ItemUi) -> Unit
+    private lateinit var onDetailsListener: (ItemUi) -> Unit
     private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreateView(
@@ -88,7 +89,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun setRecyclerView(
-        items: List<Item> = emptyList(),
+        items: List<ItemUi> = emptyList(),
         layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
     ) {
         itemAdapter = ItemAdapter(

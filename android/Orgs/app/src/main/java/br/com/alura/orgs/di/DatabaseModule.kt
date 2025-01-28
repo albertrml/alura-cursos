@@ -31,4 +31,5 @@ object DatabaseModule {
     fun provideItemRepository(itemDao: ItemDAO): ItemRepository {
         return ItemRepository(itemDao)
     }
+
 }

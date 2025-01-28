@@ -2,8 +2,8 @@ package br.com.alura.orgs.view.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.alura.orgs.model.entity.Item
-import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.domain.HomeItemUiUseCase
+import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.handleResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val repository: ItemRepository): ViewModel() {
+class HomeViewModel @Inject constructor(private val repository: HomeItemUiUseCase): ViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -22,14 +22,14 @@ class HomeViewModel @Inject constructor(private val repository: ItemRepository):
 
     fun onEvent(event: HomeUiEvent){
         when(event){
-            is HomeUiEvent.OnDelete -> deleteItem(event.item)
+            is HomeUiEvent.OnDelete -> deleteItem(event.itemUi)
             is HomeUiEvent.OnFetchAllItems -> fetchAllItems()
         }
     }
 
-    private fun deleteItem(item: Item){
+    private fun deleteItem(itemUi: ItemUi){
         viewModelScope.launch {
-            repository.deleteItem(item).collect { response ->
+            repository.deleteItem(itemUi).collect { response ->
                 response.handleResponse(_uiState) { state, res ->
                     state.copy(deleteState = res)
                 }
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(private val repository: ItemRepository):
 
     private fun fetchAllItems() {
         viewModelScope.launch {
-            repository.getAllItems().collect { response ->
+            repository.fetchAllItemUis().collect { response ->
                 response.handleResponse(_uiState) { state, res ->
                     state.copy(fetchAllItemsState = res)
                 }

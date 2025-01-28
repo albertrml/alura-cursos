@@ -30,11 +30,3 @@ fun Item.onCheck(
     quantityInStock < 0 -> isInvalid(Exception("Invalid quantity"))
     else -> isValid(this)
 }
-
-fun emptyItem() = Item(
-    itemName = "",
-    itemDescription = "",
-    itemValue = 0.0,
-    quantityInStock = 0,
-    itemUrl = ""
-)

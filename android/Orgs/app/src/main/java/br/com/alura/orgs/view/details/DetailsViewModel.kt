@@ -2,11 +2,8 @@ package br.com.alura.orgs.view.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.alura.orgs.model.entity.ItemUi
-import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.utils.handleResponse
-import br.com.alura.orgs.utils.mapTo
-import currencyFormat
+import br.com.alura.orgs.domain.UpdateItemUiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(private val repository: ItemRepository): ViewModel(){
+class DetailsViewModel @Inject constructor(private val repository: UpdateItemUiUseCase): ViewModel(){
     private val _uiState = MutableStateFlow(DetailsUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -26,15 +23,9 @@ class DetailsViewModel @Inject constructor(private val repository: ItemRepositor
 
     private fun fetchItemById(itemId: Int) {
         viewModelScope.launch {
-            repository.getItemById(itemId).collect{ response ->
+            repository.fetchItemUiById(itemId).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->
-                    state.copy(
-                        fetchItemByIdState = res.mapTo { item ->
-                            ItemUi.fromItem(item).copy(
-                                itemValue = MutableStateFlow(currencyFormat(item.itemValue))
-                            )
-                        }
-                    )
+                    state.copy( fetchItemByIdState = res)
                 }
             }
         }

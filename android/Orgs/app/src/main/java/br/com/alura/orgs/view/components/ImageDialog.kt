@@ -1,4 +1,4 @@
-package br.com.alura.orgs.view.image
+package br.com.alura.orgs.view.components
 
 import android.content.Context
 import android.view.LayoutInflater

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="br.com.alura.orgs.view.insert.InsertScreenViewModel" />
+            type="br.com.alura.orgs.view.insert.InsertViewModel" />
     </data>
 
     <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/baseline_component_align"
                 android:layout_width="match_parent"
-                app:imageUrl="@{viewmodel.itemUi.itemUrl}"
+                app:imageUrl="@{viewmodel.uiState.urlImage}"
                 app:layout_constraintBottom_toTopOf="@id/insert_forms_scrollview"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_percent="0.3"
@@ -78,7 +78,6 @@
                             android:id="@+id/name_edittext"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="@={viewmodel.itemUi.itemName}"
                             style="@style/OutlinedTextInputEditText"
                             />
 
@@ -104,7 +103,6 @@
                             android:layout_width="match_parent"
                             android:lines="5"
                             android:scrollbars="vertical"
-                            android:text="@={viewmodel.itemUi.itemDescription}"
                             style="@style/OutlinedTextInputEditText"
                             />
 
@@ -128,7 +126,6 @@
                             android:inputType="numberDecimal"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="@={viewmodel.itemUi.itemValue}"
                             />
 
                     </com.google.android.material.textfield.TextInputLayout>
@@ -150,7 +147,6 @@
                             android:inputType="number"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
-                            android:text="@={viewmodel.itemUi.quantityInStock}"
                             style="@style/OutlinedTextInputEditText"
                             />
 

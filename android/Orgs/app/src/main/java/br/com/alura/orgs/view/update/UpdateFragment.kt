@@ -13,10 +13,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentUpdateBinding
-import br.com.alura.orgs.model.entity.Item
+import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.entity.onCheck
 import br.com.alura.orgs.utils.showResults
-import br.com.alura.orgs.view.image.ImageDialog
+import br.com.alura.orgs.view.components.ImageDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -30,7 +30,6 @@ class UpdateFragment : Fragment() {
             R.id.action_updateFragment_to_homeFragment
         )
     }
-    private val updateScreenViewModel: UpdateScreenViewModel by viewModels()
     private val updateViewModel: UpdateViewModel by viewModels()
 
     override fun onCreateView(
@@ -46,7 +45,7 @@ class UpdateFragment : Fragment() {
 
     private fun setupScreen(itemId:Int){
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = updateScreenViewModel
+        binding.viewmodel = updateViewModel
 
         updateViewModel.onEvent(UpdateUiEvent.OnFetchItemById(itemId))
         updateViewModel.viewModelScope.launch {
@@ -56,7 +55,7 @@ class UpdateFragment : Fragment() {
                     loadingViewGroup = binding.updateLoadingLayout,
                     failureViewGroup = binding.updateFailureLayout,
                     actionOnSuccess = { itemBeforeUpdate ->
-                        updateScreenViewModel.fromItem(itemBeforeUpdate)
+                        setUpdateScreen(itemBeforeUpdate)
                     },
                     actionOnFailure = { exception ->
                         binding.updateFailureTextview.text = exception.message
@@ -66,11 +65,18 @@ class UpdateFragment : Fragment() {
         }
     }
 
+    private fun setUpdateScreen(itemBeforeUpdate: ItemUi){
+        binding.updateNameEdittext.setText(itemBeforeUpdate.itemName)
+        binding.updateDescriptionEdittext.setText(itemBeforeUpdate.itemDescription)
+        binding.updatePriceEdittext.setText(itemBeforeUpdate.itemValue)
+        binding.updateQuantityEdittext.setText(itemBeforeUpdate.quantityInStock)
+    }
+
     private fun setupListeners() {
         binding.updateButton.setOnClickListener {
-            val itemToUpdate = updateScreenViewModel.toItem()
-            itemToUpdate.onCheck(
-                isValid = { update(it) },
+            val itemToUpdate = getItemUiFromScreen()
+            itemToUpdate.toItem().onCheck(
+                isValid = { update(itemToUpdate) },
                 isInvalid = { exception ->
                     Toast.makeText(
                         requireContext(),
@@ -84,11 +90,9 @@ class UpdateFragment : Fragment() {
             ImageDialog.show(
                 context = requireContext(),
                 onConfirm = { url ->
-                    updateScreenViewModel.fromItem(
-                        updateScreenViewModel.toItem().copy(itemUrl = url)
-                    )
+                    updateViewModel.onEvent(UpdateUiEvent.OnSaveUrlImage(url = url))
                 },
-                onCancel = {}
+                onCancel = { }
             )
         }
         binding.updateBackButton.setOnClickListener { navigateToHome() }
@@ -96,9 +100,20 @@ class UpdateFragment : Fragment() {
         binding.updateSuccessReturnButton.setOnClickListener { navigateToHome() }
     }
 
+    private fun getItemUiFromScreen(): ItemUi {
+        return ItemUi(
+            id = args.itemId,
+            itemName = binding.updateNameEdittext.text.toString(),
+            itemDescription = binding.updateDescriptionEdittext.text.toString(),
+            itemValue = binding.updatePriceEdittext.text.toString(),
+            quantityInStock = binding.updateQuantityEdittext.text.toString(),
+            itemUrl = updateViewModel.uiState.value.urlImage,
+        )
+    }
+
     @SuppressLint("SetTextI18n")
-    private fun update(itemToUpdate:Item){
-        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemToUpdate))
+    private fun update(itemUiToUpdate:ItemUi){
+        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemUiToUpdate))
         updateViewModel.viewModelScope.launch {
             updateViewModel.uiState.collect{ state ->
                 state.updateState.showResults(

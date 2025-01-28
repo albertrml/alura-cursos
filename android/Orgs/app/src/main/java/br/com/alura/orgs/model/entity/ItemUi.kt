@@ -1,32 +1,35 @@
 package br.com.alura.orgs.model.entity
 
-import kotlinx.coroutines.flow.MutableStateFlow
-
 data class ItemUi(
     val id: Int = 0,
-    val itemName: MutableStateFlow<String> = MutableStateFlow(""),
-    val itemDescription: MutableStateFlow<String> = MutableStateFlow(""),
-    val itemValue: MutableStateFlow<String> = MutableStateFlow(""),
-    val quantityInStock: MutableStateFlow<String> = MutableStateFlow(""),
-    val itemUrl: MutableStateFlow<String> = MutableStateFlow("")
-) {
+    val itemName: String = "",
+    val itemDescription: String = "",
+    val itemValue: String = "",
+    val quantityInStock: String = "",
+    val itemUrl: String = ""
+){
+
     fun toItem() = Item(
         id = id,
-        itemName = itemName.value,
-        itemDescription = itemDescription.value,
-        itemValue = itemValue.value.toDoubleOrNull() ?: 0.0,
-        quantityInStock = quantityInStock.value.toIntOrNull() ?: 0,
-        itemUrl = itemUrl.value
+        itemName = itemName,
+        itemDescription = itemDescription,
+        itemValue = itemValue.toDoubleOrNull() ?: 0.0,
+        quantityInStock = quantityInStock.toIntOrNull() ?: 0,
+        itemUrl = itemUrl
     )
 
     companion object {
         fun fromItem(item: Item) = ItemUi(
             id = item.id,
-            itemName = MutableStateFlow(item.itemName),
-            itemDescription = MutableStateFlow(item.itemDescription),
-            itemValue = MutableStateFlow(item.itemValue.toString()),
-            quantityInStock = MutableStateFlow(item.quantityInStock.toString()),
-            itemUrl = MutableStateFlow(item.itemUrl)
+            itemName = item.itemName,
+            itemDescription = item.itemDescription,
+            itemValue = item.itemValue.toString(),
+            quantityInStock = item.quantityInStock.toString(),
+            itemUrl = item.itemUrl
         )
     }
+
 }
+
+
+
