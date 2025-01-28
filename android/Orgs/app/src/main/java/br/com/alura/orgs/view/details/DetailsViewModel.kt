@@ -2,8 +2,8 @@ package br.com.alura.orgs.view.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.alura.orgs.domain.DetailsItemUiUseCase
 import br.com.alura.orgs.utils.handleResponse
-import br.com.alura.orgs.domain.UpdateItemUiUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +11,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(private val repository: UpdateItemUiUseCase): ViewModel(){
+class DetailsViewModel @Inject constructor(
+    private val repository: DetailsItemUiUseCase
+): ViewModel(){
+
     private val _uiState = MutableStateFlow(DetailsUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -23,7 +26,7 @@ class DetailsViewModel @Inject constructor(private val repository: UpdateItemUiU
 
     private fun fetchItemById(itemId: Int) {
         viewModelScope.launch {
-            repository.fetchItemUiById(itemId).collect{ response ->
+            repository.fetchItemById(itemId).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->
                     state.copy( fetchItemByIdState = res)
                 }

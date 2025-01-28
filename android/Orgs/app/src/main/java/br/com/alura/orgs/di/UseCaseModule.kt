@@ -1,5 +1,6 @@
 package br.com.alura.orgs.di
 
+import br.com.alura.orgs.domain.DetailsItemUiUseCase
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.domain.HomeItemUiUseCase
 import br.com.alura.orgs.domain.InsertItemUiUseCase
@@ -30,6 +31,12 @@ class UseCaseModule {
     @Singleton
     fun provideHomeItemUiUseCase(itemRepository: ItemRepository): HomeItemUiUseCase {
         return HomeItemUiUseCase(itemRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDetailsItemUiUseCase(itemRepository: ItemRepository): DetailsItemUiUseCase {
+        return DetailsItemUiUseCase(itemRepository)
     }
 
 }

@@ -13,7 +13,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UpdateViewModel @Inject constructor(private val repository: UpdateItemUiUseCase): ViewModel() {
+class UpdateViewModel @Inject constructor(
+    private val repository: UpdateItemUiUseCase
+): ViewModel() {
+
     private val _uiState = MutableStateFlow(UpdateUiState())
     val uiState = _uiState.asStateFlow()
 

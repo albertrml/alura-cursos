@@ -15,6 +15,7 @@ import javax.inject.Inject
 class InsertViewModel @Inject constructor(
     private val repository: InsertItemUiUseCase
 ): ViewModel() {
+
     private val _uiState = MutableStateFlow(InsertUiState())
     val uiState = _uiState.asStateFlow()
 
