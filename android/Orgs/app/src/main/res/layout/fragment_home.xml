@@ -102,6 +102,8 @@
                 android:contentDescription="@string/home_add_button"
                 android:elevation="16dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/baseline_component_align"
+                android:layout_marginBottom="@dimen/baseline_component_align"
                 android:layout_width="wrap_content"
                 android:src="@drawable/ic_add_button"
                 app:layout_constraintBottom_toBottomOf="parent"

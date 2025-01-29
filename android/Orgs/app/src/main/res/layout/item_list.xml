@@ -10,6 +10,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/baseline_component_align"
             android:layout_marginTop="@dimen/baseline_component_align"
+            android:layout_marginBottom="@dimen/baseline_component_align"
             android:layout_width="match_parent"
             style="@style/OrgCardView"
             >

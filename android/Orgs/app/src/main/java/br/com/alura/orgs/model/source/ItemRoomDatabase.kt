@@ -20,9 +20,7 @@ abstract class ItemRoomDatabase : RoomDatabase() {
                     ctx.applicationContext,
                     ItemRoomDatabase::class.java,
                     "item_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
+                ).build()
                 INSTANCE = instance
                 return instance
             }
