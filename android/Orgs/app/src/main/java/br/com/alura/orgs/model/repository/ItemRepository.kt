@@ -3,6 +3,7 @@ package br.com.alura.orgs.model.repository
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.utils.Response
+import br.com.alura.orgs.utils.performDatabaseOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -10,11 +11,6 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
-    private suspend fun <T> performDatabaseOperation(
-        databaseOperation: suspend () -> T
-    ): Response<T> =
-        try { Response.Success(databaseOperation()) }
-        catch (e: Exception) { Response.Failure(e) }
 
     fun getAllItems(): Flow<Response<List<Item>>> = flow {
         emit(Response.Loading)

@@ -7,12 +7,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/gradient_background"
         >
 
         <ImageView
             android:id="@+id/login_logo"
             android:layout_height="150dp"
             android:layout_width="150dp"
+            android:contentDescription="@string/login_app_logo"
             android:src="@drawable/orgs_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -28,9 +30,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/login_scrollview"
             app:layout_constraintVertical_bias="0.1"
-            android:text="ORGs"
+            android:text="@string/login_title"
             android:textSize="25sp"
             android:textStyle="italic|bold"
+            android:textColor="#FFFFFF"
             />
 
         <androidx.core.widget.NestedScrollView
@@ -58,7 +61,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:padding="@dimen/padding_space"
-                    android:hint="Username"
+                    android:hint="@string/login_username_field"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/login_username_textInputEditText"
@@ -76,7 +79,7 @@
                     app:layout_constraintStart_toStartOf="@id/login_username_textInputLayout"
                     app:layout_constraintEnd_toEndOf="@id/login_username_textInputLayout"
                     android:padding="@dimen/padding_space"
-                    android:hint="Password"
+                    android:hint="@string/login_password_field"
                     >
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/login_password_textInputEditText"
@@ -91,7 +94,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/baseline_component_align"
-                    android:text="Submit"
+                    android:text="@string/login_sign_in_button"
                     app:layout_constraintTop_toBottomOf="@id/login_password_textInputLayout"
                     app:layout_constraintEnd_toEndOf="@id/login_username_textInputLayout"
                     />
@@ -105,7 +108,7 @@
                     app:layout_constraintTop_toBottomOf="@id/login_password_textInputLayout"
                     app:layout_constraintBaseline_toBaselineOf="@id/login_submit_button"
                     android:textSize="18sp"
-                    android:text="Sign Up Here!"
+                    android:text="@string/login_sign_up_button"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

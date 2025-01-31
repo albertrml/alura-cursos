@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">Orgs</string>
 
+    <string name="login_username_field">Username</string>
+    <string name="login_password_field">Password</string>
+    <string name="login_title">Orgs</string>
+    <string name="login_sign_up_button">Sign Up Here!</string>
+    <string name="login_sign_in_button">Submit</string>
+
     <!-- IMAGE LAYOUT -->
     <string name="image_description">Product Image</string>
     <string name="image_preview_button">Preview</string>
@@ -63,5 +69,6 @@
     <string name="home_name_filter_chip_description">Name</string>
     <string name="home_price_filter_chip_description">Price</string>
     <string name="home_quantity_filter_chip_description">Quantity</string>
+    <string name="login_app_logo">App logo</string>
 
 </resources>

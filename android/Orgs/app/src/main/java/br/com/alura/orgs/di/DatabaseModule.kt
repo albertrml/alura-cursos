@@ -1,7 +1,7 @@
 package br.com.alura.orgs.di
 
 import android.content.Context
-import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.ItemRoomDatabase
 import dagger.Module
@@ -26,10 +26,11 @@ object DatabaseModule {
         return database.itemDao()
     }
 
+
     @Provides
     @Singleton
-    fun provideItemRepository(itemDao: ItemDAO): ItemRepository {
-        return ItemRepository(itemDao)
+    fun provideAccountDao(database: ItemRoomDatabase): AccountDAO {
+        return database.accountDao()
     }
 
 }
