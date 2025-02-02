@@ -3,6 +3,7 @@ package br.com.alura.orgs.model.source
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import br.com.alura.orgs.model.entity.Account
@@ -10,7 +11,7 @@ import br.com.alura.orgs.model.entity.Account
 @Dao
 interface AccountDAO {
 
-    @Insert
+    @Insert (onConflict = OnConflictStrategy.ABORT)
     suspend fun create(account: Account)
 
     @Query("SELECT * FROM account")
