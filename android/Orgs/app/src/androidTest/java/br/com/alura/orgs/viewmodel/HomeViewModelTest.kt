@@ -26,9 +26,9 @@ import org.junit.Test
 
 class HomeViewModelTest {
     private lateinit var viewModel: HomeViewModel
-    private lateinit var homeItemUiUseCase: HomeItemUiUseCase
+    private lateinit var useCase: HomeItemUiUseCase
     private lateinit var repository: ItemRepository
-    private lateinit var itemDao: ItemDAO
+    private lateinit var dao: ItemDAO
     private lateinit var db: ItemRoomDatabase
 
     @Before
@@ -37,10 +37,10 @@ class HomeViewModelTest {
         db = Room
             .inMemoryDatabaseBuilder(context, ItemRoomDatabase::class.java)
             .build()
-        itemDao = db.itemDao()
-        repository = ItemRepository(itemDao)
-        homeItemUiUseCase = HomeItemUiUseCase(repository)
-        viewModel = HomeViewModel(homeItemUiUseCase)
+        dao = db.itemDao()
+        repository = ItemRepository(dao)
+        useCase = HomeItemUiUseCase(repository)
+        viewModel = HomeViewModel(useCase)
     }
 
     @Before
@@ -51,9 +51,9 @@ class HomeViewModelTest {
 
 
     @Test
-    fun onDeleteItemDeletesItem() = runTest {
-        itemDao.insert(mockItems[0])
-        val itemUi = ItemUi.fromItem(itemDao.getItemById(1)!!)
+    fun whenOnDeleteItemUiDeletesSuccessfully() = runTest {
+        dao.insert(mockItems[0])
+        val itemUi = ItemUi.fromItem(dao.getItemById(1)!!)
 
         viewModel.onEvent(HomeUiEvent.OnDelete(itemUi))
         viewModel.uiState
@@ -61,7 +61,7 @@ class HomeViewModelTest {
             .collect { uiState ->
                 when (uiState.deleteState) {
                     is Success -> {
-                        val itemsFromViewModel = itemDao.getItems().first()
+                        val itemsFromViewModel = dao.getItems().first()
                         assertEquals(emptyList<Item>(), itemsFromViewModel)
                     }
 
@@ -72,8 +72,8 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun fetchAllItemsUpdatesItemsInState() = runTest {
-        mockItems.forEach { itemDao.insert(it) }
+    fun whenOnFetchAllItemsChangesSuccessfullyUiState() = runTest {
+        mockItems.forEach { dao.insert(it) }
 
         viewModel.onEvent(HomeUiEvent.OnFetchAllItems(SortType.ByIdAscending))
         viewModel.uiState

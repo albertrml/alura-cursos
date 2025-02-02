@@ -2,7 +2,6 @@ package br.com.alura.orgs.viewmodel
 
 import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.InsertItemUiUseCase
@@ -28,9 +27,9 @@ class InsertViewModelTest {
 
 
     private lateinit var viewModel: InsertViewModel
-    private lateinit var insertItemUiUseCase: InsertItemUiUseCase
+    private lateinit var useCase: InsertItemUiUseCase
     private lateinit var repository: ItemRepository
-    private lateinit var itemDao: ItemDAO
+    private lateinit var dao: ItemDAO
     private lateinit var db: ItemRoomDatabase
 
     @Before
@@ -40,10 +39,10 @@ class InsertViewModelTest {
             .inMemoryDatabaseBuilder(context, ItemRoomDatabase::class.java)
             .build()
 
-        itemDao = db.itemDao()
-        repository = ItemRepository(itemDao)
-        insertItemUiUseCase = InsertItemUiUseCase(repository)
-        viewModel = InsertViewModel(insertItemUiUseCase)
+        dao = db.itemDao()
+        repository = ItemRepository(dao)
+        useCase = InsertItemUiUseCase(repository)
+        viewModel = InsertViewModel(useCase)
     }
 
     @Before
@@ -55,7 +54,7 @@ class InsertViewModelTest {
     }
 
     @Test
-    fun onInsertItemTriggersSuccess() = runTest {
+    fun whenOnInsertItemIsSuccessful() = runTest {
         val itemUiMock = ItemUi.fromItem(mockItems[0])
 
         viewModel.onEvent(InsertUiEvent.OnInsert(itemUiMock))
@@ -64,7 +63,7 @@ class InsertViewModelTest {
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
-                        val itemFromViewModel = itemDao.getItemById(1)!!.copy(
+                        val itemFromViewModel = dao.getItemById(1)!!.copy(
                             id = mockItems[0].id
                         )
                         assertEquals(mockItems[0], itemFromViewModel)
@@ -77,7 +76,7 @@ class InsertViewModelTest {
     }
 
     @Test
-    fun onInsertDuplicateItemButDifferentIdSucceeds() = runTest {
+    fun whenInsertDuplicateItemButDifferentIdsIsSuccessful() = runTest {
 
         val itemUiMock = ItemUi.fromItem(mockItems[0])
         viewModel.onEvent(InsertUiEvent.OnInsert(itemUiMock))
@@ -88,7 +87,7 @@ class InsertViewModelTest {
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
-                        val itemFromViewModel = itemDao.getItems().first()
+                        val itemFromViewModel = dao.getItems().first()
                         assertEquals(itemFromViewModel.size, 2)
                         assertNotEquals(itemFromViewModel[0], itemFromViewModel[1])
                     }
@@ -100,30 +99,18 @@ class InsertViewModelTest {
     }
 
     @Test
-    fun onInsertDuplicateItemFails() = runTest {
-        val itemUiMock = ItemUi.fromItem(mockItems[0])
-        viewModel.onEvent(InsertUiEvent.OnInsert(itemUiMock))
-
+    fun whenInsertDuplicateItemIsUnsuccessful() = runTest {
+        dao.insert(mockItems.first())
+        val itemFromDatabase = ItemUi.fromItem(dao.getItemById(1)!!)
+        viewModel.onEvent(InsertUiEvent.OnInsert(itemFromDatabase))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.insertState is Success }
+            .collectUntil { uiState -> uiState.insertState is Failure }
             .collect { uiState ->
-                if (uiState.insertState is Success) {
-
-                    val itemFromViewModel = ItemUi.fromItem(itemDao.getItemById(1)!!)
-                    viewModel.onEvent(InsertUiEvent.OnInsert(itemFromViewModel))
-
-                }
-            }
-
-        viewModel.uiState
-            .collectUntil { uiState2 -> uiState2.insertState is Failure }
-            .collect { uiState2 ->
-                Log.i("Response", uiState2.insertState.toString())
-                when (uiState2.insertState) {
+                when (uiState.insertState) {
                     is Success -> assert(false)
                     is Loading -> assert(true)
                     is Failure -> assert(
-                        (uiState2.insertState as Failure).exception is SQLiteConstraintException
+                        (uiState.insertState as Failure).exception is SQLiteConstraintException
                     )
                 }
             }

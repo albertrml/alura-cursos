@@ -22,13 +22,13 @@ class UpdateViewModel @Inject constructor(
 
     fun onEvent(event: UpdateUiEvent){
         when(event) {
-            is UpdateUiEvent.OnFetchItemById -> fetchItemById(event.itemId)
+            is UpdateUiEvent.OnFetchItemUiById -> fetchItemUiById(event.itemId)
             is UpdateUiEvent.OnSaveUrlImage -> saveUrlImage(event.url)
-            is UpdateUiEvent.OnUpdate -> updateItem(event.itemUi)
+            is UpdateUiEvent.OnUpdate -> updateItemUi(event.itemUi)
         }
     }
 
-    private fun fetchItemById(itemUiId: Int) {
+    private fun fetchItemUiById(itemUiId: Int) {
         viewModelScope.launch {
             repository.fetchItemUiById(itemUiId).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->
@@ -39,7 +39,7 @@ class UpdateViewModel @Inject constructor(
         }
     }
 
-    private fun updateItem(itemUi: ItemUi) {
+    private fun updateItemUi(itemUi: ItemUi) {
         viewModelScope.launch {
             repository.updateItemUi(itemUi).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->

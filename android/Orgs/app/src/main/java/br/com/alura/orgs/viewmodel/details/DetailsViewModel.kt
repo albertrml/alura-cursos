@@ -26,7 +26,7 @@ class DetailsViewModel @Inject constructor(
 
     private fun fetchItemById(itemId: Int) {
         viewModelScope.launch {
-            repository.fetchItemById(itemId).collect{ response ->
+            repository.fetchItemUiById(itemId).collect{ response ->
                 response.handleResponse(_uiState){ state, res ->
                     state.copy( fetchItemByIdState = res)
                 }

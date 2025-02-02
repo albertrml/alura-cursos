@@ -49,7 +49,7 @@ class UpdateFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewmodel = updateViewModel
 
-        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemById(itemId))
+        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(itemId))
         updateViewModel.viewModelScope.launch {
             updateViewModel.uiState.collect{ state ->
                 state.fetchItemByIdState.showResults(

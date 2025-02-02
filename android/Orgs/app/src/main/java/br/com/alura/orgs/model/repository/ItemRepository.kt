@@ -45,7 +45,7 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
         emit(Response.Loading)
         emit(
             performDatabaseOperation {
-                itemDao.getItemById(id) ?: throw ItemException.ItemNotFound()
+                itemDao.getItemById(id) ?: throw ItemException.ItemNotFoundException()
             }
         )
     }

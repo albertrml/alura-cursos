@@ -40,7 +40,7 @@ class ItemDatabaseTest {
     fun closeDb(){ db.close() }
 
     @Test
-    fun testInsertItemAndRetrieveSuccessfully() = runTest {
+    fun whenInsertItemIsSuccessful() = runTest {
         itemDAO.insert(mockItems[0])
 
         val itemFromDatabase = itemDAO.getItemById(1)
@@ -51,13 +51,13 @@ class ItemDatabaseTest {
     }
 
     @Test
-    fun testGetItemByIdReturnsNullIfItemDoesNotExist() = runTest {
+    fun whenGetItemByIdDoesNotFindItem() = runTest {
         val item = itemDAO.getItemById(1)
         assertNull(item)
     }
 
     @Test
-    fun testInsertDuplicateItemThrowsException() = runTest {
+    fun whenInsertDuplicateItemThrowsException() = runTest {
         itemDAO.insert(mockItems[0])
         val item = itemDAO.getItemById(1)!!
         assertThrows(SQLiteConstraintException::class.java) {
@@ -66,7 +66,7 @@ class ItemDatabaseTest {
     }
 
     @Test
-    fun testUpdateItemCorrectly() = runTest {
+    fun whenUpdateItemUpdatesSuccessfully() = runTest {
         itemDAO.insert(mockItems[2])
         val itemBeforeUpdate = itemDAO.getItemById(1)!!.copy(
             itemName = mockItems[1].itemName,
@@ -82,7 +82,7 @@ class ItemDatabaseTest {
     }
 
     @Test
-    fun testDeleteItemRemovesCorrectly() = runTest {
+    fun whenDeleteItemRemovesSuccessfully() = runTest {
         itemDAO.insert(mockItems[0])
         val itemForDelete = itemDAO.getItemById(1)!!
         assertEquals(1, itemDAO.getItems().first().size)
@@ -91,7 +91,7 @@ class ItemDatabaseTest {
     }
 
     @Test
-    fun testGetItemsReturnsCorrectlyAllItems() = runTest {
+    fun whenGetItemsRetrievesProperlyAllItems() = runTest {
         mockItems.forEach { itemDAO.insert(it) }
         val allItems = itemDAO.getItems().first().map { it.copy(id = 0) }
         assert(allItems.size == mockItems.size)
