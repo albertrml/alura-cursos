@@ -2,8 +2,9 @@ package br.com.alura.orgs.model.repository
 
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.source.ItemDAO
-import br.com.alura.orgs.utils.Response
-import br.com.alura.orgs.utils.performDatabaseOperation
+import br.com.alura.orgs.utils.exception.ItemException
+import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.tools.performDatabaseOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
@@ -42,6 +43,10 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
 
     fun getItemById(id: Int): Flow<Response<Item>> = flow {
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.getItemById(id) })
+        emit(
+            performDatabaseOperation {
+                itemDao.getItemById(id) ?: throw ItemException.ItemNotFound()
+            }
+        )
     }
 }

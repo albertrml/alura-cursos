@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.details.DetailsFragment">
+    tools:context=".view.DetailsFragment">
 
     <data>
         <variable
             name="viewmodel"
-            type="br.com.alura.orgs.view.details.DetailsViewModel" />
+            type="br.com.alura.orgs.viewmodel.details.DetailsViewModel" />
     </data>
 
     <LinearLayout

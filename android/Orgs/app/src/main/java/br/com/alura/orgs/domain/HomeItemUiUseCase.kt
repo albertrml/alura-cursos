@@ -3,13 +3,12 @@ package br.com.alura.orgs.domain
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.ItemRepository
-import br.com.alura.orgs.utils.currencyFormat
-import br.com.alura.orgs.utils.mapTo
-import br.com.alura.orgs.utils.SortType
-import br.com.alura.orgs.utils.SortType.ByIdAscending
-import br.com.alura.orgs.utils.SortType.ByNameAscending
-import br.com.alura.orgs.utils.SortType.ByPriceAscending
-import br.com.alura.orgs.utils.SortType.ByQuantityDescending
+import br.com.alura.orgs.utils.data.mapTo
+import br.com.alura.orgs.utils.data.SortType
+import br.com.alura.orgs.utils.data.SortType.ByIdAscending
+import br.com.alura.orgs.utils.data.SortType.ByNameAscending
+import br.com.alura.orgs.utils.data.SortType.ByPriceAscending
+import br.com.alura.orgs.utils.data.SortType.ByQuantityDescending
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -23,8 +22,8 @@ class HomeItemUiUseCase @Inject constructor(private val repository: ItemReposito
                 .map { item ->
                     ItemUi.fromItem(item)
                         .copy(
-                            itemValue = currencyFormat(item.itemValue),
-                            quantityInStock = "${item.quantityInStock} pct"
+                            itemValue = item.itemValue.toString(),
+                            quantityInStock = item.quantityInStock.toString()
                         )
                 }
         }

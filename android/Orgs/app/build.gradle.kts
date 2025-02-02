@@ -60,7 +60,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.navigation.dynamic.features.fragment)
@@ -72,7 +74,6 @@ dependencies {
     implementation(libs.android.material)
     implementation(libs.coil)
 
-    //kapt(libs.androidx.databinding.compiler)
     ksp(libs.androidx.databinding.compiler)
     ksp(libs.androidx.room.compiler)
     ksp(libs.hilt.android.compiler)
@@ -87,4 +88,5 @@ dependencies {
     androidTestImplementation(libs.androidx.junit.ktx)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.kotlinx.coroutines.test)
+
 }

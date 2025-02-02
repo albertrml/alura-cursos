@@ -1,0 +1,18 @@
+package br.com.alura.orgs.utils.exception
+
+sealed class AccountException(override val message: String) : Exception() {
+    class InvalidCredentials : AccountException(
+        message = "Account doesn't exist or invalid credentials"
+    )
+    class UsernameAlreadyExists : AccountException(
+        message = "Username already exists"
+    )
+    class InvalidPassword : AccountException(
+        message = "Password must have at least 6 characters, one digit and one uppercase letter"
+    )
+
+    class AccountIsNotAuthenticated : AccountException(
+        message = "Account is not authenticated"
+    )
+
+}
