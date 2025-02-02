@@ -20,7 +20,7 @@ fun <T> Flow<T>.collectUntil(predicate: (T) -> Boolean): Flow<T> =
                     throw CollectUntilPredicateException()
                 }
             }
-        } catch (e: Exception) {
+        } catch (e: CollectUntilPredicateException) {
         }
     }.onCompletion {
         if (it !is CollectUntilPredicateException) {
