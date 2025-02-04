@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.source.ItemDAO
-import br.com.alura.orgs.model.source.ItemRoomDatabase
+import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -21,14 +21,14 @@ import org.junit.Test
 
 class ItemDatabaseTest {
     private lateinit var itemDAO: ItemDAO
-    private lateinit var db: ItemRoomDatabase
+    private lateinit var db: OrgsRoomDatabase
 
     @Before
     fun createDb(){
         val ctx = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             ctx,
-            ItemRoomDatabase::class.java
+            OrgsRoomDatabase::class.java
         ).build()
         itemDAO = db.itemDao()
     }

@@ -20,7 +20,7 @@ class AccountViewModel @Inject constructor(
     private val repository: AccountRepository
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState())
+    /*private val _uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
     fun onEvent(event: AccountUiEvent) {
@@ -141,6 +141,6 @@ class AccountViewModel @Inject constructor(
                 )
             }
         }
-    }
+    }*/
 
 }

@@ -9,7 +9,7 @@ import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
-import br.com.alura.orgs.model.source.ItemRoomDatabase
+import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import br.com.alura.orgs.utils.data.Response.*
 import br.com.alura.orgs.utils.tools.collectUntil
 import br.com.alura.orgs.viewmodel.insert.InsertUiEvent
@@ -30,13 +30,13 @@ class InsertViewModelTest {
     private lateinit var useCase: InsertItemUiUseCase
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
-    private lateinit var db: ItemRoomDatabase
+    private lateinit var db: OrgsRoomDatabase
 
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room
-            .inMemoryDatabaseBuilder(context, ItemRoomDatabase::class.java)
+            .inMemoryDatabaseBuilder(context, OrgsRoomDatabase::class.java)
             .build()
 
         dao = db.itemDao()

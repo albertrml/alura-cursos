@@ -12,10 +12,10 @@ import br.com.alura.orgs.model.entity.Account
 interface AccountDAO {
 
     @Insert (onConflict = OnConflictStrategy.ABORT)
-    suspend fun create(account: Account)
+    suspend fun insert(account: Account)
 
-    @Query("SELECT * FROM account")
-    suspend fun read(): List<Account>
+    @Query("SELECT username FROM account")
+    suspend fun getAllUsernames(): List<String>
 
     @Update
     suspend fun update(account: Account)
@@ -27,6 +27,6 @@ interface AccountDAO {
     suspend fun authenticate(username: String, password: String): Account?
 
     @Query("SELECT EXISTS (SELECT * FROM account WHERE username = :username)")
-    suspend fun usernameExists(username: String): Boolean
+    suspend fun isUsernameExist(username: String): Boolean
 
 }
