@@ -1,19 +1,20 @@
 package br.com.alura.orgs.viewmodel.account
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.utils.data.Authenticate
-import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.handleResponse
-import br.com.alura.orgs.utils.tools.isPasswordValid
+import br.com.alura.orgs.utils.exception.AccountException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,15 +60,22 @@ class AccountViewModel @Inject constructor(
 
     private fun deleteAccount() {
         viewModelScope.launch {
-            repository.account.first { it is Authenticate.Login }
-                .let { auth ->
-                    if (auth is Authenticate.Login) {
-                        repository.deleteAccount(account = auth.account).collect { response ->
-                            response.handleResponse(_uiState) { state, res ->
-                                state.copy(deleteAccountState = res)
-                            }
-                        }
+            val auth = repository.auth.first()
+            if (auth is Authenticate.Login) {
+                repository.deleteAccount(auth.account).collect { response ->
+                    response.handleResponse(_uiState) { state, res ->
+                        state.copy(deleteAccountState = res)
                     }
+                }
+            }
+            else {
+                _uiState.update { state ->
+                    state.copy(
+                        deleteAccountState = Response.Failure(
+                            AccountException.AccountIsNotAuthenticated()
+                        )
+                    )
+                }
             }
         }
     }
@@ -99,42 +107,12 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-
-
     private fun updatePassword(password: String) {
         viewModelScope.launch {
-            if(uiState.value.authenticateState is Response.Success){
-
-                if(!password.isPasswordValid()){
-                    _uiState.emit(
-                        AccountUiState(
-                            updateAccountState = Response.Failure(
-                                AccountException.InvalidPassword()
-                            )
-                        )
-                    )
-                    return@launch
+            repository.updatePassword(password).collect { response ->
+                response.handleResponse(_uiState){ state, res ->
+                    state.copy(updateAccountState = res)
                 }
-
-                val auth = repository.account.last()
-                if (auth is Authenticate.Login) {
-                    repository.updateAccount(auth.account.copy(password = password))
-                        .collect { response ->
-                            response.handleResponse(_uiState) { state, res ->
-                                state.copy(updateAccountState = res)
-                            }
-                        }
-                }
-
-            }
-            else {
-                _uiState.emit(
-                    AccountUiState(
-                        updateAccountState = Response.Failure(
-                            AccountException.AccountIsNotAuthenticated()
-                        )
-                    )
-                )
             }
         }
     }

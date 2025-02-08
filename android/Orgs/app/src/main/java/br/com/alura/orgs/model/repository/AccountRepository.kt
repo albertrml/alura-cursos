@@ -5,6 +5,8 @@ import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.tools.isPasswordValid
+import br.com.alura.orgs.utils.tools.isUsernameValid
 import br.com.alura.orgs.utils.tools.performDatabaseOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,13 +18,18 @@ import javax.inject.Inject
 
 class AccountRepository @Inject constructor(private val accountDao: AccountDAO) {
 
-    private val _account = MutableStateFlow<Authenticate<Account>>(Authenticate.Logoff)
-    val account = _account.asStateFlow()
+    private val _auth = MutableStateFlow<Authenticate<Account>>(Authenticate.Logoff)
+    val auth = _auth.asStateFlow()
 
     fun createAccount(username: String, password: String): Flow<Response<Unit>> = flow {
         emit(Response.Loading)
         emit(
             performDatabaseOperation {
+                if(!username.isUsernameValid()) throw AccountException.InvalidUsername()
+                if(!password.isPasswordValid()) throw AccountException.InvalidPassword()
+                if(accountDao.isUsernameExist(username))
+                    throw AccountException.UsernameAlreadyExists()
+
                 accountDao.insert(Account(username, password))
             }
         )
@@ -37,12 +44,29 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         emit(Response.Loading)
         emit(performDatabaseOperation {
             accountDao.update(account)
-            _account.value.takeIf { auth -> auth is Authenticate.Login }
+            _auth.value.takeIf { auth -> auth is Authenticate.Login }
                 ?.let { auth -> auth as Authenticate.Login }
                 ?.takeIf { auth -> auth.account.username == account.username }
-                ?.let { _account.update { Authenticate.Login(account) } }
+                ?.let { _auth.update { Authenticate.Login(account) } }
             Unit
         })
+    }
+
+    fun updatePassword(newPassword: String): Flow<Response<Unit>> = flow {
+        emit(Response.Loading)
+        emit(
+            performDatabaseOperation {
+                if(!newPassword.isPasswordValid())
+                    throw AccountException.InvalidPassword()
+                when(_auth.value){
+                    is Authenticate.Logoff -> throw AccountException.AccountIsNotAuthenticated()
+                    is Authenticate.Login -> {
+                        val account = _auth.value as Authenticate.Login
+                        accountDao.update(account.account.copy(password = newPassword))
+                    }
+                }
+            }
+        )
     }
 
     fun deleteAccount(account: Account): Flow<Response<Unit>> = flow {
@@ -50,10 +74,10 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         emit(
             performDatabaseOperation {
                 accountDao.delete(account)
-                _account.value.takeIf { auth -> auth is Authenticate.Login }
+                _auth.value.takeIf { auth -> auth is Authenticate.Login }
                     ?.let { auth -> auth as Authenticate.Login }
                     ?.takeIf { auth -> auth.account == account }
-                    ?.let { _account.update { Authenticate.Logoff } }
+                    ?.let { _auth.update { Authenticate.Logoff } }
                 Unit
             }
         )
@@ -67,7 +91,7 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
                     throw AccountException.InvalidCredentials()
 
                 accountDao.authenticate(username, password)?.let { account ->
-                    _account.update { Authenticate.Login(account) }
+                    _auth.update { Authenticate.Login(account) }
                 } ?:  throw AccountException.InvalidCredentials()
             }
         )
@@ -79,7 +103,7 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
     }
 
     fun logoff(){
-        _account.update { Authenticate.Logoff }
+        _auth.update { Authenticate.Logoff }
     }
 
 }

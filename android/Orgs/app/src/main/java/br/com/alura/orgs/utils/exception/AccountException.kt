@@ -15,4 +15,9 @@ sealed class AccountException(override val message: String) : Exception() {
         message = "Account is not authenticated"
     )
 
+    class InvalidUsername : AccountException(
+        message = "Username must have at least 3 characters and must start with a letter. " +
+                  "Only letters and numbers are allowed"
+    )
+
 }
