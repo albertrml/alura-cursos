@@ -1,7 +1,6 @@
 package br.com.alura.orgs.model
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.mock.mockAccounts
@@ -14,8 +13,6 @@ import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.tools.collectUntil
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
