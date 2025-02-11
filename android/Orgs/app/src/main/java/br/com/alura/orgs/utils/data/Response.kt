@@ -21,7 +21,7 @@ fun <T, S> Response<T>.mapTo(transform: (T) -> S): Response<S> {
     }
 }
 
-fun <T, S> Response<T>.handleResponse(
+inline fun <T, S> Response<T>.update(
     uiState: MutableStateFlow<S>,
     updateState: (S, Response<T>) -> S
 ) {

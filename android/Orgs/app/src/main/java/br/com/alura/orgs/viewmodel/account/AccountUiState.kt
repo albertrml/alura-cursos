@@ -7,6 +7,6 @@ data class AccountUiState(
     val createAccountState: Response<Unit> = Response.Loading,
     val deleteAccountState: Response<Unit> = Response.Loading,
     val isUsernameExistsState: Response<Boolean> = Response.Loading,
-    val readAccountsState: Response<List<String>> = Response.Loading,
+    val getAccountsState: Response<List<String>> = Response.Loading,
     val updateAccountState: Response<Unit> = Response.Loading
 )

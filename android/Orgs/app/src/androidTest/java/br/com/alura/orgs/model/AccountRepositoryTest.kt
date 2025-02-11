@@ -9,6 +9,7 @@ import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.data.SortedAccount.ByUsernameAscending
 import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.tools.collectUntil
 import kotlinx.coroutines.flow.collect
@@ -117,7 +118,7 @@ class  AccountRepositoryTest {
     @Test
     fun whenGetAllUsernamesIsSuccessful() = runTest{
         mockAccounts.forEach { dao.insert(it) }
-        repository.getAllUsernames()
+        repository.getAllUsernames(ByUsernameAscending)
             .collectUntil { response -> response is Response.Success }
             .collect{ response ->
                 when(response){

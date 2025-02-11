@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentHomeBinding
 import br.com.alura.orgs.model.entity.ItemUi
-import br.com.alura.orgs.utils.data.SortType
+import br.com.alura.orgs.utils.data.SortedItem
 import br.com.alura.orgs.utils.data.showResults
 import br.com.alura.orgs.view.adapter.ItemAdapter
 import br.com.alura.orgs.viewmodel.home.HomeUiEvent
@@ -97,28 +97,28 @@ class HomeFragment : Fragment() {
                 checkedIds.contains(R.id.home_unsorted_filter_chip) -> {
                     homeViewModel.onEvent(
                         HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortType.ByIdAscending
+                            sortBy = SortedItem.ByIdAscending
                         )
                     )
                 }
                 checkedIds.contains(R.id.home_name_filter_chip) -> {
                     homeViewModel.onEvent(
                         HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortType.ByNameAscending
+                            sortBy = SortedItem.ByNameAscending
                         )
                     )
                 }
                 checkedIds.contains(R.id.home_price_filter_chip) -> {
                     homeViewModel.onEvent(
                         HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortType.ByPriceAscending
+                            sortBy = SortedItem.ByPriceAscending
                         )
                     )
                 }
                 checkedIds.contains(R.id.home_quantity_filter_chip) -> {
                     homeViewModel.onEvent(
                         HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortType.ByQuantityDescending
+                            sortBy = SortedItem.ByQuantityDescending
                         )
                     )
                 }

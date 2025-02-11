@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.domain.UpdateItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.data.Response
-import br.com.alura.orgs.utils.data.handleResponse
+import br.com.alura.orgs.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +31,7 @@ class UpdateViewModel @Inject constructor(
     private fun fetchItemUiById(itemUiId: Int) {
         viewModelScope.launch {
             repository.fetchItemUiById(itemUiId).collect{ response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(fetchItemByIdState = res)
                 }
                 if(response is Response.Success){ saveUrlImage(url = response.result.itemUrl) }
@@ -42,7 +42,7 @@ class UpdateViewModel @Inject constructor(
     private fun updateItemUi(itemUi: ItemUi) {
         viewModelScope.launch {
             repository.updateItemUi(itemUi).collect{ response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(updateState = res)
                 }
             }

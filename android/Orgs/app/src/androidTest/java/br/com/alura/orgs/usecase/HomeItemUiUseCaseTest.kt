@@ -10,7 +10,7 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import br.com.alura.orgs.utils.data.Response
-import br.com.alura.orgs.utils.data.SortType
+import br.com.alura.orgs.utils.data.SortedItem
 import br.com.alura.orgs.utils.tools.collectUntil
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -47,7 +47,7 @@ class HomeItemUiUseCaseTest {
     fun whenFetchAllItemsIsSuccessful() = runTest {
         mockItems.forEach { itemDao.insert(it) }
 
-        homeItemUiUseCase.fetchAllItemUis(SortType.ByIdAscending)
+        homeItemUiUseCase.fetchAllItemUis(SortedItem.ByIdAscending)
             .collectUntil { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){

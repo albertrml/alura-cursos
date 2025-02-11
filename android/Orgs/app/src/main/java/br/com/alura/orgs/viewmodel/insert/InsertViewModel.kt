@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.domain.InsertItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
-import br.com.alura.orgs.utils.data.handleResponse
+import br.com.alura.orgs.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +29,7 @@ class InsertViewModel @Inject constructor(
     private fun onInsert(itemUi: ItemUi) {
         viewModelScope.launch {
             repository.insertItemUi(itemUi).collect{ response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(insertState = res)
                 }
             }

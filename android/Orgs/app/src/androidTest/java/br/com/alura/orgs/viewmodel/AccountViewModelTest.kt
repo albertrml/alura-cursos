@@ -9,6 +9,7 @@ import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.data.SortedAccount
 import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.tools.collectUntil
 import br.com.alura.orgs.viewmodel.account.AccountUiEvent
@@ -18,6 +19,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -232,7 +234,7 @@ class AccountViewModelTest {
 
         viewModel.uiState
             .collectUntil { uiState -> uiState.deleteAccountState is Response.Success }
-            .collectLatest { uiState ->
+            .collect { uiState ->
                 when (val deleteAccountState = uiState.deleteAccountState) {
                     is Response.Success -> {
                         assertTrue(
@@ -276,11 +278,121 @@ class AccountViewModelTest {
     }
 
     //getAccounts
+    @Test
+    fun whenGetAccountsSortedAscendingIsSuccessful() = runTest {
+        mockAccounts.forEach { dao.insert(it) }
+        viewModel.onEvent(AccountUiEvent.OnGetAccounts())
+        viewModel.uiState
+            .collectUntil { uiState -> uiState.getAccountsState is Response.Success }
+            .collect{ uiState ->
+                when(val response = uiState.getAccountsState){
+                    is Response.Success -> {
+                        val usernamesFromDatabase = response.result
+                        val usernamesFromMock = mockAccounts.map { it.username }.sorted()
+                        assertEquals(usernamesFromMock, usernamesFromDatabase)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    @Test
+    fun whenGetAccountsSortedDescendingIsSuccessful() = runTest {
+        mockAccounts.forEach { dao.insert(it) }
+        viewModel.onEvent(AccountUiEvent.OnGetAccounts(SortedAccount.ByUsernameDescending))
+        viewModel.uiState
+            .collectUntil { uiState -> uiState.getAccountsState is Response.Success }
+            .collect{ uiState ->
+                when(val response = uiState.getAccountsState){
+                    is Response.Success -> {
+                        val usernamesFromDatabase = response.result
+                        val usernamesFromMock = mockAccounts.map { it.username }.sortedDescending()
+                        assertEquals(usernamesFromMock, usernamesFromDatabase)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
 
     //isUsernameExists
+    @Test
+    fun whenIsUsernameExistsReturnsTrue() = runTest {
+        val expectedAccount = mockAccounts[0]
+        mockAccounts.forEach { dao.insert(it) }
+        viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(expectedAccount.username))
+        viewModel.uiState
+            .collectUntil { uiState -> uiState.isUsernameExistsState is Response.Success }
+            .collect{ uiState ->
+                when(val response = uiState.isUsernameExistsState){
+                    is Response.Success -> {
+                        assertTrue(response.result)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    @Test
+    fun whenIsUsernameDoesNotExistIsReturnsFalse() = runTest {
+        mockAccounts.forEach { dao.insert(it) }
+        viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(wrongUsername))
+        viewModel.uiState
+            .collectUntil { uiState -> uiState.isUsernameExistsState is Response.Success }
+            .collect{ uiState ->
+                when(val response = uiState.isUsernameExistsState){
+                    is Response.Success -> {
+                        assertFalse(response.result)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
 
     //logout
+    @Test
+    fun whenLogoutIsSuccessful() = runTest {
+        val account = mockAccounts[0]
+        dao.insert(account)
+        viewModel.onEvent(AccountUiEvent.OnAuthenticate(account.username,account.password))
+        viewModel.uiState.collectUntil { uiState -> uiState.authenticateState is Response.Success }
+            .collect{ uiState ->
+                if(uiState.authenticateState is Response.Success){
+                    assertTrue(repository.auth.value is Authenticate.Login)
+                    viewModel.onEvent(AccountUiEvent.OnLogout{
+                        assertTrue(repository.auth.value is Authenticate.Logoff)
+                    })
+                }
+            }
+    }
 
     //updatePassword
+    @Test
+    fun whenUpdatePasswordIsSuccessful() = runTest{
+        val passwordBeforeUpdate = mockAccounts[0].password
+        val account = mockAccounts[0]
+        dao.insert(account)
+        repository.authenticate(account.username,account.password).collect{ response ->
+            if(response is Response.Success)
+                viewModel.onEvent(AccountUiEvent.OnUpdatePassword(newPassword))
+        }
+
+        viewModel.uiState
+            .collectUntil { uiState -> uiState.updateAccountState is Response.Success }
+            .collect{ uiState ->
+                when(uiState.updateAccountState){
+                    is Response.Success -> {
+                        val passwordAfterUpdate =
+                            (repository.auth.value as Authenticate.Login).account.password
+                        assertNotEquals(passwordBeforeUpdate, passwordAfterUpdate)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
 
 }

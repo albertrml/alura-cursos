@@ -5,7 +5,8 @@ import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
-import br.com.alura.orgs.utils.data.handleResponse
+import br.com.alura.orgs.utils.data.SortedAccount
+import br.com.alura.orgs.utils.data.update
 import br.com.alura.orgs.utils.exception.AccountException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +30,7 @@ class AccountViewModel @Inject constructor(
             is AccountUiEvent.OnAuthenticate -> authenticate(event.username, event.password)
             is AccountUiEvent.OnCreateAccount -> createAccount(event.username, event.password)
             is AccountUiEvent.OnDeleteAccount -> deleteAccount()
-            is AccountUiEvent.OnGetAccounts -> getAccounts()
+            is AccountUiEvent.OnGetAccounts -> getAccounts(event.sortedBy)
             is AccountUiEvent.OnIsUsernameExists -> isUsernameExists(event.username)
             is AccountUiEvent.OnLogout -> logout(event.onLogout)
             is AccountUiEvent.OnUpdatePassword -> updatePassword(event.password)
@@ -39,7 +40,7 @@ class AccountViewModel @Inject constructor(
     private fun authenticate(username: String, password: String) {
         viewModelScope.launch {
             repository.authenticate(username, password).collect { response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(authenticateState = res)
                 }
             }
@@ -49,7 +50,7 @@ class AccountViewModel @Inject constructor(
     private fun createAccount(username: String, password: String) {
         viewModelScope.launch {
             repository.createAccount(username, password).collect { response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(createAccountState = res)
                 }
             }
@@ -61,7 +62,7 @@ class AccountViewModel @Inject constructor(
             val auth = repository.auth.first()
             if (auth is Authenticate.Login) {
                 repository.deleteAccount(auth.account).collect { response ->
-                    response.handleResponse(_uiState) { state, res ->
+                    response.update(_uiState) { state, res ->
                         state.copy(deleteAccountState = res)
                     }
                 }
@@ -78,11 +79,11 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun getAccounts() {
+    private fun getAccounts(sortedBy: SortedAccount) {
         viewModelScope.launch {
-            repository.getAllUsernames().collect { response ->
-                response.handleResponse(_uiState){ state, res ->
-                    state.copy(readAccountsState = res)
+            repository.getAllUsernames(sortedBy).collect { response ->
+                response.update(_uiState){ state, res ->
+                    state.copy(getAccountsState = res)
                 }
             }
         }
@@ -91,7 +92,7 @@ class AccountViewModel @Inject constructor(
     private fun isUsernameExists(username: String) {
         viewModelScope.launch {
             repository.isUsernameExists(username).collect { response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(isUsernameExistsState = res)
                 }
             }
@@ -101,6 +102,7 @@ class AccountViewModel @Inject constructor(
     private fun logout(onLogout: () -> Unit) {
         viewModelScope.launch {
             _uiState.emit(AccountUiState())
+            repository.logoff()
             onLogout()
         }
     }
@@ -108,7 +110,7 @@ class AccountViewModel @Inject constructor(
     private fun updatePassword(password: String) {
         viewModelScope.launch {
             repository.updatePassword(password).collect { response ->
-                response.handleResponse(_uiState){ state, res ->
+                response.update(_uiState){ state, res ->
                     state.copy(updateAccountState = res)
                 }
             }

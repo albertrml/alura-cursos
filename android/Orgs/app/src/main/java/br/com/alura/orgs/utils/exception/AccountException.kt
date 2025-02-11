@@ -20,4 +20,11 @@ sealed class AccountException(override val message: String) : Exception() {
                   "Only letters and numbers are allowed"
     )
 
+    class PasswordIsTheSame : AccountException(
+        message = "Password is the same as the current one"
+    )
+
+    class UpdatedPasswordCantBeDone : AccountException(
+        message = "Updated password can't be done"
+    )
 }

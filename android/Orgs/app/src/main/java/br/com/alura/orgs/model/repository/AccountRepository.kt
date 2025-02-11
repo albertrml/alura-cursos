@@ -5,6 +5,8 @@ import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.data.SortedAccount
+import br.com.alura.orgs.utils.data.sortAccountsBy
 import br.com.alura.orgs.utils.tools.isPasswordValid
 import br.com.alura.orgs.utils.tools.isUsernameValid
 import br.com.alura.orgs.utils.tools.performDatabaseOperation
@@ -35,9 +37,12 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         )
     }
 
-    fun getAllUsernames(): Flow<Response<List<String>>> = flow {
+    fun getAllUsernames(sortedBy: SortedAccount): Flow<Response<List<String>>> = flow {
         emit(Response.Loading)
-        emit(performDatabaseOperation { accountDao.getAllUsernames() })
+        emit(performDatabaseOperation {
+            val accounts = accountDao.getAllUsernames()
+            accounts.sortAccountsBy(sortedBy)
+        })
     }
 
     fun updateAccount(account: Account): Flow<Response<Unit>> = flow {
@@ -56,13 +61,24 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         emit(Response.Loading)
         emit(
             performDatabaseOperation {
-                if(!newPassword.isPasswordValid())
-                    throw AccountException.InvalidPassword()
                 when(_auth.value){
                     is Authenticate.Logoff -> throw AccountException.AccountIsNotAuthenticated()
                     is Authenticate.Login -> {
-                        val account = _auth.value as Authenticate.Login
-                        accountDao.update(account.account.copy(password = newPassword))
+                        val currentAuth = _auth.value as Authenticate.Login
+
+                        if(!newPassword.isPasswordValid())
+                            throw AccountException.InvalidPassword()
+
+                        if(newPassword == currentAuth.account.password)
+                            throw AccountException.PasswordIsTheSame()
+
+                        val newAccount = currentAuth.account.copy(password = newPassword)
+                        accountDao.update(newAccount)
+                        accountDao.authenticate(newAccount.username,newAccount.password)
+                            ?.let { newCredentials ->
+                                _auth.update { Authenticate.Login(newCredentials) }
+                            }
+                            ?: throw AccountException.UpdatedPasswordCantBeDone()
                     }
                 }
             }

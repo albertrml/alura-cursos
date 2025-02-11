@@ -13,7 +13,7 @@ import br.com.alura.orgs.model.source.OrgsRoomDatabase
 import br.com.alura.orgs.utils.data.Response.Failure
 import br.com.alura.orgs.utils.data.Response.Loading
 import br.com.alura.orgs.utils.data.Response.Success
-import br.com.alura.orgs.utils.data.SortType
+import br.com.alura.orgs.utils.data.SortedItem
 import br.com.alura.orgs.utils.tools.collectUntil
 import br.com.alura.orgs.viewmodel.home.HomeUiEvent
 import br.com.alura.orgs.viewmodel.home.HomeViewModel
@@ -75,7 +75,7 @@ class HomeViewModelTest {
     fun whenOnFetchAllItemsChangesSuccessfullyUiState() = runTest {
         mockItems.forEach { dao.insert(it) }
 
-        viewModel.onEvent(HomeUiEvent.OnFetchAllItems(SortType.ByIdAscending))
+        viewModel.onEvent(HomeUiEvent.OnFetchAllItems(SortedItem.ByIdAscending))
         viewModel.uiState
             .collectUntil { uiState -> uiState.fetchAllItemsState is Success }
             .collect { uiState ->
