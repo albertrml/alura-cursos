@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.Item
 
-@Database(entities = [Item::class, Account::class], version = 3, exportSchema = true)
+@Database(entities = [Item::class, Account::class], version = 2, exportSchema = true)
 abstract class OrgsRoomDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDAO
     abstract fun accountDao(): AccountDAO

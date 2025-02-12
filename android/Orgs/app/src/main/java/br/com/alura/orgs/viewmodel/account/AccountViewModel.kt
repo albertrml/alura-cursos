@@ -25,6 +25,8 @@ class AccountViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
+    val auth = repository.auth
+
     fun onEvent(event: AccountUiEvent) {
         when (event) {
             is AccountUiEvent.OnAuthenticate -> authenticate(event.username, event.password)

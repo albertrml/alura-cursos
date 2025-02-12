@@ -20,7 +20,6 @@ object RepositoryModule {
         return ItemRepository(itemDao)
     }
 
-
     @Provides
     @Singleton
     fun provideAccountRepository(accountDao: AccountDAO): AccountRepository {
