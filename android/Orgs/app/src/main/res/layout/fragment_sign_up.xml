@@ -1,14 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.SignUpFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/gradient_background"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_width="match_parent"
+        >
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/signup_header_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <ImageView
+                android:id="@+id/signup_back_button"
+                android:contentDescription="@string/signup_go_back_button_description"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/baseline_component_align"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/padding_space"
+                android:src="@drawable/ic_back_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <ImageView
+                android:id="@+id/signup_logo"
+                android:contentDescription="@string/app_logo_description"
+                android:layout_height="150dp"
+                android:layout_width="150dp"
+                android:src="@drawable/orgs_logo"
+                app:layout_constraintBottom_toBottomOf="@id/signup_header_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/app_name"
+                app:layout_constraintBottom_toBottomOf="@id/signup_header_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/signup_logo"
+                app:layout_constraintVertical_bias="0.1"
+                style="@style/TitleScreenTextView"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/signup_forms_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_header_layout"
+            >
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/signup_scrollview"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/baseline_component_align"
+                    android:layout_width="match_parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/signup_title_forms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/signup_title"
+                        style="@style/TitleScreenTextView"
+                        android:layout_marginVertical="@dimen/baseline_component_align"
+                        />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/signup_username_textInputLayout"
+                        android:hint="@string/signup_username_field"
+                        android:layout_height="wrap_content"
+                        android:layout_width="300dp"
+                        android:padding="@dimen/padding_space"
+                        android:layout_marginTop="@dimen/baseline_component_align"
+                        app:endIconMode="clear_text"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/signup_title_forms"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/signup_username_textInputEditText"
+                            android:inputType="text"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/signup_password_textInputLayout"
+                        android:hint="@string/signup_password_field"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:padding="@dimen/padding_space"
+                        app:layout_constraintEnd_toEndOf="@id/signup_username_textInputLayout"
+                        app:layout_constraintStart_toStartOf="@id/signup_username_textInputLayout"
+                        app:layout_constraintTop_toBottomOf="@id/signup_username_textInputLayout"
+                        app:passwordToggleEnabled="true"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/signup_password_textInputEditText"
+                            android:inputType="textPassword"
+                            android:layout_height="match_parent"
+                            android:layout_width="match_parent"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/signup_submit_button"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/baseline_component_align"
+                        android:layout_width="wrap_content"
+                        android:text="@string/login_sign_in_button"
+                        app:layout_constraintEnd_toEndOf="@id/signup_username_textInputLayout"
+                        app:layout_constraintTop_toBottomOf="@id/signup_password_textInputLayout"
+                        />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/signup_loading_layout"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_header_layout"
+            >
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/signup_failure_layout"
+            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signup_header_layout"
+            >
+
+            <ImageView
+                android:id="@+id/signup_failure_imageview"
+                android:contentDescription="@string/update_failure_image_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/response_failure"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError"
+                />
+
+            <TextView
+                android:id="@+id/signup_failure_textview"
+                android:fontFamily="@font/montserrat_bold"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/baseline_component_align"
+                android:layout_width="match_parent"
+                tools:text="@string/login_failure_message"
+                style="@style/ErrorTextView"
+                />
+
+            <Button
+                android:id="@+id/signup_failure_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/baseline_component_align"
+                android:text="@string/login_failure_button_message"
+                android:layout_gravity="center"
+                />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

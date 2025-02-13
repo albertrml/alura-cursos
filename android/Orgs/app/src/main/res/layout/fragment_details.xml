@@ -149,6 +149,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError"
                 />
 
             <TextView
@@ -160,6 +161,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_failure_imageview"
+                style="@style/ErrorTextView"
                 tools:text="Unknown failure"
                 />
 

@@ -34,8 +34,8 @@ fun <T> Response<T>.showResults(
     successViewGroup: ViewGroup,
     loadingViewGroup: ViewGroup,
     failureViewGroup: ViewGroup,
-    actionOnSuccess: (T) -> Unit,
-    actionOnFailure: (Exception) -> Unit,
+    actionOnSuccess: (T) -> Unit = {},
+    actionOnFailure: (Exception) -> Unit = {},
     delay: Long = 500
 ) {
     when (this) {

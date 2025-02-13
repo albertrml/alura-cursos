@@ -1,5 +1,7 @@
 <resources>
+
     <string name="app_name">Orgs</string>
+    <string name="app_logo_description">App logo</string>
 
     <!-- LOGIN LAYOUT -->
     <string name="login_username_field">Username</string>
@@ -9,44 +11,6 @@
     <string name="login_sign_in_button">Submit</string>
     <string name="login_failure_button_message">Try Again</string>
     <string name="login_failure_message">Unknown failure</string>
-
-    <!-- IMAGE LAYOUT -->
-    <string name="image_description">Product Image</string>
-    <string name="image_preview_button">Preview</string>
-    <string name="image_url_field">Image url</string>
-
-    <!-- ITEM LIST LAYOUT -->
-    <string name="item_image_description">Click here for details</string>
-    <string name="item_name">Salada de Fruta</string>
-    <string name="item_description">Contém maçã, uva, pêra e laranja</string>
-    <string name="item_price">R$ 10,00</string>
-    <string name="item_quantity">100</string>
-    <string name="item_edit_button">Edit item</string>
-    <string name="item_remove_button">Remove button</string>
-
-    <!-- HOME LAYOUT -->
-    <string name="home_failure_button">TRY AGAIN</string>
-    <string name="home_failure_image_description">Fail Loading Image</string>
-    <string name="home_failure_message">Unknown failure</string>
-    <string name="home_add_button">Add new org item</string>
-
-    <!-- INSERT LAYOUT -->
-    <string name="insert_success_message">Insert concluded</string>
-    <string name="insert_success_image_description">Org\'s image</string>
-    <string name="insert_success_return_button">Return</string>
-    <string name="insert_failure_image_description">Fail Loading Image</string>
-    <string name="insert_failure_message">Unknown failure</string>
-    <string name="insert_button">Insert</string>
-    <string name="insert_back_button_description">Back button</string>
-
-    <!-- UPDATE LAYOUT -->
-    <string name="update_success_message">Update concluded</string>
-    <string name="update_success_image_description">Org\'s image</string>
-    <string name="update_success_return_button">Return</string>
-    <string name="update_failure_image_description">Fail Loading Image</string>
-    <string name="update_failure_message">Unknown failure</string>
-    <string name="update_button">Update</string>
-    <string name="update_back_button_description">Back button</string>
 
     <!-- DETAILS LAYOUT -->
     <string name="details_image_information">Product image</string>
@@ -72,8 +36,55 @@
     <string name="home_name_filter_chip_description">Name</string>
     <string name="home_price_filter_chip_description">Price</string>
     <string name="home_quantity_filter_chip_description">Quantity</string>
-    <string name="login_app_logo">App logo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- HOME LAYOUT -->
+    <string name="home_failure_button">TRY AGAIN</string>
+    <string name="home_failure_image_description">Fail Loading Image</string>
+    <string name="home_failure_message">Unknown failure</string>
+    <string name="home_add_button">Add new org item</string>
+
+    <!-- IMAGE LAYOUT -->
+    <string name="image_description">Product Image</string>
+    <string name="image_preview_button">Preview</string>
+    <string name="image_url_field">Image url</string>
+
+    <!-- INSERT LAYOUT -->
+    <string name="insert_success_message">Insert concluded</string>
+    <string name="insert_success_image_description">Org\'s image</string>
+    <string name="insert_success_return_button">To Home</string>
+    <string name="insert_failure_image_description">Fail Loading Image</string>
+    <string name="insert_failure_message">Unknown failure</string>
+    <string name="insert_button">Insert</string>
+    <string name="insert_back_button_description">Back button</string>
+
+    <!-- ITEM LIST LAYOUT -->
+    <string name="item_image_description">Click here for details</string>
+    <string name="item_name">Salada de Fruta</string>
+    <string name="item_description">Contém maçã, uva, pêra e laranja</string>
+    <string name="item_price">R$ 10,00</string>
+    <string name="item_quantity">100</string>
+    <string name="item_edit_button">Edit item</string>
+    <string name="item_remove_button">Remove button</string>
+
+    <!-- SIGNUP LAYOUT -->
+    <string name="signup_success_button">To Login</string>
+    <string name="signup_go_back_button_description">Go back to Login Screen</string>
+    <string name="signup_password_field">Password</string>
+    <string name="signup_success_message">Account added successfully</string>
+    <string name="signup_title">Sign Up</string>
+    <string name="signup_username_field">Username</string>
+
+    <!-- UPDATE LAYOUT -->
+    <string name="update_back_button">To Home</string>
+    <string name="update_back_button_description">Back button</string>
+    <string name="update_button">Update</string>
+    <string name="update_failure_image_description">Fail Loading Image</string>
+    <string name="update_failure_message">Unknown failure</string>
+    <string name="update_success_image_description">Update success image</string>
+    <string name="update_success_message">Update concluded</string>
+
+
 
 </resources>

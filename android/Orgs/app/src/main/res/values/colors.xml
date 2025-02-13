@@ -31,6 +31,11 @@
 
 
 
+    <color name="colorSuccess">#0A4E01</color>
+    <color name="colorOnSuccess">#FFFFFF</color>
+
+
+
 
     <color name="colorPrimaryDark">#45ADF0</color>
     <color name="colorOnPrimaryDark">#00000B</color>
@@ -61,5 +66,6 @@
 
     <color name="colorBackgroundDark">#000000</color>
     <color name="colorOnBackgroundDark">#FFFFFF</color>
+
 
 </resources>

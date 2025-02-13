@@ -22,7 +22,7 @@
 
             <ImageView
                 android:id="@+id/login_logo"
-                android:contentDescription="@string/login_app_logo"
+                android:contentDescription="@string/app_logo_description"
                 android:layout_height="150dp"
                 android:layout_width="150dp"
                 android:src="@drawable/orgs_logo"

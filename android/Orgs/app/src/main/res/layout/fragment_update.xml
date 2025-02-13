@@ -185,6 +185,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorSuccess"
                 />
 
             <TextView
@@ -192,18 +193,18 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/update_success_message"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/update_success_image"
+                style="@style/SuccessTextView"
                 />
 
             <Button
                 android:id="@+id/update_success_return_button"
+                android:contentDescription="@string/update_back_button_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/update_success_return_button"
+                android:text="@string/update_back_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -245,25 +246,26 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError"
                 />
 
             <TextView
                 android:id="@+id/update_failure_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/update_failure_imageview"
+                style="@style/ErrorTextView"
                 tools:text="@string/update_failure_message"
                 />
 
             <Button
                 android:id="@+id/update_failure_return_button"
+                android:contentDescription="@string/update_back_button_description"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/update_success_return_button"
+                android:text="@string/update_back_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

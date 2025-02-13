@@ -78,6 +78,14 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+    <style name="SuccessTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="TitleScreenTextView" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textSize">30sp</item>

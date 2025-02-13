@@ -185,6 +185,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorSuccess"
                 />
 
             <TextView
@@ -192,11 +193,10 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/update_success_message"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/insert_success_image_imageview"
+                style="@style/SuccessTextView"
                 />
 
             <Button
@@ -245,17 +245,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError"
                 />
 
             <TextView
                 android:id="@+id/insert_failure_textview"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/insert_failure_imageview"
+                style="@style/ErrorTextView"
                 tools:text="@string/insert_failure_message"
                 />
 

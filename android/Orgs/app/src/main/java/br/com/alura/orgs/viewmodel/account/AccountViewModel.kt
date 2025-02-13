@@ -25,15 +25,16 @@ class AccountViewModel @Inject constructor(
     private val _uiState: MutableStateFlow<AccountUiState> = MutableStateFlow(AccountUiState())
     val uiState: StateFlow<AccountUiState> = _uiState.asStateFlow()
 
-    val auth = repository.auth
-
     fun onEvent(event: AccountUiEvent) {
         when (event) {
-            is AccountUiEvent.OnAuthenticate -> authenticate(event.username, event.password)
-            is AccountUiEvent.OnCreateAccount -> createAccount(event.username, event.password)
+            is AccountUiEvent.OnAuthenticate ->
+                authenticate(event.username.lowercase(), event.password)
+            is AccountUiEvent.OnCreateAccount ->
+                createAccount(event.username.lowercase(), event.password)
             is AccountUiEvent.OnDeleteAccount -> deleteAccount()
             is AccountUiEvent.OnGetAccounts -> getAccounts(event.sortedBy)
-            is AccountUiEvent.OnIsUsernameExists -> isUsernameExists(event.username)
+            is AccountUiEvent.OnIsUsernameExists ->
+                isUsernameExists(event.username.lowercase())
             is AccountUiEvent.OnLogout -> logout(event.onLogout)
             is AccountUiEvent.OnUpdatePassword -> updatePassword(event.password)
         }
