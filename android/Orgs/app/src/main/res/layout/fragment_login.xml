@@ -80,6 +80,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:endIconMode="clear_text"
                         >
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/login_username_textInputEditText"

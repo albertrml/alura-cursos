@@ -7,21 +7,21 @@ import androidx.room.RoomDatabase
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.Item
 
-@Database(entities = [Item::class, Account::class], version = 2, exportSchema = true)
-abstract class OrgsRoomDatabase : RoomDatabase() {
+@Database(entities = [Item::class, Account::class], version = 1, exportSchema = true)
+abstract class OrgRoomDatabase : RoomDatabase() {
     abstract fun itemDao(): ItemDAO
     abstract fun accountDao(): AccountDAO
 
     companion object {
         @Volatile
-        private var INSTANCE: OrgsRoomDatabase? = null
+        private var INSTANCE: OrgRoomDatabase? = null
 
-        fun getDatabase(ctx: Context): OrgsRoomDatabase {
+        fun getDatabase(ctx: Context): OrgRoomDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     ctx.applicationContext,
-                    OrgsRoomDatabase::class.java,
-                    "item_database"
+                    OrgRoomDatabase::class.java,
+                    "org_database"
                 ).build()
                 INSTANCE = instance
                 return instance

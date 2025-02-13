@@ -68,6 +68,7 @@ class LoginFragment : Fragment() {
         binding.loginFailureButton.setOnClickListener {
             binding.loginFailureLayout.visibility = View.GONE
             binding.loginSuccessLayout.visibility = View.VISIBLE
+            binding.loginPasswordTextInputEditText.setText("")
         }
     }
 

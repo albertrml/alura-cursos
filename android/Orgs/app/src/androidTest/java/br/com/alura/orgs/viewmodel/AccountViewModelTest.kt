@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.source.AccountDAO
-import br.com.alura.orgs.model.source.OrgsRoomDatabase
+import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedAccount
@@ -30,7 +30,7 @@ class AccountViewModelTest {
     private lateinit var viewModel: AccountViewModel
     private lateinit var repository: AccountRepository
     private lateinit var dao: AccountDAO
-    private lateinit var db: OrgsRoomDatabase
+    private lateinit var db: OrgRoomDatabase
 
     private val wrongUsername = "Test#"
     private val wrongPassword = "Test"
@@ -41,7 +41,7 @@ class AccountViewModelTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context,
-            OrgsRoomDatabase::class.java
+            OrgRoomDatabase::class.java
         ).build()
 
         dao = db.accountDao()

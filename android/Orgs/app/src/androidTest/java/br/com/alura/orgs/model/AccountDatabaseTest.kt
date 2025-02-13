@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.source.AccountDAO
-import br.com.alura.orgs.model.source.OrgsRoomDatabase
+import br.com.alura.orgs.model.source.OrgRoomDatabase
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -18,7 +18,7 @@ import org.junit.Test
 class AccountDatabaseTest {
 
     private lateinit var dao: AccountDAO
-    private lateinit var db: OrgsRoomDatabase
+    private lateinit var db: OrgRoomDatabase
     private val wrongUsername = "Test"
     private val wrongPassword = "Test123"
     private val newPassword = "65432A"
@@ -28,7 +28,7 @@ class AccountDatabaseTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context = context,
-            klass = OrgsRoomDatabase::class.java
+            klass = OrgRoomDatabase::class.java
         ).build()
         dao = db.accountDao()
     }

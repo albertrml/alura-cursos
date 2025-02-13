@@ -8,7 +8,7 @@ import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
-import br.com.alura.orgs.model.source.OrgsRoomDatabase
+import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.exception.ItemException
 import br.com.alura.orgs.utils.tools.collectUntil
@@ -23,13 +23,13 @@ class DetailsItemUiUseCaseTest {
     private lateinit var useCase: DetailsItemUiUseCase
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
-    private lateinit var db: OrgsRoomDatabase
+    private lateinit var db: OrgRoomDatabase
 
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room
-            .inMemoryDatabaseBuilder(context, OrgsRoomDatabase::class.java)
+            .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
 
         dao = db.itemDao()

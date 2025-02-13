@@ -3,7 +3,7 @@ package br.com.alura.orgs.di
 import android.content.Context
 import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
-import br.com.alura.orgs.model.source.OrgsRoomDatabase
+import br.com.alura.orgs.model.source.OrgRoomDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,20 +16,20 @@ import javax.inject.Singleton
 object DatabaseModule {
     @Provides
     @Singleton
-    fun provideItemDatabase(@ApplicationContext context: Context): OrgsRoomDatabase {
-        return OrgsRoomDatabase.getDatabase(context)
+    fun provideItemDatabase(@ApplicationContext context: Context): OrgRoomDatabase {
+        return OrgRoomDatabase.getDatabase(context)
     }
 
     @Provides
     @Singleton
-    fun provideItemDao(database: OrgsRoomDatabase): ItemDAO {
+    fun provideItemDao(database: OrgRoomDatabase): ItemDAO {
         return database.itemDao()
     }
 
 
     @Provides
     @Singleton
-    fun provideAccountDao(database: OrgsRoomDatabase): AccountDAO {
+    fun provideAccountDao(database: OrgRoomDatabase): AccountDAO {
         return database.accountDao()
     }
 
