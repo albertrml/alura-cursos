@@ -70,6 +70,20 @@
         <item name="android:gravity">start|center</item>
     </style>
 
+    <style name="ErrorTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">?attr/colorError</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="TitleScreenTextView" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">italic|bold</item>
+    </style>
+
     <style name="OrgFloatingActionButton" parent="Widget.Design.FloatingActionButton" >
         <item name="android:backgroundTint">?attr/colorSecondary</item>
         <item name="android:elevation">16dp</item>

@@ -21,7 +21,7 @@
     <color name="colorOnSurfaceVariant">#00081B</color>
     <color name="colorSurfaceContainerHighest">#6CA2F8</color>
 
-    <color name="colorError">#F40000</color>
+    <color name="colorError">#9B0303</color>
     <color name="colorOnError">#FFFFFF</color>
     <color name="colorErrorContainer">#F09EA3</color>
     <color name="colorOnErrorContainer">#3A0202</color>
@@ -54,7 +54,7 @@
     <color name="colorSurfaceContainerHighestDark">#B7F6F8</color>
 
 
-    <color name="colorErrorDark">#F40000</color>
+    <color name="colorErrorDark">#F63F3F</color>
     <color name="colorOnErrorDark">#FFFFFF</color>
     <color name="colorErrorContainerDark">#F09EA3</color>
     <color name="colorOnErrorContainerDark">#3A0202</color>

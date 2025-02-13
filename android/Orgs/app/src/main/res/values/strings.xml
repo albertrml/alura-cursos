@@ -1,11 +1,14 @@
 <resources>
     <string name="app_name">Orgs</string>
 
+    <!-- LOGIN LAYOUT -->
     <string name="login_username_field">Username</string>
     <string name="login_password_field">Password</string>
     <string name="login_title">Orgs</string>
     <string name="login_sign_up_button">Sign Up Here!</string>
     <string name="login_sign_in_button">Submit</string>
+    <string name="login_failure_button_message">Try Again</string>
+    <string name="login_failure_message">Unknown failure</string>
 
     <!-- IMAGE LAYOUT -->
     <string name="image_description">Product Image</string>
@@ -70,5 +73,7 @@
     <string name="home_price_filter_chip_description">Price</string>
     <string name="home_quantity_filter_chip_description">Quantity</string>
     <string name="login_app_logo">App logo</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

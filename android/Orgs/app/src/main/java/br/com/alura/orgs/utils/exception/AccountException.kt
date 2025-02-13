@@ -8,7 +8,8 @@ sealed class AccountException(override val message: String) : Exception() {
         message = "Username already exists"
     )
     class InvalidPassword : AccountException(
-        message = "Password must have at least 6 characters, one digit and one uppercase letter"
+        message = "Password must have between 6 and 12 alphanumeric characters " +
+                  "with one digit and one uppercase letter"
     )
 
     class AccountIsNotAuthenticated : AccountException(

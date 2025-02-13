@@ -103,6 +103,12 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         emit(Response.Loading)
         emit(
             performDatabaseOperation {
+                if (!username.isUsernameValid())
+                    throw AccountException.InvalidUsername()
+
+                if (!password.isPasswordValid())
+                    throw AccountException.InvalidPassword()
+
                 if(!accountDao.isUsernameExist(username))
                     throw AccountException.InvalidCredentials()
 

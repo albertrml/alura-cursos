@@ -9,11 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import br.com.alura.orgs.databinding.FragmentLoginBinding
-import br.com.alura.orgs.utils.data.Authenticate
+import br.com.alura.orgs.utils.data.showResults
 import br.com.alura.orgs.viewmodel.account.AccountUiEvent
 import br.com.alura.orgs.viewmodel.account.AccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -29,7 +28,25 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
-    private fun setupScreen(){}
+    private fun setupScreen(){
+        accountViewModel.viewModelScope.launch {
+            accountViewModel.uiState.collect { uiState ->
+                uiState.authenticateState.showResults(
+                    binding.loginSuccessLayout,
+                    binding.loginLoadingLayout,
+                    binding.loginFailureLayout,
+                    actionOnSuccess = { _ ->
+                        val action = LoginFragmentDirections
+                            .actionLoginFragmentToHomeFragment()
+                        this@LoginFragment.findNavController().navigate(action)
+                    },
+                    actionOnFailure = { error ->
+                        binding.loginFailureTextview.text = error.message
+                    }
+                )
+            }
+        }
+    }
 
     private fun setupListeners(){
         binding.loginSubmitButton.setOnClickListener {
@@ -39,18 +56,18 @@ class LoginFragment : Fragment() {
                     password = binding.loginPasswordTextInputEditText.text.toString()
                 )
             )
+            setupScreen()
         }
 
-        binding.loginSignupTextView.setOnClickListener {  }
+        binding.loginSignupTextView.setOnClickListener {
+            val action = LoginFragmentDirections
+                .actionLoginFragmentToSignUpFragment()
+            this@LoginFragment.findNavController().navigate(action)
+        }
 
-        accountViewModel.viewModelScope.launch {
-            accountViewModel.auth.collectLatest { auth ->
-                if (auth is Authenticate.Login) {
-                    val action = LoginFragmentDirections
-                        .actionLoginFragmentToHomeFragment()
-                    this@LoginFragment.findNavController().navigate(action)
-                }
-            }
+        binding.loginFailureButton.setOnClickListener {
+            binding.loginFailureLayout.visibility = View.GONE
+            binding.loginSuccessLayout.visibility = View.VISIBLE
         }
     }
 

@@ -1,7 +1,7 @@
 package br.com.alura.orgs.utils.tools
 
 fun String.isPasswordValid(): Boolean {
-    return length in 6..8 &&
+    return length in 6..12 &&
            any { it.isDigit() } &&
            any { it.isUpperCase() }
 }
