@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import br.com.alura.orgs.databinding.FragmentLoginBinding
 import br.com.alura.orgs.utils.data.showResults
@@ -20,6 +22,18 @@ class LoginFragment : Fragment() {
     private val accountViewModel: AccountViewModel by viewModels()
     private val binding by lazy { FragmentLoginBinding.inflate(layoutInflater) }
 
+    private val navigateToHome: () -> Unit = {
+        val action = LoginFragmentDirections
+            .actionLoginFragmentToHomeFragment()
+        this@LoginFragment.findNavController().navigate(action)
+    }
+
+    private val navigateToSignUp: () -> Unit = {
+        val action = LoginFragmentDirections
+            .actionLoginFragmentToSignUpFragment()
+        this@LoginFragment.findNavController().navigate(action)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,23 +42,19 @@ class LoginFragment : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        setupScreen()
+        super.onResume()
+    }
+
     private fun setupScreen(){
-        accountViewModel.viewModelScope.launch {
-            accountViewModel.uiState.collect { uiState ->
-                uiState.authenticateState.showResults(
-                    binding.loginSuccessLayout,
-                    binding.loginLoadingLayout,
-                    binding.loginFailureLayout,
-                    actionOnSuccess = { _ ->
-                        val action = LoginFragmentDirections
-                            .actionLoginFragmentToHomeFragment()
-                        this@LoginFragment.findNavController().navigate(action)
-                    },
-                    actionOnFailure = { error ->
-                        binding.loginFailureTextview.text = error.message
-                    }
-                )
-            }
+        binding.run{
+            loginFormsLayout.visibility = View.VISIBLE
+            loginLoadingLayout.visibility = View.GONE
+            loginFailureLayout.visibility = View.GONE
+
+            loginPasswordTextInputEditText.setText("")
+            loginUsernameTextInputEditText.setText("")
         }
     }
 
@@ -56,19 +66,35 @@ class LoginFragment : Fragment() {
                     password = binding.loginPasswordTextInputEditText.text.toString()
                 )
             )
-            setupScreen()
+            setupScreenByViewModel()
         }
 
-        binding.loginSignupTextView.setOnClickListener {
-            val action = LoginFragmentDirections
-                .actionLoginFragmentToSignUpFragment()
-            this@LoginFragment.findNavController().navigate(action)
-        }
+        binding.loginSignupTextView.setOnClickListener { navigateToSignUp() }
 
         binding.loginFailureButton.setOnClickListener {
             binding.loginFailureLayout.visibility = View.GONE
-            binding.loginSuccessLayout.visibility = View.VISIBLE
+            binding.loginFormsLayout.visibility = View.VISIBLE
             binding.loginPasswordTextInputEditText.setText("")
+        }
+    }
+
+    private fun setupScreenByViewModel(){
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    accountViewModel.uiState.collect { uiState ->
+                        uiState.authenticateState.showResults(
+                            binding.loginFormsLayout,
+                            binding.loginLoadingLayout,
+                            binding.loginFailureLayout,
+                            actionOnSuccess = { _ -> navigateToHome() },
+                            actionOnFailure = { error ->
+                                binding.loginFailureTextview.text = error.message
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 

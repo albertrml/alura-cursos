@@ -33,21 +33,35 @@
                 />
 
             <TextView
+                android:id="@+id/login_header_title"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="@string/login_title"
+                android:text="@string/login_header_title"
                 app:layout_constraintBottom_toBottomOf="@id/login_header_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_logo"
-                app:layout_constraintVertical_bias="0.1"
+                app:layout_constraintVertical_bias="0.0"
+                style="@style/TitleScreenTextView"
+                />
+
+            <TextView
+                android:id="@+id/login_header_operation"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/login_header_operation"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_header_title"
+                app:layout_constraintVertical_bias="1.0"
                 style="@style/TitleScreenTextView"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
-            android:id="@+id/login_success_layout"
+            android:id="@+id/login_forms_layout"
             android:layout_height="0dp"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -73,7 +87,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/login_username_textInputLayout"
-                        android:hint="@string/login_username_field"
+                        android:hint="@string/login_forms_username"
                         android:layout_height="wrap_content"
                         android:layout_width="300dp"
                         android:padding="@dimen/padding_space"
@@ -92,7 +106,7 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/login_password_textInputLayout"
-                        android:hint="@string/login_password_field"
+                        android:hint="@string/login_forms_password"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:padding="@dimen/padding_space"

@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentSignUpBinding
@@ -31,9 +33,13 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setupScreen()
         setupListeners()
         return binding.root
+    }
+
+    override fun onResume() {
+        setupScreen()
+        super.onResume()
     }
 
     private fun setupScreen(){
@@ -70,16 +76,20 @@ class SignUpFragment : Fragment() {
 
     private fun setupScreenByViewModel(){
         viewLifecycleOwner.lifecycleScope.launch {
-            accountViewModel.uiState.collect { uiState ->
-                uiState.createAccountState.showResults(
-                    binding.signupFormsLayout,
-                    binding.signupLoadingLayout,
-                    binding.signupFailureLayout,
-                    actionOnSuccess = { _ -> navigateToLogin() },
-                    actionOnFailure = { error ->
-                        binding.signupFailureTextview.text = error.message
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                launch {
+                    accountViewModel.uiState.collect { uiState ->
+                        uiState.createAccountState.showResults(
+                            binding.signupFormsLayout,
+                            binding.signupLoadingLayout,
+                            binding.signupFailureLayout,
+                            actionOnSuccess = { _ -> navigateToLogin() },
+                            actionOnFailure = { error ->
+                                binding.signupFailureTextview.text = error.message
+                            }
+                        )
                     }
-                )
+                }
             }
         }
     }
