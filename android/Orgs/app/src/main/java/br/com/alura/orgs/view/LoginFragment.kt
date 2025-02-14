@@ -78,21 +78,19 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun setupScreenByViewModel(){
+    private fun setupScreenByViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    accountViewModel.uiState.collect { uiState ->
-                        uiState.authenticateState.showResults(
-                            binding.loginFormsLayout,
-                            binding.loginLoadingLayout,
-                            binding.loginFailureLayout,
-                            actionOnSuccess = { _ -> navigateToHome() },
-                            actionOnFailure = { error ->
-                                binding.loginFailureTextview.text = error.message
-                            }
-                        )
-                    }
+                accountViewModel.uiState.collect { uiState ->
+                    uiState.authenticateState.showResults(
+                        binding.loginFormsLayout,
+                        binding.loginLoadingLayout,
+                        binding.loginFailureLayout,
+                        actionOnSuccess = { _ -> navigateToHome() },
+                        actionOnFailure = { error ->
+                            binding.loginFailureTextview.text = error.message
+                        }
+                    )
                 }
             }
         }

@@ -74,21 +74,19 @@ class SignUpFragment : Fragment() {
 
     }
 
-    private fun setupScreenByViewModel(){
+    private fun setupScreenByViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                launch {
-                    accountViewModel.uiState.collect { uiState ->
-                        uiState.createAccountState.showResults(
-                            binding.signupFormsLayout,
-                            binding.signupLoadingLayout,
-                            binding.signupFailureLayout,
-                            actionOnSuccess = { _ -> navigateToLogin() },
-                            actionOnFailure = { error ->
-                                binding.signupFailureTextview.text = error.message
-                            }
-                        )
-                    }
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                accountViewModel.uiState.collect { uiState ->
+                    uiState.createAccountState.showResults(
+                        binding.signupFormsLayout,
+                        binding.signupLoadingLayout,
+                        binding.signupFailureLayout,
+                        actionOnSuccess = { _ -> navigateToLogin() },
+                        actionOnFailure = { error ->
+                            binding.signupFailureTextview.text = error.message
+                        }
+                    )
                 }
             }
         }
