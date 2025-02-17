@@ -28,8 +28,9 @@ class  AccountRepositoryTest {
     private lateinit var repository: AccountRepository
     private lateinit var dao: AccountDAO
     private lateinit var db: OrgRoomDatabase
-    private val wrongUsername = "Test#"
-    private val wrongPassword = "Test"
+    private val invalidUsername = "Test#"
+    private val invalidPassword = "Test"
+    private val wrongPassword = "A123bcd"
     private val newPassword = "65432A"
 
     @Before
@@ -69,7 +70,7 @@ class  AccountRepositoryTest {
     @Test
     fun whenCreateAccountWithWrongUsernameIsFailure() = runTest {
         val account = mockAccounts.first()
-        repository.createAccount(wrongUsername, account.password)
+        repository.createAccount(invalidUsername, account.password)
             .collectUntil { response -> response is Response.Failure }
             .collect {
                 when (it) {
@@ -85,7 +86,7 @@ class  AccountRepositoryTest {
     @Test
     fun whenCreateAccountWithWrongPasswordIsFailure() = runTest {
         val account = mockAccounts.first()
-        repository.createAccount(account.username, wrongPassword)
+        repository.createAccount(account.username, invalidPassword)
             .collectUntil { response -> response is Response.Failure }
             .collect {
                 when (it) {
@@ -156,9 +157,45 @@ class  AccountRepositoryTest {
     }
 
     @Test
-    fun whenAuthenticateAccountIsFailure() = runTest {
+    fun whenAuthenticateAccountIsFailureByInvalidUsername() = runTest {
         mockAccounts.forEach { dao.insert(it) }
-        repository.authenticate(wrongUsername, wrongPassword)
+        repository.authenticate(invalidUsername, invalidPassword)
+            .collectUntil { response -> response is Response.Failure }
+            .collect{ response ->
+                when(response){
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> {
+                        assert(response.exception is AccountException.InvalidUsername)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun whenAuthenticateAccountIsFailureByInvalidPassword() = runTest {
+        val account = mockAccounts.first
+        mockAccounts.forEach { dao.insert(it) }
+        repository.authenticate(account.username, invalidPassword)
+            .collectUntil { response -> response is Response.Failure }
+            .collect{ response ->
+                when(response){
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> {
+                        assert(response.exception is AccountException.InvalidPassword)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun whenAuthenticateAccountIsFailure() = runTest {
+        val account = mockAccounts.first.copy(
+            password = wrongPassword
+        )
+        mockAccounts.forEach { dao.insert(it) }
+        repository.authenticate(account.username, account.password)
             .collectUntil { response -> response is Response.Failure }
             .collect{ response ->
                 when(response){
@@ -192,7 +229,7 @@ class  AccountRepositoryTest {
     @Test
     fun whenSearchForAccountIsUnsuccessful() = runTest {
         mockAccounts.forEach { dao.insert(it) }
-        repository.isUsernameExists(wrongUsername)
+        repository.isUsernameExists(invalidUsername)
             .collectUntil { response -> response is Response.Success }
             .collect{ response ->
                 when(response){
@@ -235,7 +272,7 @@ class  AccountRepositoryTest {
         val account = mockAccounts.first()
         dao.insert(account)
         repository.authenticate(account.username, account.password).collect()
-        repository.updatePassword(newPassword = wrongPassword)
+        repository.updatePassword(newPassword = invalidPassword)
             .collectUntil { response -> response is Response.Failure }
             .collect{ response ->
                 when(response){

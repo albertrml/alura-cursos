@@ -1,6 +1,7 @@
 package br.com.alura.orgs.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.mock.mockAccounts
@@ -32,8 +33,9 @@ class AccountViewModelTest {
     private lateinit var dao: AccountDAO
     private lateinit var db: OrgRoomDatabase
 
-    private val wrongUsername = "Test#"
-    private val wrongPassword = "Test"
+    private val invalidUsername = "Test#"
+    private val invalidPassword = "Test"
+    private val wrongPassword = "A12345bcd"
     private val newPassword = "65432A"
 
     @Before
@@ -91,12 +93,13 @@ class AccountViewModelTest {
 
     @Test
     fun whenAuthenticateIsUnsuccessful() = runTest {
-        val account = mockAccounts[0]
+        val account = mockAccounts.first
         dao.insert(account)
-        viewModel.onEvent(AccountUiEvent.OnAuthenticate(wrongUsername, wrongPassword))
+        viewModel.onEvent(AccountUiEvent.OnAuthenticate(account.username, wrongPassword))
         viewModel.uiState
             .collectUntil { uiState -> uiState.authenticateState is Response.Failure }
             .collect{ uiState ->
+                Log.i("AuthenticateException",uiState.authenticateState.toString())
                 when(uiState.authenticateState){
                     is Response.Success -> assertFalse(
                         "Expected Response.Failure",
@@ -149,7 +152,7 @@ class AccountViewModelTest {
     @Test
     fun whenCreateAccountWithInvalidUsernameIsUnsuccessful() = runTest {
         val account = mockAccounts[0]
-        viewModel.onEvent(AccountUiEvent.OnCreateAccount(wrongUsername, account.password))
+        viewModel.onEvent(AccountUiEvent.OnCreateAccount(invalidUsername, account.password))
         viewModel.uiState
             .collectUntil { uiState -> uiState.createAccountState is Response.Failure }
             .collect{ uiState ->
@@ -173,7 +176,7 @@ class AccountViewModelTest {
     @Test
     fun whenCreateAccountWithInvalidPasswordIsUnsuccessful() = runTest {
         val account = mockAccounts[0]
-        viewModel.onEvent(AccountUiEvent.OnCreateAccount(account.username, wrongPassword))
+        viewModel.onEvent(AccountUiEvent.OnCreateAccount(account.username, invalidPassword))
         viewModel.uiState
             .collectUntil { uiState -> uiState.createAccountState is Response.Failure }
             .collect{ uiState ->
@@ -338,7 +341,7 @@ class AccountViewModelTest {
     @Test
     fun whenIsUsernameDoesNotExistIsReturnsFalse() = runTest {
         mockAccounts.forEach { dao.insert(it) }
-        viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(wrongUsername))
+        viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(invalidUsername))
         viewModel.uiState
             .collectUntil { uiState -> uiState.isUsernameExistsState is Response.Success }
             .collect{ uiState ->
