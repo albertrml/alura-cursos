@@ -5,8 +5,10 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
@@ -20,6 +22,7 @@ import org.junit.Before
 import org.junit.Test
 
 class ItemRepositoryTest {
+    private lateinit var accountDAO: AccountDAO
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
     private lateinit var db: OrgRoomDatabase
@@ -31,6 +34,7 @@ class ItemRepositoryTest {
             .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
         dao = db.itemDao()
+        accountDAO = db.accountDao()
         repository = ItemRepository(dao)
     }
 
@@ -42,6 +46,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenInsertItemIsSuccessful() = runTest {
+        accountDAO.insert(mockAccounts[0])
         repository.insertItem(mockItems[0])
             .collectUntil{ response -> response is Response.Success }
             .collect { response ->
@@ -59,6 +64,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenInsertDuplicatedItemIsUnsuccessful() = runTest {
+        accountDAO.insert(mockAccounts[0])
         dao.insert(mockItems[0])
         val item = dao.getItemById(1)!!
         repository.insertItem(item)
@@ -76,6 +82,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenGetAllItemsIsSuccessful() = runTest {
+        mockAccounts.forEach{ accountDAO.insert(it) }
         mockItems.forEach { dao.insert(it) }
         repository.getAllItems()
             .collectUntil{ response -> response is Response.Success }
@@ -98,11 +105,12 @@ class ItemRepositoryTest {
 
     @Test
     fun whenDeleteItemRemovesProperly() = runTest {
+        accountDAO.insert(mockAccounts[0])
         val item = mockItems[0]
         dao.insert(item)
         val itemForDelete = dao.getItemById(1)!!
 
-        repository.deleteItem(itemForDelete)
+        repository.deleteItem(itemForDelete.userOwner, itemForDelete)
             .collectUntil{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
@@ -118,6 +126,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenGetItemByIdIsSuccessful() = runTest {
+        accountDAO.insert(mockAccounts[0])
         dao.insert(mockItems[0])
         repository.getItemById(1)
             .collectUntil{ response -> response is Response.Success }
@@ -151,6 +160,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenUpdateItemUpdatesIsSuccessful() = runTest {
+        accountDAO.insert(mockAccounts[0])
         dao.insert(mockItems[0])
         val itemBeforeUpdate = dao.getItems().first().first().copy(
             itemName = mockItems[1].itemName,
@@ -176,6 +186,7 @@ class ItemRepositoryTest {
 
     @Test
     fun whenUpdateItemWithSameDataDoesNotChangeItem() = runTest {
+        accountDAO.insert(mockAccounts[2])
         dao.insert(mockItems[2])
         val sameItem = dao.getItems().first().first()
         repository.updateItem(sameItem)

@@ -6,7 +6,8 @@ data class ItemUi(
     val itemDescription: String = "",
     val itemValue: String = "",
     val quantityInStock: String = "",
-    val itemUrl: String = ""
+    val itemUrl: String = "",
+    val userOwner: String = ""
 ){
 
     fun toItem() = Item(
@@ -15,7 +16,8 @@ data class ItemUi(
         itemDescription = itemDescription,
         itemValue = itemValue.toDoubleOrNull() ?: 0.0,
         quantityInStock = quantityInStock.toIntOrNull() ?: 0,
-        itemUrl = itemUrl
+        itemUrl = itemUrl,
+        userOwner = userOwner
     )
 
     companion object {
@@ -25,7 +27,8 @@ data class ItemUi(
             itemDescription = item.itemDescription,
             itemValue = item.itemValue.toString(),
             quantityInStock = item.quantityInStock.toString(),
-            itemUrl = item.itemUrl
+            itemUrl = item.itemUrl,
+            userOwner = item.userOwner
         )
     }
 

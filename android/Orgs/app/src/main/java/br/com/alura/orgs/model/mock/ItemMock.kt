@@ -8,34 +8,39 @@ val mockItems = listOf(
         itemDescription = "Fruit",
         itemValue = 0.35,
         quantityInStock = 10,
-        itemUrl = ""
+        itemUrl = "",
+        userOwner = "richard"
     ),
     Item(
         itemName = "Apple",
         itemDescription = "Fruit",
         itemValue = 0.50,
         quantityInStock = 15,
-        itemUrl = ""
+        itemUrl = "",
+        userOwner = "joao"
     ),
     Item(
         itemName = "Banana",
         itemDescription = "Fruit",
         itemValue = 0.25,
         quantityInStock = 20,
-        itemUrl = ""
+        itemUrl = "",
+        userOwner = "maria"
     ),
     Item(
         itemName = "Carrot",
         itemDescription = "Vegetable",
         itemValue = 0.75,
         quantityInStock = 8,
-        itemUrl = ""
+        itemUrl = "",
+        userOwner = "jose"
     ),
     Item(
         itemName = "Broccoli",
         itemDescription = "Vegetable",
         itemValue = 1.25,
         quantityInStock = 5,
-        itemUrl = ""
+        itemUrl = "",
+        userOwner = "pedro"
     )
 )

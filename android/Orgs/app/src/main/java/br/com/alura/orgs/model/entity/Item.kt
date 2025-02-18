@@ -2,9 +2,21 @@ package br.com.alura.orgs.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import br.com.alura.orgs.utils.exception.ItemException
 
-@Entity(tableName = "item")
+@Entity(
+    tableName = "item",
+    foreignKeys = [
+        ForeignKey(
+            entity = Account::class,
+            parentColumns = ["username"],
+            childColumns = ["user_owner"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Item(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
@@ -17,16 +29,19 @@ data class Item(
     @ColumnInfo(name="quantity")
     val quantityInStock: Int,
     @ColumnInfo(name="url_image")
-    val itemUrl: String
+    val itemUrl: String,
+    @ColumnInfo(name="user_owner")
+    val userOwner: String
 )
 
 fun Item.onCheck(
     isValid: (Item) -> Unit,
     isInvalid: (Exception) -> Unit
 ) = when{
-    itemName.isBlank() -> isInvalid(Exception("Invalid name"))
-    itemDescription.isBlank() -> isInvalid(Exception("Invalid description"))
-    itemValue < 0 -> isInvalid(Exception("Invalid value"))
-    quantityInStock < 0 -> isInvalid(Exception("Invalid quantity"))
+    itemName.isBlank() -> isInvalid(ItemException.InvalidNameException())
+    itemDescription.isBlank() -> isInvalid(ItemException.InvalidDescriptionException())
+    itemValue < 0 -> isInvalid(ItemException.InvalidValueException())
+    quantityInStock < 0 -> isInvalid(ItemException.InvalidQuantityException())
+    userOwner.isBlank() -> isInvalid(ItemException.InvalidUserOwnerException())
     else -> isValid(this)
 }

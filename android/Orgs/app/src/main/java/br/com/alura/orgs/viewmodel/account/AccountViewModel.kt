@@ -6,6 +6,7 @@ import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedAccount
+import br.com.alura.orgs.utils.data.mapTo
 import br.com.alura.orgs.utils.data.update
 import br.com.alura.orgs.utils.exception.AccountException
 import dagger.hilt.android.lifecycle.HiltViewModel

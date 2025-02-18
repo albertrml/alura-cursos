@@ -6,14 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentHomeBinding
 import br.com.alura.orgs.model.entity.ItemUi
-import br.com.alura.orgs.utils.data.SortedItem
 import br.com.alura.orgs.utils.data.showResults
 import br.com.alura.orgs.view.adapter.ItemAdapter
 import br.com.alura.orgs.viewmodel.home.HomeUiEvent
@@ -74,19 +75,21 @@ class HomeFragment : Fragment() {
 
     private fun setupScreen(){
         selectFilter()
-        homeViewModel.viewModelScope.launch {
-            homeViewModel.uiState.collect { state ->
-                state.fetchAllItemsState.showResults(
-                    successViewGroup = binding.homeSuccessLayout,
-                    loadingViewGroup = binding.homeLoadingLayout,
-                    failureViewGroup = binding.homeFailureLayout,
-                    actionOnSuccess = { items ->
-                        setRecyclerView(items)
-                    },
-                    actionOnFailure = { exception ->
-                        binding.homeFailureTextview.text = exception.toString()
-                    }
-                )
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.uiState.collect { state ->
+                    state.fetchAllItemsState.showResults(
+                        successViewGroup = binding.homeSuccessLayout,
+                        loadingViewGroup = binding.homeLoadingLayout,
+                        failureViewGroup = binding.homeFailureLayout,
+                        actionOnSuccess = { items ->
+                            setRecyclerView(items)
+                        },
+                        actionOnFailure = { exception ->
+                            binding.homeFailureTextview.text = exception.toString()
+                        }
+                    )
+                }
             }
         }
     }
@@ -95,32 +98,16 @@ class HomeFragment : Fragment() {
         binding.homeFilterChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
             when{
                 checkedIds.contains(R.id.home_unsorted_filter_chip) -> {
-                    homeViewModel.onEvent(
-                        HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortedItem.ByIdAscending
-                        )
-                    )
+                    homeViewModel.onEvent(HomeUiEvent.OnFetchAllItemsByIdAscending)
                 }
                 checkedIds.contains(R.id.home_name_filter_chip) -> {
-                    homeViewModel.onEvent(
-                        HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortedItem.ByNameAscending
-                        )
-                    )
+                    homeViewModel.onEvent(HomeUiEvent.OnFetchAllItemsByNameAscending)
                 }
                 checkedIds.contains(R.id.home_price_filter_chip) -> {
-                    homeViewModel.onEvent(
-                        HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortedItem.ByPriceAscending
-                        )
-                    )
+                    homeViewModel.onEvent(HomeUiEvent.OnFetchAllItemsByPriceAscending)
                 }
                 checkedIds.contains(R.id.home_quantity_filter_chip) -> {
-                    homeViewModel.onEvent(
-                        HomeUiEvent.OnFetchAllItems(
-                            sortBy = SortedItem.ByQuantityDescending
-                        )
-                    )
+                    homeViewModel.onEvent(HomeUiEvent.OnFetchAllItemsByQuantityDescending)
                 }
             }
         }

@@ -6,14 +6,16 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.HomeItemUiUseCase
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
+import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response.Failure
 import br.com.alura.orgs.utils.data.Response.Loading
 import br.com.alura.orgs.utils.data.Response.Success
-import br.com.alura.orgs.utils.data.SortedItem
 import br.com.alura.orgs.utils.tools.collectUntil
 import br.com.alura.orgs.viewmodel.home.HomeUiEvent
 import br.com.alura.orgs.viewmodel.home.HomeViewModel
@@ -25,6 +27,8 @@ import org.junit.Before
 import org.junit.Test
 
 class HomeViewModelTest {
+    private lateinit var accountDAO: AccountDAO
+    private lateinit var accountRepository: AccountRepository
     private lateinit var viewModel: HomeViewModel
     private lateinit var useCase: HomeItemUiUseCase
     private lateinit var repository: ItemRepository
@@ -38,9 +42,11 @@ class HomeViewModelTest {
             .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
         dao = db.itemDao()
+        accountDAO = db.accountDao()
         repository = ItemRepository(dao)
+        accountRepository = AccountRepository(accountDAO)
         useCase = HomeItemUiUseCase(repository)
-        viewModel = HomeViewModel(useCase)
+        viewModel = HomeViewModel(accountRepository,useCase)
     }
 
     @Before
@@ -52,8 +58,11 @@ class HomeViewModelTest {
 
     @Test
     fun whenOnDeleteItemUiDeletesSuccessfully() = runTest {
+        accountDAO.insert(mockAccounts[0])
         dao.insert(mockItems[0])
         val itemUi = ItemUi.fromItem(dao.getItemById(1)!!)
+
+        accountRepository.authenticate(mockAccounts[0].username, mockAccounts[0].password)
 
         viewModel.onEvent(HomeUiEvent.OnDelete(itemUi))
         viewModel.uiState
@@ -73,9 +82,10 @@ class HomeViewModelTest {
 
     @Test
     fun whenOnFetchAllItemsChangesSuccessfullyUiState() = runTest {
+        mockAccounts.forEach { accountDAO.insert(it) }
         mockItems.forEach { dao.insert(it) }
 
-        viewModel.onEvent(HomeUiEvent.OnFetchAllItems(SortedItem.ByIdAscending))
+        viewModel.onEvent(HomeUiEvent.OnFetchAllItemsByIdAscending)
         viewModel.uiState
             .collectUntil { uiState -> uiState.fetchAllItemsState is Success }
             .collect { uiState ->

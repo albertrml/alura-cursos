@@ -4,7 +4,9 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import kotlinx.coroutines.flow.first
@@ -20,6 +22,7 @@ import org.junit.Test
 
 
 class ItemDatabaseTest {
+    private lateinit var accountDao: AccountDAO
     private lateinit var itemDAO: ItemDAO
     private lateinit var db: OrgRoomDatabase
 
@@ -31,6 +34,7 @@ class ItemDatabaseTest {
             OrgRoomDatabase::class.java
         ).build()
         itemDAO = db.itemDao()
+        accountDao = db.accountDao()
     }
 
     @Before
@@ -41,6 +45,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenInsertItemIsSuccessful() = runTest {
+        accountDao.insert(mockAccounts[0])
         itemDAO.insert(mockItems[0])
 
         val itemFromDatabase = itemDAO.getItemById(1)
@@ -58,6 +63,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenInsertDuplicateItemThrowsException() = runTest {
+        accountDao.insert(mockAccounts[0])
         itemDAO.insert(mockItems[0])
         val item = itemDAO.getItemById(1)!!
         assertThrows(SQLiteConstraintException::class.java) {
@@ -67,6 +73,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenUpdateItemUpdatesSuccessfully() = runTest {
+        accountDao.insert(mockAccounts[2])
         itemDAO.insert(mockItems[2])
         val itemBeforeUpdate = itemDAO.getItemById(1)!!.copy(
             itemName = mockItems[1].itemName,
@@ -83,6 +90,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenDeleteItemRemovesSuccessfully() = runTest {
+        accountDao.insert(mockAccounts[0])
         itemDAO.insert(mockItems[0])
         val itemForDelete = itemDAO.getItemById(1)!!
         assertEquals(1, itemDAO.getItems().first().size)
@@ -92,6 +100,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenGetItemsRetrievesProperlyAllItems() = runTest {
+        mockAccounts.forEach{ accountDao.insert(it) }
         mockItems.forEach { itemDAO.insert(it) }
         val allItems = itemDAO.getItems().first().map { it.copy(id = 0) }
         assert(allItems.size == mockItems.size)

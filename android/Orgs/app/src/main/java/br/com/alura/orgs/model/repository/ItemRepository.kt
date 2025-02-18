@@ -36,9 +36,14 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
         emit(performDatabaseOperation { itemDao.update(item) })
     }
 
-    fun deleteItem(item: Item): Flow<Response<Unit>> = flow {
+    fun deleteItem(userOwner: String, item: Item): Flow<Response<Unit>> = flow {
         emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.delete(item) })
+        emit(
+            performDatabaseOperation {
+                if (userOwner != item.userOwner) throw ItemException.ItemIsNotOwnerException()
+                itemDao.delete(item)
+            }
+        )
     }
 
     fun getItemById(id: Int): Flow<Response<Item>> = flow {
@@ -49,4 +54,18 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
             }
         )
     }
+
+    fun getItemsByUserOwner(userOwner: String): Flow<Response<List<Item>>> = flow {
+        emit(Response.Loading)
+        try {
+            emitAll(
+                itemDao.getItemsByUserOwner(userOwner).map {
+                    Response.Success(it)
+                }
+            )
+        }catch (e: Exception){
+            Response.Failure(e)
+        }
+    }
+
 }
