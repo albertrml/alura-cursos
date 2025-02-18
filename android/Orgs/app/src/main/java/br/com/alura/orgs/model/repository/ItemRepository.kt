@@ -13,6 +13,16 @@ import javax.inject.Inject
 
 class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
 
+    fun deleteItem(userOwner: String, item: Item): Flow<Response<Unit>> = flow {
+        emit(Response.Loading)
+        emit(
+            performDatabaseOperation {
+                if (userOwner != item.userOwner) throw ItemException.ItemIsNotOwnerException()
+                itemDao.delete(item)
+            }
+        )
+    }
+
     fun getAllItems(): Flow<Response<List<Item>>> = flow {
         emit(Response.Loading)
         try {
@@ -24,26 +34,6 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
         }catch (e: Exception){
             Response.Failure(e)
         }
-    }
-
-    fun insertItem(item: Item): Flow<Response<Unit>> = flow {
-        emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.insert(item) })
-    }
-
-    fun updateItem(item: Item): Flow<Response<Unit>> = flow {
-        emit(Response.Loading)
-        emit(performDatabaseOperation { itemDao.update(item) })
-    }
-
-    fun deleteItem(userOwner: String, item: Item): Flow<Response<Unit>> = flow {
-        emit(Response.Loading)
-        emit(
-            performDatabaseOperation {
-                if (userOwner != item.userOwner) throw ItemException.ItemIsNotOwnerException()
-                itemDao.delete(item)
-            }
-        )
     }
 
     fun getItemById(id: Int): Flow<Response<Item>> = flow {
@@ -63,9 +53,19 @@ class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
                     Response.Success(it)
                 }
             )
-        }catch (e: Exception){
+        } catch (e: Exception) {
             Response.Failure(e)
         }
+    }
+
+    fun insertItem(item: Item): Flow<Response<Unit>> = flow {
+        emit(Response.Loading)
+        emit(performDatabaseOperation { itemDao.insert(item) })
+    }
+
+    fun updateItem(item: Item): Flow<Response<Unit>> = flow {
+        emit(Response.Loading)
+        emit(performDatabaseOperation { itemDao.update(item) })
     }
 
 }

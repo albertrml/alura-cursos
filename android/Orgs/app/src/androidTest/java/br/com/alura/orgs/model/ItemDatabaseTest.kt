@@ -26,7 +26,7 @@ class ItemDatabaseTest {
     private lateinit var accountDao: AccountDAO
     private lateinit var itemDAO: ItemDAO
     private lateinit var db: OrgRoomDatabase
-    private val expectedItem = mockItems
+    private val expectedItems = mockItems
     private val nonExistentUserOwner = "TESTETESTE"
 
     @Before
@@ -62,7 +62,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenGetItemByIdFindItem() = runTest {
-        itemDAO.insert(expectedItem[0])
+        itemDAO.insert(expectedItems[0])
         val item = itemDAO.getItemById(1)
         assertNotNull(item)
     }
@@ -75,16 +75,16 @@ class ItemDatabaseTest {
 
     @Test
     fun whenGetItemsRetrievesProperlyAllItems() = runTest {
-        expectedItem.forEach { itemDAO.insert(it) }
+        expectedItems.forEach { itemDAO.insert(it) }
         val allItems = itemDAO.getItems().first().map { it.copy(id = 0) }
-        assert(allItems.size == expectedItem.size)
-        assert(allItems.containsAll(expectedItem))
+        assert(allItems.size == expectedItems.size)
+        assert(allItems.containsAll(expectedItems))
     }
 
     @Test
     fun whenGetItemsByUserOwnerRetrievesProperlyAllItems() = runTest {
-        val expectedRichardItems = expectedItem.filter { it.userOwner == "richard" }
-        expectedItem.forEach { itemDAO.insert(it) }
+        val expectedRichardItems = expectedItems.filter { it.userOwner == "richard" }
+        expectedItems.forEach { itemDAO.insert(it) }
         val richardItems = itemDAO
             .getItemsByUserOwner("richard")
             .first().map { it.copy(id = 0) }
@@ -94,7 +94,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenGetItemsByWrongUserOwnerRetrievesEmpty() = runTest {
-        expectedItem.forEach { itemDAO.insert(it) }
+        expectedItems.forEach { itemDAO.insert(it) }
         val items = itemDAO
             .getItemsByUserOwner(nonExistentUserOwner)
             .first().map { it.copy(id = 0) }
@@ -103,7 +103,7 @@ class ItemDatabaseTest {
 
     @Test
     fun whenInsertDuplicateItemThrowsException() = runTest {
-        itemDAO.insert(expectedItem[0])
+        itemDAO.insert(expectedItems[0])
         val item = itemDAO.getItemById(1)!!
         assertThrows(SQLiteConstraintException::class.java) {
             runBlocking { itemDAO.insert(item) }
@@ -111,25 +111,32 @@ class ItemDatabaseTest {
     }
 
     @Test
+    fun whenInsertItemWithNonExistentUserOwnerThrowsException() = runTest {
+        assertThrows(SQLiteConstraintException::class.java) {
+            runBlocking { itemDAO.insert(expectedItems[0].copy(userOwner = nonExistentUserOwner)) }
+        }
+    }
+
+    @Test
     fun whenUpdateItemUpdatesSuccessfully() = runTest {
-        itemDAO.insert(expectedItem[2])
+        itemDAO.insert(expectedItems[2])
         val itemBeforeUpdate = itemDAO.getItemById(1)!!.copy(
-            itemName = expectedItem[1].itemName,
-            itemDescription = expectedItem[1].itemDescription,
-            itemValue = expectedItem[1].itemValue,
-            quantityInStock = expectedItem[1].quantityInStock
+            itemName = expectedItems[1].itemName,
+            itemDescription = expectedItems[1].itemDescription,
+            itemValue = expectedItems[1].itemValue,
+            quantityInStock = expectedItems[1].quantityInStock
         )
         itemDAO.update(itemBeforeUpdate)
         val itemAfterUpdate = itemDAO.getItemById(1)
 
         assert(itemDAO.getItems().first().size == 1)
         assertEquals(itemBeforeUpdate, itemAfterUpdate)
-        assertNotEquals(expectedItem[2], itemAfterUpdate!!.copy(id = 0))
+        assertNotEquals(expectedItems[2], itemAfterUpdate!!.copy(id = 0))
     }
 
     @Test
     fun whenDeleteItemRemovesSuccessfully() = runTest {
-        itemDAO.insert(expectedItem[0])
+        itemDAO.insert(expectedItems[0])
         val itemForDelete = itemDAO.getItemById(1)!!
         assertEquals(1, itemDAO.getItems().first().size)
         itemDAO.delete(itemForDelete)

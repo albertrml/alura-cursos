@@ -26,6 +26,8 @@ class ItemRepositoryTest {
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
     private lateinit var db: OrgRoomDatabase
+    private val expectedItems = mockItems
+    private val nonExistentUserOwner = "TESTETESTE"
 
     @Before
     fun setup() {
@@ -39,74 +41,18 @@ class ItemRepositoryTest {
     }
 
     @Before
-    fun setupTestData() = runTest { db.clearAllTables() }
+    fun setupTestData() = runTest {
+        db.clearAllTables()
+        mockAccounts.forEach{ accountDAO.insert(it) }
+    }
 
     @After
     fun tearDown() { db.close() }
 
-    @Test
-    fun whenInsertItemIsSuccessful() = runTest {
-        accountDAO.insert(mockAccounts[0])
-        repository.insertItem(mockItems[0])
-            .collectUntil{ response -> response is Response.Success }
-            .collect { response ->
-                when (response) {
-                    is Response.Success -> {
-                        val item = dao.getItemById(1)!!
-                        assertEquals(item.itemName, mockItems[0].itemName)
-                    }
-
-                    is Response.Loading -> assert(true)
-                    is Response.Failure -> assert(false)
-                }
-            }
-    }
-
-    @Test
-    fun whenInsertDuplicatedItemIsUnsuccessful() = runTest {
-        accountDAO.insert(mockAccounts[0])
-        dao.insert(mockItems[0])
-        val item = dao.getItemById(1)!!
-        repository.insertItem(item)
-            .collectUntil{ response -> response is Response.Success }
-            .collect { result ->
-                when (result) {
-                    is Response.Success -> assert(false)
-                    is Response.Loading -> assert(true)
-                    is Response.Failure -> assert(
-                        result.exception is SQLiteConstraintException
-                    )
-                }
-            }
-    }
-
-    @Test
-    fun whenGetAllItemsIsSuccessful() = runTest {
-        mockAccounts.forEach{ accountDAO.insert(it) }
-        mockItems.forEach { dao.insert(it) }
-        repository.getAllItems()
-            .collectUntil{ response -> response is Response.Success }
-            .collect { response ->
-                when (response) {
-                    is Response.Success -> {
-                        assertEquals(mockItems.size, response.result.size)
-                        assert(
-                            response.result
-                                .map { it.copy(id = 0) }
-                                .containsAll(mockItems)
-                        )
-                    }
-
-                    is Response.Loading -> assert(true)
-                    is Response.Failure -> assert(false)
-                }
-            }
-    }
-
+    /***  delete ***/
     @Test
     fun whenDeleteItemRemovesProperly() = runTest {
-        accountDAO.insert(mockAccounts[0])
-        val item = mockItems[0]
+        val item = expectedItems[0]
         dao.insert(item)
         val itemForDelete = dao.getItemById(1)!!
 
@@ -117,24 +63,62 @@ class ItemRepositoryTest {
                     is Response.Success -> {
                         assert(dao.getItems().first().isEmpty())
                     }
-
-                    is Response.Loading -> {}
+                    is Response.Loading -> assert(true)
                     is Response.Failure -> assert(false)
                 }
             }
     }
 
     @Test
+    fun whenDeleteItemWithWrongUserOwnerIsUnsuccessful() = runTest {
+        val item = expectedItems[0]
+        dao.insert(item)
+        val itemForDelete = dao.getItemById(1)!!
+
+        repository.deleteItem(nonExistentUserOwner, itemForDelete)
+            .collectUntil{ response -> response is Response.Failure }
+            .collect { response ->
+                when (response) {
+                    is Response.Success -> {
+                        assert(dao.getItems().first().isEmpty())
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure ->
+                        assert(response.exception is ItemException.ItemIsNotOwnerException)
+                }
+            }
+    }
+
+    /***  getAllItems ***/
+    @Test
+    fun whenGetAllItemsIsSuccessful() = runTest {
+        expectedItems.forEach { dao.insert(it) }
+        repository.getAllItems()
+            .collectUntil{ response -> response is Response.Success }
+            .collect { response ->
+                when (response) {
+                    is Response.Success -> {
+                        val allItems = response.result.map { it.copy(id = 0) }
+                        assertEquals(expectedItems.size, allItems.size)
+                        assert(allItems.containsAll(expectedItems))
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    /*** getItemById ***/
+    @Test
     fun whenGetItemByIdIsSuccessful() = runTest {
-        accountDAO.insert(mockAccounts[0])
-        dao.insert(mockItems[0])
+        dao.insert(expectedItems[0])
         repository.getItemById(1)
             .collectUntil{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
                         val item = response.result.copy(id = 0)
-                        assertEquals(mockItems[0],item)
+                        assertEquals(expectedItems[0],item)
                     }
                     is Response.Loading -> assert(true)
                     is Response.Failure -> assert(false)
@@ -149,8 +133,7 @@ class ItemRepositoryTest {
             .collect { response ->
                 when (response) {
                     is Response.Success -> assert(false)
-
-                    is Response.Loading -> {}
+                    is Response.Loading -> assert(true)
                     is Response.Failure -> {
                         assert(response.exception is ItemException.ItemNotFoundException)
                     }
@@ -158,15 +141,98 @@ class ItemRepositoryTest {
             }
     }
 
+    /*** getItemsByUserOwner ***/
+    @Test
+    fun whenGetItemsByUserOwnerIsSuccessful() = runTest {
+        expectedItems.forEach { dao.insert(it) }
+        val expectedRichardItems = expectedItems.filter { it.userOwner == "richard" }
+        repository.getItemsByUserOwner("richard")
+            .collectUntil { response -> response is Response.Success }
+            .collect{ response ->
+                when(response){
+                    is Response.Success -> {
+                        val richardItems = response.result.map { it.copy(id = 0) }
+                        assertEquals(expectedRichardItems.size, richardItems.size)
+                        assert(richardItems.containsAll(expectedRichardItems))
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    @Test
+    fun whenGetItemsByNonExistentUserOwnerOrDonNotHaveItemsIsEmpty() = runTest {
+        expectedItems.forEach { dao.insert(it) }
+        repository.getItemsByUserOwner(nonExistentUserOwner)
+            .collectUntil { response -> response is Response.Success }
+            .collect{ response ->
+                when(response){
+                    is Response.Success -> assert(response.result.isEmpty())
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    /*** InsertItem ***/
+    @Test
+    fun whenInsertItemIsSuccessful() = runTest {
+        repository.insertItem(expectedItems[0])
+            .collectUntil{ response -> response is Response.Success }
+            .collect { response ->
+                when (response) {
+                    is Response.Success -> {
+                        val item = dao.getItemById(1)!!.copy(id = 0)
+                        assertEquals(expectedItems[0], item)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
+                }
+            }
+    }
+
+    @Test
+    fun whenInsertDuplicatedItemIsUnsuccessful() = runTest {
+        dao.insert(expectedItems[0])
+        val duplicateItem = dao.getItemById(1)!!
+        repository.insertItem(duplicateItem)
+            .collectUntil{ response -> response is Response.Success }
+            .collect { result ->
+                when (result) {
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(
+                        result.exception is SQLiteConstraintException
+                    )
+                }
+            }
+    }
+
+    @Test
+    fun whenInsertWithNonExistentUsernameIsUnsuccessful() = runTest {
+        repository.insertItem(expectedItems[0].copy(userOwner = nonExistentUserOwner))
+            .collectUntil{ response -> response is Response.Success }
+            .collect { result ->
+                when (result) {
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(
+                        result.exception is SQLiteConstraintException
+                    )
+                }
+            }
+    }
+
+    /*** InsertItem ***/
     @Test
     fun whenUpdateItemUpdatesIsSuccessful() = runTest {
-        accountDAO.insert(mockAccounts[0])
-        dao.insert(mockItems[0])
+        dao.insert(expectedItems[0])
         val itemBeforeUpdate = dao.getItems().first().first().copy(
-            itemName = mockItems[1].itemName,
-            itemDescription = mockItems[1].itemDescription,
-            itemValue = mockItems[1].itemValue,
-            quantityInStock = mockItems[1].quantityInStock
+            itemName = expectedItems[1].itemName,
+            itemDescription = expectedItems[1].itemDescription,
+            itemValue = expectedItems[1].itemValue,
+            quantityInStock = expectedItems[1].quantityInStock
         )
 
         repository.updateItem(itemBeforeUpdate)
@@ -177,7 +243,6 @@ class ItemRepositoryTest {
                         val itemAfterUpdate = dao.getItemById(1)
                         assertEquals(itemBeforeUpdate, itemAfterUpdate)
                     }
-
                     is Response.Loading -> assert(true)
                     is Response.Failure -> assert(false)
                 }
@@ -186,13 +251,12 @@ class ItemRepositoryTest {
 
     @Test
     fun whenUpdateItemWithSameDataDoesNotChangeItem() = runTest {
-        accountDAO.insert(mockAccounts[2])
-        dao.insert(mockItems[2])
+        dao.insert(expectedItems[2])
         val sameItem = dao.getItems().first().first()
         repository.updateItem(sameItem)
             .collectUntil{ response -> response is Response.Success }
-            .collect {
-                when (it) {
+            .collect { response ->
+                when (response) {
                     is Response.Success -> assert(true)
                     is Response.Loading -> assert(true)
                     is Response.Failure -> assert(false)
