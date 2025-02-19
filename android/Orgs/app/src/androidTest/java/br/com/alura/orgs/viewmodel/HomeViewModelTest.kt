@@ -16,7 +16,7 @@ import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response.Failure
 import br.com.alura.orgs.utils.data.Response.Loading
 import br.com.alura.orgs.utils.data.Response.Success
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.home.HomeUiEvent
 import br.com.alura.orgs.viewmodel.home.HomeViewModel
 import kotlinx.coroutines.flow.first
@@ -66,7 +66,7 @@ class HomeViewModelTest {
 
         viewModel.onEvent(HomeUiEvent.OnDelete(itemUi))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.deleteState is Success }
+            .until { uiState -> uiState.deleteState is Success }
             .collect { uiState ->
                 when (uiState.deleteState) {
                     is Success -> {
@@ -87,7 +87,7 @@ class HomeViewModelTest {
 
         viewModel.onEvent(HomeUiEvent.OnFetchAllItemsByIdAscending)
         viewModel.uiState
-            .collectUntil { uiState -> uiState.fetchAllItemsState is Success }
+            .until { uiState -> uiState.fetchAllItemsState is Success }
             .collect { uiState ->
                 when (uiState.fetchAllItemsState) {
                     is Success -> {

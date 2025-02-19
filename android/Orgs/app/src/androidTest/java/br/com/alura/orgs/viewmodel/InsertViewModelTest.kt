@@ -11,7 +11,7 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response.*
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.insert.InsertUiEvent
 import br.com.alura.orgs.viewmodel.insert.InsertViewModel
 import kotlinx.coroutines.flow.first
@@ -59,7 +59,7 @@ class InsertViewModelTest {
 
         viewModel.onEvent(InsertUiEvent.OnInsert(itemUiMock))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.insertState is Success }
+            .until { uiState -> uiState.insertState is Success }
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
@@ -83,7 +83,7 @@ class InsertViewModelTest {
         viewModel.onEvent(InsertUiEvent.OnInsert(itemUiMock))
 
         viewModel.uiState
-            .collectUntil { uiState -> uiState.insertState is Success }
+            .until { uiState -> uiState.insertState is Success }
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
@@ -104,7 +104,7 @@ class InsertViewModelTest {
         val itemFromDatabase = ItemUi.fromItem(dao.getItemById(1)!!)
         viewModel.onEvent(InsertUiEvent.OnInsert(itemFromDatabase))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.insertState is Failure }
+            .until { uiState -> uiState.insertState is Failure }
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> assert(false)

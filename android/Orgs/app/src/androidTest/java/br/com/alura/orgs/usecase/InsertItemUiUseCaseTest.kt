@@ -11,7 +11,7 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -48,7 +48,7 @@ class InsertItemUiUseCaseTest {
     fun whenInsertItemIsSuccessful() = runTest {
         val expectedItemUi = ItemUi.fromItem(mockItems.first())
         useCase.insertItemUi(expectedItemUi)
-            .collectUntil { response -> response is Response.Success }
+            .until { response -> response is Response.Success }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {
@@ -68,7 +68,7 @@ class InsertItemUiUseCaseTest {
         dao.insert(mockItems.first())
         val itemUiFromDatabase = ItemUi.fromItem(dao.getItemById(1)!!)
         useCase.insertItemUi(itemUiFromDatabase)
-            .collectUntil { response -> response is Response.Failure }
+            .until { response -> response is Response.Failure }
             .collect{ response ->
                 when(response){
                     is Response.Success -> assert(false)

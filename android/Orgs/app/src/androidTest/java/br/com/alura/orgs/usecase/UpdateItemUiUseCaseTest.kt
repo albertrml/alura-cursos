@@ -11,7 +11,7 @@ import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.exception.ItemException
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -48,7 +48,7 @@ class UpdateItemUiUseCaseTest {
         mockItems.forEach { dao.insert(it) }
 
         useCase.fetchItemUiById(1)
-            .collectUntil { response -> response is Response.Success  }
+            .until { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {
@@ -66,7 +66,7 @@ class UpdateItemUiUseCaseTest {
     @Test
     fun whenFetchItemByIdIsUnsuccessful() = runTest{
         useCase.fetchItemUiById(1)
-            .collectUntil { response -> response is Response.Failure  }
+            .until { response -> response is Response.Failure  }
             .collect { response ->
                 when(response){
                     is Response.Success -> assert(false)
@@ -90,7 +90,7 @@ class UpdateItemUiUseCaseTest {
         )
 
         useCase.updateItemUi(expectedItemUi)
-            .collectUntil { response -> response is Response.Success  }
+            .until { response -> response is Response.Success  }
             .collect { response ->
                 when(response){
                     is Response.Success -> {

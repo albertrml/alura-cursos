@@ -14,7 +14,7 @@ import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedItem
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -58,7 +58,7 @@ class HomeItemUiUseCaseTest {
         mockItems.forEach { itemDao.insert(it) }
 
         homeItemUiUseCase.fetchAllItemUis(username, SortedItem.ByIdAscending)
-            .collectUntil { response -> response is Response.Success  }
+            .until { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {
@@ -81,7 +81,7 @@ class HomeItemUiUseCaseTest {
 
         val itemForDelete = ItemUi.fromItem(itemDao.getItemById(1)!!)
         homeItemUiUseCase.deleteItem(account.username,itemForDelete)
-            .collectUntil { response -> response is Response.Success  }
+            .until { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {

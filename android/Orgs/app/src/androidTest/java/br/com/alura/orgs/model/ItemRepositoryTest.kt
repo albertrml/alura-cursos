@@ -13,7 +13,7 @@ import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.exception.ItemException
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -57,7 +57,7 @@ class ItemRepositoryTest {
         val itemForDelete = dao.getItemById(1)!!
 
         repository.deleteItem(itemForDelete.userOwner, itemForDelete)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
@@ -76,7 +76,7 @@ class ItemRepositoryTest {
         val itemForDelete = dao.getItemById(1)!!
 
         repository.deleteItem(nonExistentUserOwner, itemForDelete)
-            .collectUntil{ response -> response is Response.Failure }
+            .until{ response -> response is Response.Failure }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
@@ -94,7 +94,7 @@ class ItemRepositoryTest {
     fun whenGetAllItemsIsSuccessful() = runTest {
         expectedItems.forEach { dao.insert(it) }
         repository.getAllItems()
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
@@ -113,7 +113,7 @@ class ItemRepositoryTest {
     fun whenGetItemByIdIsSuccessful() = runTest {
         dao.insert(expectedItems[0])
         repository.getItemById(1)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
@@ -129,7 +129,7 @@ class ItemRepositoryTest {
     @Test
     fun whenGetItemByIdSearchByWrongIdIsUnsuccessful() = runTest {
         repository.getItemById(1)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> assert(false)
@@ -147,7 +147,7 @@ class ItemRepositoryTest {
         expectedItems.forEach { dao.insert(it) }
         val expectedRichardItems = expectedItems.filter { it.userOwner == "richard" }
         repository.getItemsByUserOwner("richard")
-            .collectUntil { response -> response is Response.Success }
+            .until { response -> response is Response.Success }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {
@@ -165,7 +165,7 @@ class ItemRepositoryTest {
     fun whenGetItemsByNonExistentUserOwnerOrDonNotHaveItemsIsEmpty() = runTest {
         expectedItems.forEach { dao.insert(it) }
         repository.getItemsByUserOwner(nonExistentUserOwner)
-            .collectUntil { response -> response is Response.Success }
+            .until { response -> response is Response.Success }
             .collect{ response ->
                 when(response){
                     is Response.Success -> assert(response.result.isEmpty())
@@ -179,7 +179,7 @@ class ItemRepositoryTest {
     @Test
     fun whenInsertItemIsSuccessful() = runTest {
         repository.insertItem(expectedItems[0])
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> {
@@ -197,7 +197,7 @@ class ItemRepositoryTest {
         dao.insert(expectedItems[0])
         val duplicateItem = dao.getItemById(1)!!
         repository.insertItem(duplicateItem)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { result ->
                 when (result) {
                     is Response.Success -> assert(false)
@@ -212,7 +212,7 @@ class ItemRepositoryTest {
     @Test
     fun whenInsertWithNonExistentUsernameIsUnsuccessful() = runTest {
         repository.insertItem(expectedItems[0].copy(userOwner = nonExistentUserOwner))
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { result ->
                 when (result) {
                     is Response.Success -> assert(false)
@@ -236,7 +236,7 @@ class ItemRepositoryTest {
         )
 
         repository.updateItem(itemBeforeUpdate)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect {
                 when (it) {
                     is Response.Success -> {
@@ -254,7 +254,7 @@ class ItemRepositoryTest {
         dao.insert(expectedItems[2])
         val sameItem = dao.getItems().first().first()
         repository.updateItem(sameItem)
-            .collectUntil{ response -> response is Response.Success }
+            .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
                     is Response.Success -> assert(true)

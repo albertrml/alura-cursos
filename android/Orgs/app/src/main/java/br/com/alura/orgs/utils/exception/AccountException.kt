@@ -28,4 +28,12 @@ sealed class AccountException(override val message: String) : Exception() {
     class UpdatedPasswordCantBeDone : AccountException(
         message = "Updated password can't be done"
     )
+
+    class AccountBelongsToAnotherUser : AccountException(
+        message = "Account belongs to other user"
+    )
+
+    class AccountIsTheSame : AccountException(
+        message = "Account is the same"
+    )
 }

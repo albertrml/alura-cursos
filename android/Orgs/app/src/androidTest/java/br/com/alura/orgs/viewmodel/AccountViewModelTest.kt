@@ -12,7 +12,7 @@ import br.com.alura.orgs.utils.data.Authenticate
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedAccount
 import br.com.alura.orgs.utils.exception.AccountException
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.account.AccountUiEvent
 import br.com.alura.orgs.viewmodel.account.AccountViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -20,7 +20,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -64,7 +63,7 @@ class AccountViewModelTest {
             AccountUiEvent.OnAuthenticate(expectedAccount.username, expectedAccount.password)
         )
         viewModel.uiState
-            .collectUntil { uiState -> uiState.authenticateState is Response.Success }
+            .until { uiState -> uiState.authenticateState is Response.Success }
             .collect{ uiState ->
                 when(uiState.authenticateState){
                     is Response.Success -> {
@@ -97,7 +96,7 @@ class AccountViewModelTest {
         dao.insert(account)
         viewModel.onEvent(AccountUiEvent.OnAuthenticate(account.username, wrongPassword))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.authenticateState is Response.Failure }
+            .until { uiState -> uiState.authenticateState is Response.Failure }
             .collect{ uiState ->
                 Log.i("AuthenticateException",uiState.authenticateState.toString())
                 when(uiState.authenticateState){
@@ -128,7 +127,7 @@ class AccountViewModelTest {
             AccountUiEvent.OnCreateAccount(expectedAccount.username, expectedAccount.password)
         )
         viewModel.uiState
-            .collectUntil { uiState -> uiState.createAccountState is Response.Success }
+            .until { uiState -> uiState.createAccountState is Response.Success }
             .collect{ uiState ->
                 when(uiState.createAccountState){
                     is Response.Success -> {
@@ -154,7 +153,7 @@ class AccountViewModelTest {
         val account = mockAccounts[0]
         viewModel.onEvent(AccountUiEvent.OnCreateAccount(invalidUsername, account.password))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.createAccountState is Response.Failure }
+            .until { uiState -> uiState.createAccountState is Response.Failure }
             .collect{ uiState ->
                 when(uiState.createAccountState){
                     is Response.Success -> assertFalse(
@@ -178,7 +177,7 @@ class AccountViewModelTest {
         val account = mockAccounts[0]
         viewModel.onEvent(AccountUiEvent.OnCreateAccount(account.username, invalidPassword))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.createAccountState is Response.Failure }
+            .until { uiState -> uiState.createAccountState is Response.Failure }
             .collect{ uiState ->
                 when(uiState.createAccountState){
                     is Response.Success -> assertFalse(
@@ -203,7 +202,7 @@ class AccountViewModelTest {
         dao.insert(account)
         viewModel.onEvent(AccountUiEvent.OnCreateAccount(account.username, account.password))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.createAccountState is Response.Failure }
+            .until { uiState -> uiState.createAccountState is Response.Failure }
             .collect{ uiState ->
                 when(uiState.createAccountState){
                     is Response.Success -> assertFalse(
@@ -236,7 +235,7 @@ class AccountViewModelTest {
             }
 
         viewModel.uiState
-            .collectUntil { uiState -> uiState.deleteAccountState is Response.Success }
+            .until { uiState -> uiState.deleteAccountState is Response.Success }
             .collect { uiState ->
                 when (val deleteAccountState = uiState.deleteAccountState) {
                     is Response.Success -> {
@@ -266,7 +265,7 @@ class AccountViewModelTest {
 
         viewModel.onEvent(AccountUiEvent.OnDeleteAccount)
         viewModel.uiState
-            .collectUntil { uiState -> uiState.deleteAccountState is Response.Failure }
+            .until { uiState -> uiState.deleteAccountState is Response.Failure }
             .collect { uiState ->
                 when(uiState.deleteAccountState){
                     is Response.Success -> assert(false)
@@ -286,7 +285,7 @@ class AccountViewModelTest {
         mockAccounts.forEach { dao.insert(it) }
         viewModel.onEvent(AccountUiEvent.OnGetAccounts())
         viewModel.uiState
-            .collectUntil { uiState -> uiState.getAccountsState is Response.Success }
+            .until { uiState -> uiState.getAccountsState is Response.Success }
             .collect{ uiState ->
                 when(val response = uiState.getAccountsState){
                     is Response.Success -> {
@@ -305,7 +304,7 @@ class AccountViewModelTest {
         mockAccounts.forEach { dao.insert(it) }
         viewModel.onEvent(AccountUiEvent.OnGetAccounts(SortedAccount.ByUsernameDescending))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.getAccountsState is Response.Success }
+            .until { uiState -> uiState.getAccountsState is Response.Success }
             .collect{ uiState ->
                 when(val response = uiState.getAccountsState){
                     is Response.Success -> {
@@ -326,7 +325,7 @@ class AccountViewModelTest {
         mockAccounts.forEach { dao.insert(it) }
         viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(expectedAccount.username))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.isUsernameExistsState is Response.Success }
+            .until { uiState -> uiState.isUsernameExistsState is Response.Success }
             .collect{ uiState ->
                 when(val response = uiState.isUsernameExistsState){
                     is Response.Success -> {
@@ -343,7 +342,7 @@ class AccountViewModelTest {
         mockAccounts.forEach { dao.insert(it) }
         viewModel.onEvent(AccountUiEvent.OnIsUsernameExists(invalidUsername))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.isUsernameExistsState is Response.Success }
+            .until { uiState -> uiState.isUsernameExistsState is Response.Success }
             .collect{ uiState ->
                 when(val response = uiState.isUsernameExistsState){
                     is Response.Success -> {
@@ -361,7 +360,7 @@ class AccountViewModelTest {
         val account = mockAccounts[0]
         dao.insert(account)
         viewModel.onEvent(AccountUiEvent.OnAuthenticate(account.username,account.password))
-        viewModel.uiState.collectUntil { uiState -> uiState.authenticateState is Response.Success }
+        viewModel.uiState.until { uiState -> uiState.authenticateState is Response.Success }
             .collect{ uiState ->
                 if(uiState.authenticateState is Response.Success){
                     assertTrue(repository.auth.value is Authenticate.Login)
@@ -373,7 +372,7 @@ class AccountViewModelTest {
     }
 
     //updatePassword
-    @Test
+    /*@Test
     fun whenUpdatePasswordIsSuccessful() = runTest{
         val passwordBeforeUpdate = mockAccounts[0].password
         val account = mockAccounts[0]
@@ -396,6 +395,6 @@ class AccountViewModelTest {
                     is Response.Failure -> assert(false)
                 }
             }
-    }
+    }*/
 
 }

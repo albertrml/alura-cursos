@@ -11,7 +11,7 @@ import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.exception.ItemException
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.details.DetailsUiEvent
 import br.com.alura.orgs.viewmodel.details.DetailsViewModel
 import kotlinx.coroutines.test.runTest
@@ -52,7 +52,7 @@ class DetailsViewModelTest {
         dao.insert(mockItems.first())
         viewModel.onEvent(DetailsUiEvent.OnFetchItemById(1))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.fetchItemByIdState is Response.Success }
+            .until { uiState -> uiState.fetchItemByIdState is Response.Success }
             .collect { uiState ->
                 when (uiState.fetchItemByIdState) {
                     is Response.Success -> {
@@ -70,7 +70,7 @@ class DetailsViewModelTest {
     fun whenFetchItemUiByIdIsUnsuccessful() = runTest {
         viewModel.onEvent(DetailsUiEvent.OnFetchItemById(1))
         viewModel.uiState
-            .collectUntil { uiState -> uiState.fetchItemByIdState is Response.Failure }
+            .until { uiState -> uiState.fetchItemByIdState is Response.Failure }
             .collect { uiState ->
                 when (uiState.fetchItemByIdState) {
                     is Response.Success -> assert(false)

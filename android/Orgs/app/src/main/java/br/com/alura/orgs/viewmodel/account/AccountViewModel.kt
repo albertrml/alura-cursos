@@ -36,7 +36,7 @@ class AccountViewModel @Inject constructor(
             is AccountUiEvent.OnIsUsernameExists ->
                 isUsernameExists(event.username.lowercase())
             is AccountUiEvent.OnLogout -> logout(event.onLogout)
-            is AccountUiEvent.OnUpdatePassword -> updatePassword(event.password)
+            /*is AccountUiEvent.OnUpdatePassword -> updatePassword(event.password)*/
         }
     }
 
@@ -110,7 +110,7 @@ class AccountViewModel @Inject constructor(
         }
     }
 
-    private fun updatePassword(password: String) {
+    /*private fun updatePassword(password: String) {
         viewModelScope.launch {
             repository.updatePassword(password).collect { response ->
                 response.update(_uiState){ state, res ->
@@ -118,6 +118,6 @@ class AccountViewModel @Inject constructor(
                 }
             }
         }
-    }
+    }*/
 
 }

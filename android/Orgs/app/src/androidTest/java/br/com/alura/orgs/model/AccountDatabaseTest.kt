@@ -9,7 +9,7 @@ import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
-import br.com.alura.orgs.utils.tools.collectUntil
+import br.com.alura.orgs.utils.tools.until
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
@@ -172,7 +172,7 @@ class AccountDatabaseTest {
         itemsToInsert.forEach { itemDao.insert(it) }
 
         itemDao.getItemsByUserOwner(expectedAccount.username)
-            .collectUntil { items -> items.size == itemsToInsert.size  }
+            .until { items -> items.size == itemsToInsert.size  }
             .collectLatest { items ->
                 val itemsFromDatabase = items.map { it.copy(id = 0) }
                 assertEquals(itemsToInsert.size, items.size)
@@ -186,7 +186,7 @@ class AccountDatabaseTest {
             assertFalse(dao.isUsernameExist(username))
 
             itemDao.getItemsByUserOwner(username)
-                .collectUntil { items -> items.isEmpty()  }
+                .until { items -> items.isEmpty()  }
                 .collectLatest { items ->
                     assertTrue(items.isEmpty())
                 }

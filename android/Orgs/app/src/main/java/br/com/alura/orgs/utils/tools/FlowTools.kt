@@ -11,7 +11,7 @@ sealed class FlowToolsException(override val message: String): Exception() {
     )
 }
 
-fun <T> Flow<T>.collectUntil(predicate: (T) -> Boolean): Flow<T> =
+fun <T> Flow<T>.until(predicate: (T) -> Boolean): Flow<T> =
     flow {
         try {
             collect { value ->
