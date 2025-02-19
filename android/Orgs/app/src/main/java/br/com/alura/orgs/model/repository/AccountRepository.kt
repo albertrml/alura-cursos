@@ -7,8 +7,6 @@ import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedAccount
 import br.com.alura.orgs.utils.data.sortAccountsBy
-import br.com.alura.orgs.utils.tools.isPasswordValid
-import br.com.alura.orgs.utils.tools.isUsernameValid
 import br.com.alura.orgs.utils.tools.performDatabaseOperation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

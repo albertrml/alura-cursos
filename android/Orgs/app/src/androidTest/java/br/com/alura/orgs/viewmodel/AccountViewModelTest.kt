@@ -31,11 +31,10 @@ class AccountViewModelTest {
     private lateinit var repository: AccountRepository
     private lateinit var dao: AccountDAO
     private lateinit var db: OrgRoomDatabase
-
     private val invalidUsername = "Test#"
     private val invalidPassword = "Test"
     private val wrongPassword = "A12345bcd"
-    private val newPassword = "65432A"
+
 
     @Before
     fun setup() {
