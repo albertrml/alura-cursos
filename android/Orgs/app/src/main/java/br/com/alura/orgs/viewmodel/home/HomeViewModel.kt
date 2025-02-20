@@ -59,37 +59,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    private fun deleteItem(itemUi: ItemUi){
+    private fun deleteItem(itemUi: ItemUi) {
         viewModelScope.launch {
-            accountRepository.auth
-                .filterIsInstance<Authenticate.Login<Account>>()
-                .map { it.account.username }
-                .flatMapLatest { username ->
-                    homeUseCase.deleteItem(itemUi)
+            homeUseCase.deleteItem(itemUi).collect { response ->
+                response.update(_uiState) { state, res ->
+                    state.copy(deleteState = res)
                 }
-                .collect { response ->
-                    response.update(_uiState) { state, res ->
-                        state.copy(deleteState = res)
-                    }
-                }
+            }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun fetchAllItemsByAccount(sortBy: SortedItem){
         viewModelScope.launch {
-            accountRepository.auth
-                .filterIsInstance<Authenticate.Login<Account>>()
-                .map { it.account.username }
-                .flatMapLatest { username ->
-                    homeUseCase.fetchAllItemUis(sortBy)
+            homeUseCase.fetchAllItemUis(sortBy).collect{ response ->
+                response.update(_uiState) { state, res ->
+                    state.copy(fetchAllItemsState = res)
                 }
-                .collect { response ->
-                    response.update(_uiState) { state, res ->
-                        state.copy(fetchAllItemsState = res)
-                    }
-                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package br.com.alura.orgs.domain
 
+import android.util.Log
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.AccountRepository
@@ -28,15 +29,12 @@ class HomeUseCase @Inject constructor(
         itemRepository.deleteItem(itemUi.toItem())
     ){ auth, delete ->
         when(auth){
-            is Authenticate.Login ->
+            is Authenticate.Login -> {
                 if (auth.account.username != itemUi.userOwner)
                     Response.Failure(ItemException.ItemBelongsToAnotherAccountException())
-            else
-                    when (delete) {
-                        is Response.Success -> delete
-                        is Response.Loading -> delete
-                        is Response.Failure -> Response.Failure(delete.exception)
-                    }
+                else
+                    delete
+            }
             is Authenticate.Logoff -> Response.Failure(AccountException.AccountIsNotAuthenticated())
         }
     }
