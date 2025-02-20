@@ -7,7 +7,9 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.InsertItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockItems
+import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response.*
@@ -27,9 +29,11 @@ class InsertViewModelTest {
 
 
     private lateinit var viewModel: InsertViewModel
-    private lateinit var useCase: InsertItemUiUseCase
-    private lateinit var repository: ItemRepository
-    private lateinit var dao: ItemDAO
+    private lateinit var insertUseCase: InsertItemUiUseCase
+    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountDAO: AccountDAO
+    private lateinit var itemRepository: ItemRepository
+    private lateinit var itemDAO: ItemDAO
     private lateinit var db: OrgRoomDatabase
 
     @Before
@@ -39,10 +43,12 @@ class InsertViewModelTest {
             .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
 
-        dao = db.itemDao()
-        repository = ItemRepository(dao)
-        useCase = InsertItemUiUseCase(repository)
-        viewModel = InsertViewModel(useCase)
+        itemDAO = db.itemDao()
+        itemRepository = ItemRepository(itemDAO)
+        accountDAO = db.accountDao()
+        accountRepository = AccountRepository(accountDAO)
+        insertUseCase = InsertItemUiUseCase(accountRepository,itemRepository)
+        viewModel = InsertViewModel(insertUseCase)
     }
 
     @Before
@@ -63,7 +69,7 @@ class InsertViewModelTest {
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
-                        val itemFromViewModel = dao.getItemById(1)!!.copy(
+                        val itemFromViewModel = itemDAO.getItemById(1)!!.copy(
                             id = mockItems[0].id
                         )
                         assertEquals(mockItems[0], itemFromViewModel)
@@ -87,7 +93,7 @@ class InsertViewModelTest {
             .collect { uiState ->
                 when (uiState.insertState) {
                     is Success -> {
-                        val itemFromViewModel = dao.getItems().first()
+                        val itemFromViewModel = itemDAO.getItems().first()
                         assertEquals(itemFromViewModel.size, 2)
                         assertNotEquals(itemFromViewModel[0], itemFromViewModel[1])
                     }
@@ -100,8 +106,8 @@ class InsertViewModelTest {
 
     @Test
     fun whenInsertDuplicateItemIsUnsuccessful() = runTest {
-        dao.insert(mockItems.first())
-        val itemFromDatabase = ItemUi.fromItem(dao.getItemById(1)!!)
+        itemDAO.insert(mockItems.first())
+        val itemFromDatabase = ItemUi.fromItem(itemDAO.getItemById(1)!!)
         viewModel.onEvent(InsertUiEvent.OnInsert(itemFromDatabase))
         viewModel.uiState
             .until { uiState -> uiState.insertState is Failure }

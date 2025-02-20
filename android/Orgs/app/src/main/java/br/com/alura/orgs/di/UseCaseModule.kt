@@ -18,8 +18,11 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideInsertItemUiUseCase(itemRepository: ItemRepository): InsertItemUiUseCase {
-        return InsertItemUiUseCase(itemRepository)
+    fun provideInsertItemUiUseCase(
+        accountRepository: AccountRepository,
+        itemRepository: ItemRepository
+    ): InsertItemUiUseCase {
+        return InsertItemUiUseCase(accountRepository,itemRepository)
     }
 
     @Provides
