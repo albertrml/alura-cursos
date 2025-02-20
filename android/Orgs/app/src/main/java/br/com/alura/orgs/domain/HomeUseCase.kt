@@ -1,6 +1,5 @@
 package br.com.alura.orgs.domain
 
-import android.util.Log
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.AccountRepository

@@ -3,7 +3,6 @@ package br.com.alura.orgs.viewmodel.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.alura.orgs.domain.HomeUseCase
-import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.utils.data.Authenticate
@@ -14,9 +13,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
