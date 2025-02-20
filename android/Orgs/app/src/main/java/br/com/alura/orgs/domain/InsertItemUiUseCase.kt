@@ -6,7 +6,6 @@ import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.utils.data.Authenticate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapConcat
 import javax.inject.Inject
