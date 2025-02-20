@@ -105,7 +105,7 @@ class AccountViewModel @Inject constructor(
     private fun logout(onLogout: () -> Unit) {
         viewModelScope.launch {
             _uiState.emit(AccountUiState())
-            repository.logoff()
+            repository.logout()
             onLogout()
         }
     }

@@ -5,6 +5,7 @@ import br.com.alura.orgs.model.repository.ItemRepository
 import br.com.alura.orgs.domain.HomeItemUiUseCase
 import br.com.alura.orgs.domain.InsertItemUiUseCase
 import br.com.alura.orgs.domain.UpdateItemUiUseCase
+import br.com.alura.orgs.model.repository.AccountRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,8 +30,11 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideHomeItemUiUseCase(itemRepository: ItemRepository): HomeItemUiUseCase {
-        return HomeItemUiUseCase(itemRepository)
+    fun provideHomeItemUiUseCase(
+        accountRepository: AccountRepository,
+        itemRepository: ItemRepository
+    ): HomeItemUiUseCase {
+        return HomeItemUiUseCase(accountRepository, itemRepository)
     }
 
     @Provides

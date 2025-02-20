@@ -301,7 +301,7 @@ class  AccountRepositoryTest {
     }
 
     @Test
-    fun whenLogoffIsSuccessful() = runTest {
+    fun whenLogoutIsSuccessful() = runTest {
         val account = expectedAccounts.first()
         dao.insert(account)
 
@@ -310,7 +310,7 @@ class  AccountRepositoryTest {
             repository.authenticate(account.username, account.password)
         ){ authState, authenticate ->
             if (authenticate is Response.Success){
-                repository.logoff()
+                repository.logout()
             }
             authState to authenticate
         }

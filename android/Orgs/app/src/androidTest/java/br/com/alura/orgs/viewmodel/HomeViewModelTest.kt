@@ -45,7 +45,7 @@ class HomeViewModelTest {
         accountDAO = db.accountDao()
         repository = ItemRepository(dao)
         accountRepository = AccountRepository(accountDAO)
-        useCase = HomeItemUiUseCase(repository)
+        useCase = HomeItemUiUseCase(accountRepository,repository)
         viewModel = HomeViewModel(accountRepository,useCase)
     }
 

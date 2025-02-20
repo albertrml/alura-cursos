@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
                 .filterIsInstance<Authenticate.Login<Account>>()
                 .map { it.account.username }
                 .flatMapLatest { username ->
-                    homeItemUiUseCase.deleteItem(username,itemUi)
+                    homeItemUiUseCase.deleteItem(itemUi)
                 }
                 .collect { response ->
                     response.update(_uiState) { state, res ->
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
                 .filterIsInstance<Authenticate.Login<Account>>()
                 .map { it.account.username }
                 .flatMapLatest { username ->
-                    homeItemUiUseCase.fetchAllItemUis(username, sortBy)
+                    homeItemUiUseCase.fetchAllItemUis(sortBy)
                 }
                 .collect { response ->
                     response.update(_uiState) { state, res ->

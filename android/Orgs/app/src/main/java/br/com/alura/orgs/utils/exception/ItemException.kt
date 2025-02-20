@@ -20,7 +20,7 @@ sealed class ItemException(override val message: String) : Exception() {
         message = "Invalid user owner"
     )
 
-    class ItemIsNotOwnerException: ItemException(
+    class ItemBelongsToAnotherAccountException: ItemException(
         message = "Item is not owner"
     )
 

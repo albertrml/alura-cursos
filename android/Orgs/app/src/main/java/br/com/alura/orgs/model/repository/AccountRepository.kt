@@ -76,7 +76,7 @@ class AccountRepository @Inject constructor(private val accountDao: AccountDAO) 
         emit(performDatabaseOperation { accountDao.isUsernameExist(username) })
     }
 
-    fun logoff(){
+    fun logout(){
         _auth.update { Authenticate.Logoff }
     }
 

@@ -56,7 +56,7 @@ class ItemRepositoryTest {
         dao.insert(item)
         val itemForDelete = dao.getItemById(1)!!
 
-        repository.deleteItem(itemForDelete.userOwner, itemForDelete)
+        repository.deleteItem(itemForDelete)
             .until{ response -> response is Response.Success }
             .collect { response ->
                 when (response) {
@@ -65,26 +65,6 @@ class ItemRepositoryTest {
                     }
                     is Response.Loading -> assert(true)
                     is Response.Failure -> assert(false)
-                }
-            }
-    }
-
-    @Test
-    fun whenDeleteItemWithWrongUserOwnerIsUnsuccessful() = runTest {
-        val item = expectedItems[0]
-        dao.insert(item)
-        val itemForDelete = dao.getItemById(1)!!
-
-        repository.deleteItem(nonExistentUserOwner, itemForDelete)
-            .until{ response -> response is Response.Failure }
-            .collect { response ->
-                when (response) {
-                    is Response.Success -> {
-                        assert(dao.getItems().first().isEmpty())
-                    }
-                    is Response.Loading -> assert(true)
-                    is Response.Failure ->
-                        assert(response.exception is ItemException.ItemIsNotOwnerException)
                 }
             }
     }

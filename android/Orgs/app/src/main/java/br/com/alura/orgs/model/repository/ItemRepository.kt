@@ -13,11 +13,10 @@ import javax.inject.Inject
 
 class ItemRepository @Inject constructor(private val itemDao: ItemDAO) {
 
-    fun deleteItem(userOwner: String, item: Item): Flow<Response<Unit>> = flow {
+    fun deleteItem(item: Item): Flow<Response<Unit>> = flow {
         emit(Response.Loading)
         emit(
             performDatabaseOperation {
-                if (userOwner != item.userOwner) throw ItemException.ItemIsNotOwnerException()
                 itemDao.delete(item)
             }
         )
