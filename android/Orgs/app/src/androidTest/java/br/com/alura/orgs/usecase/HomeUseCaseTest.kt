@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.HomeItemUiUseCase
+import br.com.alura.orgs.domain.HomeUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
@@ -29,9 +29,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-class HomeItemUiUseCaseTest {
+class HomeUseCaseTest {
 
-    private lateinit var homeItemUiUseCase: HomeItemUiUseCase
+    private lateinit var homeUseCase: HomeUseCase
     private lateinit var accountDao: AccountDAO
     private lateinit var accountRepository: AccountRepository
     private lateinit var itemRepository: ItemRepository
@@ -48,7 +48,7 @@ class HomeItemUiUseCaseTest {
         itemRepository = ItemRepository(itemDao)
         accountDao = db.accountDao()
         accountRepository = AccountRepository(accountDao)
-        homeItemUiUseCase = HomeItemUiUseCase(accountRepository,itemRepository)
+        homeUseCase = HomeUseCase(accountRepository,itemRepository)
     }
 
     @Before
@@ -69,7 +69,7 @@ class HomeItemUiUseCaseTest {
         val outdatedItemList = itemDao.getItemsByUserOwner(account.username).first()
         val itemForDelete = ItemUi.fromItem(outdatedItemList.first())
 
-        homeItemUiUseCase.deleteItem(itemForDelete)
+        homeUseCase.deleteItem(itemForDelete)
             .until { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){
@@ -91,7 +91,7 @@ class HomeItemUiUseCaseTest {
         val outdatedItemList = itemDao.getItemsByUserOwner(account.username).first()
         val itemForDelete = ItemUi.fromItem(outdatedItemList.first())
 
-        homeItemUiUseCase.deleteItem(itemForDelete)
+        homeUseCase.deleteItem(itemForDelete)
             .until { response -> response is Response.Failure  }
             .collect{ response ->
                 when(response){
@@ -113,7 +113,7 @@ class HomeItemUiUseCaseTest {
         val outdatedItemList = itemDao.getItemsByUserOwner(account.username).first()
         val itemForDelete = ItemUi.fromItem(outdatedItemList.first())
 
-        homeItemUiUseCase.deleteItem(itemForDelete)
+        homeUseCase.deleteItem(itemForDelete)
             .until { response -> response is Response.Failure  }
             .collect{ response ->
                 when(response){
@@ -136,7 +136,7 @@ class HomeItemUiUseCaseTest {
 
         combine(
             accountRepository.authenticate(account.username,account.password),
-            homeItemUiUseCase.fetchAllItemUis(SortedItem.ByIdAscending)
+            homeUseCase.fetchAllItemUis(SortedItem.ByIdAscending)
         ){ auth, fetch ->
             if (auth is Response.Success){
                 when(fetch){

@@ -2,9 +2,9 @@ package br.com.alura.orgs.di
 
 import br.com.alura.orgs.domain.DetailsItemUiUseCase
 import br.com.alura.orgs.model.repository.ItemRepository
-import br.com.alura.orgs.domain.HomeItemUiUseCase
-import br.com.alura.orgs.domain.InsertItemUiUseCase
-import br.com.alura.orgs.domain.UpdateItemUiUseCase
+import br.com.alura.orgs.domain.HomeUseCase
+import br.com.alura.orgs.domain.InsertUseCase
+import br.com.alura.orgs.domain.UpdateUseCase
 import br.com.alura.orgs.model.repository.AccountRepository
 import dagger.Module
 import dagger.Provides
@@ -21,14 +21,17 @@ object UseCaseModule {
     fun provideInsertItemUiUseCase(
         accountRepository: AccountRepository,
         itemRepository: ItemRepository
-    ): InsertItemUiUseCase {
-        return InsertItemUiUseCase(accountRepository,itemRepository)
+    ): InsertUseCase {
+        return InsertUseCase(accountRepository,itemRepository)
     }
 
     @Provides
     @Singleton
-    fun provideUpdateItemUiUseCase(itemRepository: ItemRepository): UpdateItemUiUseCase {
-        return UpdateItemUiUseCase(itemRepository)
+    fun provideUpdateItemUiUseCase(
+        accountRepository: AccountRepository,
+        itemRepository: ItemRepository
+    ): UpdateUseCase {
+        return UpdateUseCase(accountRepository,itemRepository)
     }
 
     @Provides
@@ -36,8 +39,8 @@ object UseCaseModule {
     fun provideHomeItemUiUseCase(
         accountRepository: AccountRepository,
         itemRepository: ItemRepository
-    ): HomeItemUiUseCase {
-        return HomeItemUiUseCase(accountRepository, itemRepository)
+    ): HomeUseCase {
+        return HomeUseCase(accountRepository, itemRepository)
     }
 
     @Provides

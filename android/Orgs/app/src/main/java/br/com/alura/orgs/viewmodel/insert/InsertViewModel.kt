@@ -2,7 +2,7 @@ package br.com.alura.orgs.viewmodel.insert
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.alura.orgs.domain.InsertItemUiUseCase
+import br.com.alura.orgs.domain.InsertUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.data.update
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class InsertViewModel @Inject constructor(
-    private val repository: InsertItemUiUseCase
+    private val repository: InsertUseCase
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(InsertUiState())

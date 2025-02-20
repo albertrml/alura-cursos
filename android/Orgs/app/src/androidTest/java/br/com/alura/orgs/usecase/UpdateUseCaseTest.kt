@@ -3,10 +3,13 @@ package br.com.alura.orgs.usecase
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.UpdateItemUiUseCase
+import br.com.alura.orgs.domain.UpdateUseCase
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
+import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
@@ -18,11 +21,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class UpdateItemUiUseCaseTest {
+class UpdateUseCaseTest {
 
-    private lateinit var useCase: UpdateItemUiUseCase
-    private lateinit var repository: ItemRepository
-    private lateinit var dao: ItemDAO
+    private lateinit var updateUseCase: UpdateUseCase
+    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountDAO: AccountDAO
+    private lateinit var itemRepository: ItemRepository
+    private lateinit var itemDAO: ItemDAO
     private lateinit var db: OrgRoomDatabase
 
     @Before
@@ -32,27 +37,32 @@ class UpdateItemUiUseCaseTest {
             .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
 
-        dao = db.itemDao()
-        repository = ItemRepository(dao)
-        useCase = UpdateItemUiUseCase(repository)
+        itemDAO = db.itemDao()
+        itemRepository = ItemRepository(itemDAO)
+        accountDAO = db.accountDao()
+        accountRepository = AccountRepository(accountDAO)
+        updateUseCase = UpdateUseCase(accountRepository,itemRepository)
     }
 
     @Before
-    fun setupTestData() = runTest { db.clearAllTables() }
+    fun setupTestData() = runTest {
+        db.clearAllTables()
+        mockAccounts.forEach { accountDAO.insert(it) }
+    }
 
     @After
     fun closeDatabase() { db.close() }
 
     @Test
     fun whenFetchItemByIdIsSuccessful() = runTest {
-        mockItems.forEach { dao.insert(it) }
+        mockItems.forEach { itemDAO.insert(it) }
 
-        useCase.fetchItemUiById(1)
+        updateUseCase.fetchItemUiById(1)
             .until { response -> response is Response.Success  }
             .collect{ response ->
                 when(response){
                     is Response.Success -> {
-                        val expectedItemUi = ItemUi.fromItem(dao.getItemById(1)!!)
+                        val expectedItemUi = ItemUi.fromItem(itemDAO.getItemById(1)!!)
                         val itemUi = response.result
                         assertEquals(1, itemUi.id)
                         assertEquals(expectedItemUi, itemUi)
@@ -65,7 +75,7 @@ class UpdateItemUiUseCaseTest {
 
     @Test
     fun whenFetchItemByIdIsUnsuccessful() = runTest{
-        useCase.fetchItemUiById(1)
+        updateUseCase.fetchItemUiById(1)
             .until { response -> response is Response.Failure  }
             .collect { response ->
                 when(response){
@@ -80,8 +90,8 @@ class UpdateItemUiUseCaseTest {
 
     @Test
     fun whenUpdateItemUiIsSuccessful() = runTest {
-        dao.insert(mockItems.first())
-        val expectedItemUi = ItemUi.fromItem(dao.getItemById(1)!!).copy(
+        itemDAO.insert(mockItems.first())
+        val expectedItemUi = ItemUi.fromItem(itemDAO.getItemById(1)!!).copy(
             itemName = mockItems[1].itemName,
             itemDescription = mockItems[1].itemDescription,
             itemValue = mockItems[1].itemValue.toString(),
@@ -89,12 +99,15 @@ class UpdateItemUiUseCaseTest {
             itemUrl = mockItems[1].itemUrl
         )
 
-        useCase.updateItemUi(expectedItemUi)
+        val account = mockAccounts.first { it.username == expectedItemUi.userOwner }
+        accountRepository.authenticate(account.username, account.password).collect{}
+
+        updateUseCase.updateItemUi(expectedItemUi)
             .until { response -> response is Response.Success  }
             .collect { response ->
                 when(response){
                     is Response.Success -> {
-                        val currentItemUi = ItemUi.fromItem(dao.getItemById(1)!!)
+                        val currentItemUi = ItemUi.fromItem(itemDAO.getItemById(1)!!)
                         assertEquals(expectedItemUi, currentItemUi)
                     }
                     is Response.Loading -> assert(true)

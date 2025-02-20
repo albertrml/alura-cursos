@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class HomeItemUiUseCase @Inject constructor(
+class HomeUseCase @Inject constructor(
     private val accountRepository: AccountRepository,
     private val itemRepository: ItemRepository
 )  {

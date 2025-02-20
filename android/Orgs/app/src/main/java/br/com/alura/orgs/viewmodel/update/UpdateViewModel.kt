@@ -2,7 +2,7 @@ package br.com.alura.orgs.viewmodel.update
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.alura.orgs.domain.UpdateItemUiUseCase
+import br.com.alura.orgs.domain.UpdateUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.update
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateViewModel @Inject constructor(
-    private val repository: UpdateItemUiUseCase
+    private val repository: UpdateUseCase
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(UpdateUiState())

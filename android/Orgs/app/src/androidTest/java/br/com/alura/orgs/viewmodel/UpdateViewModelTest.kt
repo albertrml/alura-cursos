@@ -3,10 +3,12 @@ package br.com.alura.orgs.viewmodel
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.UpdateItemUiUseCase
+import br.com.alura.orgs.domain.UpdateUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockItems
+import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
@@ -21,10 +23,12 @@ import org.junit.Before
 import org.junit.Test
 
 class UpdateViewModelTest {
-    private lateinit var viewModel: UpdateViewModel
-    private lateinit var useCase: UpdateItemUiUseCase
-    private lateinit var repository: ItemRepository
-    private lateinit var dao: ItemDAO
+    private lateinit var updateViewModel: UpdateViewModel
+    private lateinit var updateUseCase: UpdateUseCase
+    private lateinit var accountRepository: AccountRepository
+    private lateinit var accountDAO: AccountDAO
+    private lateinit var itemRepository: ItemRepository
+    private lateinit var itemDAO: ItemDAO
     private lateinit var db: OrgRoomDatabase
 
     @Before
@@ -33,10 +37,12 @@ class UpdateViewModelTest {
         db = Room
             .inMemoryDatabaseBuilder(context, OrgRoomDatabase::class.java)
             .build()
-        dao = db.itemDao()
-        repository = ItemRepository(dao)
-        useCase = UpdateItemUiUseCase(repository)
-        viewModel = UpdateViewModel(useCase)
+        itemDAO = db.itemDao()
+        itemRepository = ItemRepository(itemDAO)
+        accountDAO = db.accountDao()
+        accountRepository = AccountRepository(accountDAO)
+        updateUseCase = UpdateUseCase(accountRepository,itemRepository)
+        updateViewModel = UpdateViewModel(updateUseCase)
     }
 
     @Before
@@ -48,9 +54,9 @@ class UpdateViewModelTest {
     @Test
     fun whenOnFetchItemByIdChangesSuccessfullyUiState() = runTest {
         val item = mockItems[0]
-        dao.insert(item)
-        viewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(1))
-        viewModel.uiState
+        itemDAO.insert(item)
+        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(1))
+        updateViewModel.uiState
             .until { uiState -> uiState.fetchItemByIdState is Response.Success }
             .collect { uiState ->
                 when (uiState.fetchItemByIdState) {
@@ -69,8 +75,8 @@ class UpdateViewModelTest {
 
     @Test
     fun whenOnFetchItemByIdIsUnsuccessful() = runTest {
-        viewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(1))
-        viewModel.uiState
+        updateViewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(1))
+        updateViewModel.uiState
             .until { uiState -> uiState.fetchItemByIdState is Response.Failure }
             .collect { uiState ->
                 when (uiState.fetchItemByIdState) {
@@ -89,22 +95,22 @@ class UpdateViewModelTest {
     @Test
     fun whenOnUpdateItemUiIsSuccessful() = runTest {
         val item = mockItems[0]
-        dao.insert(item)
+        itemDAO.insert(item)
         val itemBeforeUpdate = ItemUi.fromItem(
-            dao.getItemById(1)!!.copy(
+            itemDAO.getItemById(1)!!.copy(
                 itemName = mockItems[1].itemName,
                 itemDescription = mockItems[1].itemDescription,
                 itemValue = mockItems[1].itemValue,
                 quantityInStock = mockItems[1].quantityInStock
             )
         )
-        viewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
-        viewModel.uiState
+        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
+        updateViewModel.uiState
             .until { uiState -> uiState.updateState is Response.Success }
             .collect { uiState ->
             when (uiState.updateState) {
                 is Response.Success -> {
-                    val itemAfterUpdate = ItemUi.fromItem(dao.getItemById(1)!!)
+                    val itemAfterUpdate = ItemUi.fromItem(itemDAO.getItemById(1)!!)
                     assertEquals(itemBeforeUpdate, itemAfterUpdate)
                 }
                 is Response.Loading -> assert(true)

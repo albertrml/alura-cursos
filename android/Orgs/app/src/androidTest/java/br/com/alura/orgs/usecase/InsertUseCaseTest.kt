@@ -3,7 +3,7 @@ package br.com.alura.orgs.usecase
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.InsertItemUiUseCase
+import br.com.alura.orgs.domain.InsertUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
@@ -24,9 +24,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class InsertItemUiUseCaseTest {
+class InsertUseCaseTest {
 
-    private lateinit var insertUseCase: InsertItemUiUseCase
+    private lateinit var insertUseCase: InsertUseCase
     private lateinit var accountRepository: AccountRepository
     private lateinit var accountDAO: AccountDAO
     private lateinit var itemRepository: ItemRepository
@@ -44,7 +44,7 @@ class InsertItemUiUseCaseTest {
         accountRepository = AccountRepository(accountDAO)
         itemDAO = db.itemDao()
         itemRepository = ItemRepository(itemDAO)
-        insertUseCase = InsertItemUiUseCase(accountRepository,itemRepository)
+        insertUseCase = InsertUseCase(accountRepository,itemRepository)
     }
 
     @Before

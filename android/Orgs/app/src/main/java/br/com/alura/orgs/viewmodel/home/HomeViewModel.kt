@@ -2,7 +2,7 @@ package br.com.alura.orgs.viewmodel.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.alura.orgs.domain.HomeItemUiUseCase
+import br.com.alura.orgs.domain.HomeUseCase
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.AccountRepository
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
-    private val homeItemUiUseCase: HomeItemUiUseCase
+    private val homeUseCase: HomeUseCase
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
                 .filterIsInstance<Authenticate.Login<Account>>()
                 .map { it.account.username }
                 .flatMapLatest { username ->
-                    homeItemUiUseCase.deleteItem(itemUi)
+                    homeUseCase.deleteItem(itemUi)
                 }
                 .collect { response ->
                     response.update(_uiState) { state, res ->
@@ -83,7 +83,7 @@ class HomeViewModel @Inject constructor(
                 .filterIsInstance<Authenticate.Login<Account>>()
                 .map { it.account.username }
                 .flatMapLatest { username ->
-                    homeItemUiUseCase.fetchAllItemUis(sortBy)
+                    homeUseCase.fetchAllItemUis(sortBy)
                 }
                 .collect { response ->
                     response.update(_uiState) { state, res ->

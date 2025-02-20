@@ -3,7 +3,7 @@ package br.com.alura.orgs.viewmodel
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.HomeItemUiUseCase
+import br.com.alura.orgs.domain.HomeUseCase
 import br.com.alura.orgs.model.entity.Item
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockAccounts
@@ -30,7 +30,7 @@ class HomeViewModelTest {
     private lateinit var accountDAO: AccountDAO
     private lateinit var accountRepository: AccountRepository
     private lateinit var viewModel: HomeViewModel
-    private lateinit var useCase: HomeItemUiUseCase
+    private lateinit var useCase: HomeUseCase
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
     private lateinit var db: OrgRoomDatabase
@@ -45,7 +45,7 @@ class HomeViewModelTest {
         accountDAO = db.accountDao()
         repository = ItemRepository(dao)
         accountRepository = AccountRepository(accountDAO)
-        useCase = HomeItemUiUseCase(accountRepository,repository)
+        useCase = HomeUseCase(accountRepository,repository)
         viewModel = HomeViewModel(accountRepository,useCase)
     }
 

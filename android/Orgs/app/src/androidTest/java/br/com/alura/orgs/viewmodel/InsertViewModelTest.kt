@@ -4,7 +4,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.alura.orgs.domain.InsertItemUiUseCase
+import br.com.alura.orgs.domain.InsertUseCase
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.AccountRepository
@@ -29,7 +29,7 @@ class InsertViewModelTest {
 
 
     private lateinit var viewModel: InsertViewModel
-    private lateinit var insertUseCase: InsertItemUiUseCase
+    private lateinit var insertUseCase: InsertUseCase
     private lateinit var accountRepository: AccountRepository
     private lateinit var accountDAO: AccountDAO
     private lateinit var itemRepository: ItemRepository
@@ -47,7 +47,7 @@ class InsertViewModelTest {
         itemRepository = ItemRepository(itemDAO)
         accountDAO = db.accountDao()
         accountRepository = AccountRepository(accountDAO)
-        insertUseCase = InsertItemUiUseCase(accountRepository,itemRepository)
+        insertUseCase = InsertUseCase(accountRepository,itemRepository)
         viewModel = InsertViewModel(insertUseCase)
     }
 
