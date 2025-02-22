@@ -5,8 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.DetailsItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
@@ -23,6 +25,7 @@ class DetailsItemUiUseCaseTest {
     private lateinit var useCase: DetailsItemUiUseCase
     private lateinit var repository: ItemRepository
     private lateinit var dao: ItemDAO
+    private lateinit var accountDao: AccountDAO
     private lateinit var db: OrgRoomDatabase
 
     @Before
@@ -33,12 +36,16 @@ class DetailsItemUiUseCaseTest {
             .build()
 
         dao = db.itemDao()
+        accountDao = db.accountDao()
         repository = ItemRepository(dao)
         useCase = DetailsItemUiUseCase(repository)
     }
 
     @Before
-    fun setupTestData() = runTest { db.clearAllTables() }
+    fun setupTestData() = runTest {
+        db.clearAllTables()
+        mockAccounts.forEach { accountDao.insert(it) }
+    }
 
     @After
     fun closeDatabase() { db.close() }
@@ -46,7 +53,6 @@ class DetailsItemUiUseCaseTest {
     @Test
     fun whenFetchItemUiByIdIsSuccessful() = runTest {
         mockItems.forEach { dao.insert(it) }
-
         useCase.fetchItemUiById(1)
             .until { response -> response is Response.Success  }
             .collect{ response ->

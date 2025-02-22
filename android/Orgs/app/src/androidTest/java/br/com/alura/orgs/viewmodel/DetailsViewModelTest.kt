@@ -5,8 +5,10 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.DetailsItemUiUseCase
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.ItemRepository
+import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
@@ -25,6 +27,7 @@ class DetailsViewModelTest {
     private lateinit var viewModel: DetailsViewModel
     private lateinit var useCase: DetailsItemUiUseCase
     private lateinit var repository: ItemRepository
+    private lateinit var accountDAO: AccountDAO
     private lateinit var dao: ItemDAO
     private lateinit var db: OrgRoomDatabase
 
@@ -36,13 +39,17 @@ class DetailsViewModelTest {
             .build()
 
         dao = db.itemDao()
+        accountDAO = db.accountDao()
         repository = ItemRepository(dao)
         useCase = DetailsItemUiUseCase(repository)
         viewModel = DetailsViewModel(useCase)
     }
 
     @Before
-    fun setupTestData() = runTest { db.clearAllTables() }
+    fun setupTestData() = runTest {
+        db.clearAllTables()
+        mockAccounts.forEach { accountDAO.insert(it) }
+    }
 
     @After
     fun closeDatabase() { db.close() }
