@@ -1,7 +1,6 @@
 package br.com.alura.orgs.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.HomeUseCase
@@ -117,8 +116,6 @@ class HomeViewModelTest {
                 when(response){
                     is Success -> {
                         val itemsFromViewModel = response.result.sortedBy { it.id }
-                        Log.i("outdatedList", expectedItems.toString())
-                        Log.i("updatedList", itemsFromViewModel.toString())
                         assertEquals(expectedItems.size, itemsFromViewModel.size)
                         assertEquals(expectedItems, itemsFromViewModel)
                     }

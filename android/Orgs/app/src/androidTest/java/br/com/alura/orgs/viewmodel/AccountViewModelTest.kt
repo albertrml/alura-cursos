@@ -1,7 +1,6 @@
 package br.com.alura.orgs.viewmodel
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.model.mock.mockAccounts
@@ -98,7 +97,6 @@ class AccountViewModelTest {
         viewModel.uiState
             .until { uiState -> uiState.authenticateState is Response.Failure }
             .collect{ uiState ->
-                Log.i("AuthenticateException",uiState.authenticateState.toString())
                 when(uiState.authenticateState){
                     is Response.Success -> assertFalse(
                         "Expected Response.Failure",
@@ -230,10 +228,7 @@ class AccountViewModelTest {
        combine(
            repository.authenticate(accountForDelete.username,accountForDelete.password),
            repository.auth
-       ) { temp, auth ->
-
-           Log.i("DeleteAccount", "$temp\n$auth")
-
+       ) { _, auth ->
            if (auth is Authenticate.Login){
                viewModel.onEvent(AccountUiEvent.OnDeleteAccount)
            }
@@ -245,7 +240,6 @@ class AccountViewModelTest {
         viewModel.uiState
             .until { uiState -> uiState.deleteAccountState is Response.Success }
             .collect { uiState ->
-                Log.i("DeleteAccount", uiState.toString())
                 when (val deleteAccountState = uiState.deleteAccountState) {
                     is Response.Success -> {
                         assertTrue(

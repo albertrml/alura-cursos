@@ -1,7 +1,6 @@
 package br.com.alura.orgs.usecase
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.HomeUseCase
@@ -142,7 +141,6 @@ class HomeUseCaseTest {
                 when(fetch){
                     is Response.Success -> {
                         val fetchResults = fetch.result.map { it.copy(id = 0) }
-                        Log.i("FetchResults", fetch.result.toString())
                         assertEquals(expectedItems.size,fetchResults.size)
                         assertTrue(expectedItems.containsAll(fetchResults))
                     }
