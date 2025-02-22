@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class DetailsItemUiUseCase @Inject constructor(private val repository: ItemRepository) {
-    fun fetchItemUiById(itemId: Int) = repository.getItemById(itemId).map { response ->
-        response.mapTo { item ->
-            ItemUi.fromItem(item).copy(itemValue = item.itemValue.toString())
+    fun fetchItemUiById(itemId: Int) = repository.getItemById(itemId)
+        .map { response ->
+            response.mapTo { item ->
+                ItemUi.fromItem(item).copy(itemValue = item.itemValue.toString())
+            }
         }
-    }
 }

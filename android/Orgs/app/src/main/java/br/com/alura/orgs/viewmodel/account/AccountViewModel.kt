@@ -8,6 +8,9 @@ import br.com.alura.orgs.utils.data.Response
 import br.com.alura.orgs.utils.data.SortedAccount
 import br.com.alura.orgs.utils.data.update
 import br.com.alura.orgs.utils.exception.AccountException
+import br.com.alura.orgs.utils.tools.isPasswordValid
+import br.com.alura.orgs.utils.tools.isUsernameValid
+import br.com.alura.orgs.utils.tools.until
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,12 +32,15 @@ class AccountViewModel @Inject constructor(
         when (event) {
             is AccountUiEvent.OnAuthenticate ->
                 authenticate(event.username.lowercase(), event.password)
+
             is AccountUiEvent.OnCreateAccount ->
                 createAccount(event.username.lowercase(), event.password)
+
             is AccountUiEvent.OnDeleteAccount -> deleteAccount()
             is AccountUiEvent.OnGetAccounts -> getAccounts(event.sortedBy)
             is AccountUiEvent.OnIsUsernameExists ->
                 isUsernameExists(event.username.lowercase())
+
             is AccountUiEvent.OnLogout -> logout(event.onLogout)
             /*is AccountUiEvent.OnUpdatePassword -> updatePassword(event.password)*/
         }
@@ -42,8 +48,16 @@ class AccountViewModel @Inject constructor(
 
     private fun authenticate(username: String, password: String) {
         viewModelScope.launch {
+
+            validateCredentials(username,password)?.let {
+                _uiState.update { state ->
+                    state.copy(authenticateState = Response.Failure(it))
+                }
+                return@launch
+            }
+
             repository.authenticate(username, password).collect { response ->
-                response.update(_uiState){ state, res ->
+                response.update(_uiState) { state, res ->
                     state.copy(authenticateState = res)
                 }
             }
@@ -52,8 +66,16 @@ class AccountViewModel @Inject constructor(
 
     private fun createAccount(username: String, password: String) {
         viewModelScope.launch {
+
+            validateCredentials(username,password)?.let { accountException ->
+                _uiState.update { state ->
+                    state.copy(createAccountState = Response.Failure(accountException))
+                }
+                return@launch
+            }
+
             repository.createAccount(username, password).collect { response ->
-                response.update(_uiState){ state, res ->
+                response.update(_uiState) { state, res ->
                     state.copy(createAccountState = res)
                 }
             }
@@ -62,21 +84,22 @@ class AccountViewModel @Inject constructor(
 
     private fun deleteAccount() {
         viewModelScope.launch {
-            val auth = repository.auth.first()
-            if (auth is Authenticate.Login) {
-                repository.deleteAccount(auth.account).collect { response ->
-                    response.update(_uiState) { state, res ->
-                        state.copy(deleteAccountState = res)
-                    }
+            when (val auth = repository.auth.first()){
+                is Authenticate.Login -> {
+                    repository.deleteAccount(auth.account)
+                        .until{ response -> response is Response.Success}
+                        .collect{ response ->
+                            response.update(_uiState){ state, res ->
+                                state.copy(deleteAccountState = res)
+                            }
+                        }
                 }
-            }
-            else {
-                _uiState.update { state ->
-                    state.copy(
-                        deleteAccountState = Response.Failure(
-                            AccountException.AccountIsNotAuthenticated()
+                is Authenticate.Logoff -> {
+                    _uiState.update { state ->
+                        state.copy(deleteAccountState =
+                            Response.Failure(AccountException.AccountIsNotAuthenticated())
                         )
-                    )
+                    }
                 }
             }
         }
@@ -85,7 +108,7 @@ class AccountViewModel @Inject constructor(
     private fun getAccounts(sortedBy: SortedAccount) {
         viewModelScope.launch {
             repository.getAllUsernames(sortedBy).collect { response ->
-                response.update(_uiState){ state, res ->
+                response.update(_uiState) { state, res ->
                     state.copy(getAccountsState = res)
                 }
             }
@@ -95,7 +118,7 @@ class AccountViewModel @Inject constructor(
     private fun isUsernameExists(username: String) {
         viewModelScope.launch {
             repository.isUsernameExists(username).collect { response ->
-                response.update(_uiState){ state, res ->
+                response.update(_uiState) { state, res ->
                     state.copy(isUsernameExistsState = res)
                 }
             }
@@ -119,5 +142,13 @@ class AccountViewModel @Inject constructor(
             }
         }
     }*/
+
+    private fun validateCredentials(username: String, password: String): AccountException? {
+        if (!username.isUsernameValid())
+            return AccountException.InvalidUsername()
+        if (!password.isPasswordValid())
+            return AccountException.InvalidPassword()
+        return null
+    }
 
 }

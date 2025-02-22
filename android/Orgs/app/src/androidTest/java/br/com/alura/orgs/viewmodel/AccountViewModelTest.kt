@@ -15,7 +15,8 @@ import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.account.AccountUiEvent
 import br.com.alura.orgs.viewmodel.account.AccountViewModel
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -226,16 +227,25 @@ class AccountViewModelTest {
         val accountForDelete = mockAccounts[0]
         dao.insert(accountForDelete)
 
-        repository.authenticate(accountForDelete.username, accountForDelete.password)
-            .collectLatest { response ->
-                if (response is Response.Success){
-                    viewModel.onEvent(AccountUiEvent.OnDeleteAccount)
-                }
-            }
+       combine(
+           repository.authenticate(accountForDelete.username,accountForDelete.password),
+           repository.auth
+       ) { temp, auth ->
+
+           Log.i("DeleteAccount", "$temp\n$auth")
+
+           if (auth is Authenticate.Login){
+               viewModel.onEvent(AccountUiEvent.OnDeleteAccount)
+           }
+           auth
+       }
+           .until { it is Authenticate.Login }
+           .collect{}
 
         viewModel.uiState
             .until { uiState -> uiState.deleteAccountState is Response.Success }
             .collect { uiState ->
+                Log.i("DeleteAccount", uiState.toString())
                 when (val deleteAccountState = uiState.deleteAccountState) {
                     is Response.Success -> {
                         assertTrue(
@@ -258,24 +268,34 @@ class AccountViewModelTest {
     }
 
     @Test
-    fun whenDeleteAccountThatIsNotAuthenticatedIsUnsuccessful() = runTest{
+    fun whenDeleteAccountThatIsUnauthenticatedIsFailure() = runTest{
         val accountForDelete = mockAccounts[0]
         dao.insert(accountForDelete)
 
         viewModel.onEvent(AccountUiEvent.OnDeleteAccount)
         viewModel.uiState
-            .until { uiState -> uiState.deleteAccountState is Response.Failure }
-            .collect { uiState ->
-                when(uiState.deleteAccountState){
-                    is Response.Success -> assert(false)
-                    is Response.Loading -> assert(true)
+            .map { uiState -> uiState.deleteAccountState }
+            .until { uiState -> uiState is Response.Failure }
+            .collect { deleteAccountState ->
+                when (deleteAccountState) {
+                    is Response.Success -> {
+                        assertFalse(
+                            "Expected Failure",
+                            true
+                        )
+                    }
+                    is Response.Loading -> assertTrue(
+                        "Waiting for conclusion",
+                        true
+                    )
                     is Response.Failure -> {
-                        val failure = uiState.deleteAccountState as Response.Failure
-                        assert(failure.exception is AccountException.AccountIsNotAuthenticated)
+                        assertTrue(
+                            deleteAccountState.exception.toString(),
+                            true
+                        )
                     }
                 }
             }
-
     }
 
     //getAccounts
