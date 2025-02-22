@@ -5,6 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.alura.orgs.domain.UpdateUseCase
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.model.mock.mockAccounts
 import br.com.alura.orgs.model.mock.mockItems
 import br.com.alura.orgs.model.repository.AccountRepository
 import br.com.alura.orgs.model.repository.ItemRepository
@@ -12,10 +13,13 @@ import br.com.alura.orgs.model.source.AccountDAO
 import br.com.alura.orgs.model.source.ItemDAO
 import br.com.alura.orgs.model.source.OrgRoomDatabase
 import br.com.alura.orgs.utils.data.Response
+import br.com.alura.orgs.utils.exception.AccountException
 import br.com.alura.orgs.utils.exception.ItemException
 import br.com.alura.orgs.utils.tools.until
 import br.com.alura.orgs.viewmodel.update.UpdateUiEvent
 import br.com.alura.orgs.viewmodel.update.UpdateViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -54,6 +58,8 @@ class UpdateViewModelTest {
     @Test
     fun whenOnFetchItemByIdChangesSuccessfullyUiState() = runTest {
         val item = mockItems[0]
+        val ownerAccount = mockAccounts.first{ item.userOwner == it.username }
+        accountDAO.insert(ownerAccount)
         itemDAO.insert(item)
         updateViewModel.onEvent(UpdateUiEvent.OnFetchItemUiById(1))
         updateViewModel.uiState
@@ -95,7 +101,11 @@ class UpdateViewModelTest {
     @Test
     fun whenOnUpdateItemUiIsSuccessful() = runTest {
         val item = mockItems[0]
+        val account = mockAccounts.first{ item.userOwner == it.username }
+
+        accountDAO.insert(account)
         itemDAO.insert(item)
+
         val itemBeforeUpdate = ItemUi.fromItem(
             itemDAO.getItemById(1)!!.copy(
                 itemName = mockItems[1].itemName,
@@ -104,18 +114,99 @@ class UpdateViewModelTest {
                 quantityInStock = mockItems[1].quantityInStock
             )
         )
-        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
+
+        accountRepository.authenticate(account.username, account.password)
+            .until { auth -> auth is Response.Success }
+            .collectLatest{ response ->
+                if (response is Response.Success ){
+                    updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
+                }
+            }
+
         updateViewModel.uiState
             .until { uiState -> uiState.updateState is Response.Success }
             .collect { uiState ->
-            when (uiState.updateState) {
-                is Response.Success -> {
-                    val itemAfterUpdate = ItemUi.fromItem(itemDAO.getItemById(1)!!)
-                    assertEquals(itemBeforeUpdate, itemAfterUpdate)
+                when (uiState.updateState) {
+                    is Response.Success -> {
+                        val itemAfterUpdate = ItemUi.fromItem(itemDAO.getItemById(1)!!)
+                        assertEquals(itemBeforeUpdate, itemAfterUpdate)
+                    }
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> assert(false)
                 }
-                is Response.Loading -> assert(true)
-                is Response.Failure -> assert(false)
             }
-        }
+    }
+
+    @Test
+    fun whenOnUpdateItemUiFailsDueAccountIsNotAuthenticated() = runTest {
+        val item = mockItems[0]
+        val account = mockAccounts.first{ item.userOwner == it.username }
+
+        accountDAO.insert(account)
+        itemDAO.insert(item)
+
+        val itemBeforeUpdate = ItemUi.fromItem(
+            itemDAO.getItemById(1)!!.copy(
+                itemName = mockItems[1].itemName,
+                itemDescription = mockItems[1].itemDescription,
+                itemValue = mockItems[1].itemValue,
+                quantityInStock = mockItems[1].quantityInStock
+            )
+        )
+
+        updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
+        updateViewModel.uiState
+            .map { uiState -> uiState.updateState }
+            .until { updateState -> updateState is Response.Failure }
+            .collect { updateState ->
+                when (updateState) {
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> {
+                        assert(updateState.exception is AccountException.AccountIsNotAuthenticated)
+                    }
+                }
+            }
+    }
+
+    @Test
+    fun whenOnUpdateItemUiFailsDueItemBelongsToAnotherAccount() = runTest {
+        val item = mockItems[0]
+        val ownerAccount = mockAccounts.first{ item.userOwner == it.username }
+        val otherAccount = mockAccounts.first{ item.userOwner != it.username }
+
+        accountDAO.insert(otherAccount)
+        accountDAO.insert(ownerAccount)
+        itemDAO.insert(item)
+
+        val itemBeforeUpdate = ItemUi.fromItem(
+            itemDAO.getItemById(1)!!.copy(
+                itemName = mockItems[1].itemName,
+                itemDescription = mockItems[1].itemDescription,
+                itemValue = mockItems[1].itemValue,
+                quantityInStock = mockItems[1].quantityInStock
+            )
+        )
+
+        accountRepository.authenticate(otherAccount.username, otherAccount.password)
+            .until { auth -> auth is Response.Success }
+            .collectLatest{ response ->
+                if (response is Response.Success ){
+                    updateViewModel.onEvent(UpdateUiEvent.OnUpdate(itemBeforeUpdate))
+                }
+            }
+
+        updateViewModel.uiState
+            .map { uiState -> uiState.updateState }
+            .until { updateState -> updateState is Response.Failure }
+            .collect { updateState ->
+                when (updateState) {
+                    is Response.Success -> assert(false)
+                    is Response.Loading -> assert(true)
+                    is Response.Failure -> {
+                        assert(updateState.exception is ItemException.ItemBelongsToAnotherAccountException)
+                    }
+                }
+            }
     }
 }
