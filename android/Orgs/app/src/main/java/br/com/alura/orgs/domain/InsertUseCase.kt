@@ -1,5 +1,6 @@
 package br.com.alura.orgs.domain
 
+import android.util.Log
 import br.com.alura.orgs.model.entity.Account
 import br.com.alura.orgs.model.entity.ItemUi
 import br.com.alura.orgs.model.repository.AccountRepository
@@ -19,6 +20,7 @@ class InsertUseCase @Inject constructor(
     fun insertItemUi(itemUi: ItemUi) = accountRepository.auth
         .filterIsInstance<Authenticate.Login<Account>>()
         .flatMapConcat { auth ->
+            Log.i("InsertUseCase", "insertItemUi: ${auth.account}")
             val newItem = itemUi.copy(userOwner = auth.account.username).toItem()
             itemRepository.insertItem(newItem)
         }

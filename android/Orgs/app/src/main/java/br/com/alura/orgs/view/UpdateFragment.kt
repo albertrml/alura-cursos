@@ -72,6 +72,7 @@ class UpdateFragment : Fragment() {
         binding.updateDescriptionEdittext.setText(itemBeforeUpdate.itemDescription)
         binding.updatePriceEdittext.setText(itemBeforeUpdate.itemValue)
         binding.updateQuantityEdittext.setText(itemBeforeUpdate.quantityInStock)
+        binding.updateUserOwnerEdittext.setText(itemBeforeUpdate.userOwner)
     }
 
     private fun setupListeners() {
@@ -110,6 +111,7 @@ class UpdateFragment : Fragment() {
             itemValue = binding.updatePriceEdittext.text.toString(),
             quantityInStock = binding.updateQuantityEdittext.text.toString(),
             itemUrl = updateViewModel.uiState.value.urlImage,
+            userOwner = binding.updateUserOwnerEdittext.text.toString()
         )
     }
 

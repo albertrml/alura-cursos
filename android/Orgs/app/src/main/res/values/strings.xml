@@ -85,7 +85,7 @@
     <string name="update_failure_message">Unknown failure</string>
     <string name="update_success_image_description">Update success image</string>
     <string name="update_success_message">Update concluded</string>
-
+    <string name="forms_userOwner_field">User Owner</string>
 
 
 </resources>

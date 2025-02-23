@@ -135,7 +135,7 @@
                         android:hint="@string/forms_quantity_field"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/update_userOwner_textInputLayout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/update_price_textInputLayout"
@@ -145,6 +145,29 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/update_quantity_edittext"
                             android:inputType="number"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_userOwner_textInputLayout"
+                        android:hint="@string/forms_userOwner_field"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_quantity_textInputLayout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        android:visibility="gone"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_userOwner_edittext"
+                            android:inputType="text"
                             android:layout_height="wrap_content"
                             android:layout_width="match_parent"
                             style="@style/OutlinedTextInputEditText"

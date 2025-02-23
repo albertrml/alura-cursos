@@ -42,6 +42,5 @@ fun Item.onCheck(
     itemDescription.isBlank() -> isInvalid(ItemException.InvalidDescriptionException())
     itemValue < 0 -> isInvalid(ItemException.InvalidValueException())
     quantityInStock < 0 -> isInvalid(ItemException.InvalidQuantityException())
-    userOwner.isBlank() -> isInvalid(ItemException.InvalidUserOwnerException())
     else -> isValid(this)
 }
