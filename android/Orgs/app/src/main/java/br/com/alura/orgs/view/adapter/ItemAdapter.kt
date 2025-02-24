@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.alura.orgs.R
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.utils.currencyFormat
 import br.com.alura.orgs.view.components.ImageDialog
 
 class ItemAdapter(
@@ -31,8 +32,8 @@ class ItemAdapter(
         fun bind(itemUi: ItemUi){
             nameTextView.text = itemUi.itemName
             descriptionTextView.text = itemUi.itemDescription
-            priceTextView.text = itemUi.itemValue
-            inStockTextView.text = itemUi.quantityInStock
+            priceTextView.text = currencyFormat(value = itemUi.itemValue.toDouble())
+            inStockTextView.text = "${itemUi.quantityInStock } pct"
             ImageDialog.loadImage(itemUi.itemUrl, imageView)
         }
 

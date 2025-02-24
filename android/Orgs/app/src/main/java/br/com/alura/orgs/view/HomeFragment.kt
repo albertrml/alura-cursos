@@ -30,6 +30,8 @@ class HomeFragment : Fragment() {
     private lateinit var onEditListener: (ItemUi) -> Unit
     private lateinit var onRemoveListener: (ItemUi) -> Unit
     private lateinit var onDetailsListener: (ItemUi) -> Unit
+    private lateinit var onLogoutListener: () -> Unit
+    private lateinit var onInsertListener: () -> Unit
     private lateinit var itemAdapter: ItemAdapter
 
     override fun onCreateView(
@@ -39,6 +41,7 @@ class HomeFragment : Fragment() {
     ): View {
 
         setupListeners()
+        setupButtons()
         setupScreen()
 
         return binding.root
@@ -61,16 +64,27 @@ class HomeFragment : Fragment() {
             this@HomeFragment.findNavController().navigate(action)
         }
 
-        binding.homeAddItemButton.setOnClickListener{
+        onLogoutListener = {
+            val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+            this@HomeFragment.findNavController().navigate(action)
+        }
+
+        onInsertListener = {
             val action = HomeFragmentDirections
                 .actionHomeFragmentToInsertFragment()
             this@HomeFragment.findNavController().navigate(action)
         }
 
+    }
+
+    private fun setupButtons(){
+        binding.homeAddItemButton.setOnClickListener{ onInsertListener() }
+
         binding.homeTryAgainButton.setOnClickListener {
             selectFilter()
         }
 
+        binding.homeLogoutButton.setOnClickListener{ onLogoutListener() }
     }
 
     private fun setupScreen(){

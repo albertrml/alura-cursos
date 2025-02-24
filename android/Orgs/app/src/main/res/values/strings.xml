@@ -86,6 +86,8 @@
     <string name="update_success_image_description">Update success image</string>
     <string name="update_success_message">Update concluded</string>
     <string name="forms_userOwner_field">User Owner</string>
+    <string name="home_title">Home</string>
+    <string name="home_logout_button_description">Logout Button</string>
 
 
 </resources>

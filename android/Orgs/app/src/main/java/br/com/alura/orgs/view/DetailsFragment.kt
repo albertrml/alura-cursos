@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import br.com.alura.orgs.R
 import br.com.alura.orgs.databinding.FragmentDetailsBinding
 import br.com.alura.orgs.model.entity.ItemUi
+import br.com.alura.orgs.utils.currencyFormat
 import br.com.alura.orgs.utils.data.showResults
 import br.com.alura.orgs.view.components.ImageDialog
 import br.com.alura.orgs.viewmodel.details.DetailsUiEvent
@@ -65,7 +66,7 @@ class DetailsFragment : Fragment() {
         with(binding){
             detailsNameTextview.text = itemUi.itemName
             detailsDescriptionTextview.text = itemUi.itemDescription
-            detailsPriceTextview.text = itemUi.itemValue
+            detailsPriceTextview.text = currencyFormat(itemUi.itemValue.toDouble())
             ImageDialog.loadImage(itemUi.itemUrl, detailsImageImageview)
         }
     }
