@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/baseline_component_align"
+        android:orientation="vertical"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/home_success_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            tools:visibility="visible"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/home_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                app:layout_constraintBottom_toTopOf="@id/home_filter_scrollview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <TextView
+                    android:id="@+id/home_title_textView"
+                    style="@style/OrgHeaderFragment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/baseline_component_align"
+                    android:text="@string/home_title"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <ImageView
+                    android:id="@+id/home_logout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/baseline_component_align"
+                    android:contentDescription="@string/home_logout_button_description"
+                    android:src="@drawable/ic_logout_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <HorizontalScrollView
+                android:id="@+id/home_filter_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@id/home_header"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/home_list_scrollview"
+                >
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/home_filter_chipGroup"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/baseline_component_align"
+                    android:layout_width="wrap_content"
+                    android:paddingHorizontal="@dimen/padding_space"
+                    app:chipSpacingHorizontal="@dimen/baseline_component_within_align"
+                    app:singleSelection="true"
+                    >
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_unsorted_filter_chip"
+                        android:checked="true"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_unsorted_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_name_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_name_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_price_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_price_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/home_quantity_filter_chip"
+                        android:layout_height="wrap_content"
+                        android:layout_width="110dp"
+                        android:text="@string/home_quantity_filter_chip_description"
+                        android:textAlignment="center"
+                        style="@style/Widget.MaterialComponents.Chip.Filter"
+                        />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/home_list_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_filter_scrollview"
+                app:layout_constraintVertical_bias="0.0"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/home_list_recyclerview"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    tools:listitem="@layout/item_list"
+                    />
+
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/home_add_item_button"
+                android:contentDescription="@string/home_add_button"
+                android:elevation="16dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/baseline_component_align"
+                android:layout_marginBottom="@dimen/baseline_component_align"
+                android:layout_width="wrap_content"
+                android:src="@drawable/ic_add_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                style="@style/OrgFloatingActionButton"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/home_loading_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            >
+
+            <ProgressBar
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                tools:visibility="gone"
+                />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/home_failure_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            tools:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/home_failure_imageview"
+                android:contentDescription="@string/home_failure_image_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/response_failure"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/home_failure_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_failure_imageview"
+                tools:text="@string/home_failure_message"
+                />
+
+            <Button
+                android:id="@+id/home_try_again_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/home_failure_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/home_failure_textview"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+
+</layout>

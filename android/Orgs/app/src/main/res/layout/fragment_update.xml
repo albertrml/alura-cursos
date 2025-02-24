@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="br.com.alura.orgs.viewmodel.update.UpdateViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/update_layout"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/baseline_component_align"
+            android:layout_width="match_parent"
+            tools:visibility="visible"
+            >
+
+            <ImageButton
+                android:id="@+id/update_back_button"
+                android:contentDescription="@string/update_back_button_description"
+                android:src="@drawable/ic_back_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/OrgImageButton"
+                />
+
+            <ImageView
+                android:id="@+id/update_image_imageview"
+                android:contentDescription="@string/forms_image_field"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/baseline_component_align"
+                android:layout_width="match_parent"
+                app:imageUrl="@{viewmodel.uiState.urlImage}"
+                app:layout_constraintBottom_toTopOf="@id/update_forms_scrollview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_back_button"
+                />
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/update_forms_scrollview"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                app:layout_constraintBottom_toTopOf="@id/update_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_image_imageview"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    >
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_name_textInputLayout"
+                        android:hint="@string/forms_name_field"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/baseline_component_align"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/update_description_textInputLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_name_edittext"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_description_textInputLayout"
+                        android:hint="@string/forms_description_field"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/baseline_component_align"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/update_price_textInputLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_name_textInputLayout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_description_edittext"
+                            android:inputType="textMultiLine"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            android:lines="5"
+                            android:scrollbars="vertical"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_price_textInputLayout"
+                        android:hint="@string/forms_price_field"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/baseline_component_align"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/update_quantity_textInputLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_description_textInputLayout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_price_edittext"
+                            android:inputType="numberDecimal"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_quantity_textInputLayout"
+                        android:hint="@string/forms_quantity_field"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toTopOf="@id/update_userOwner_textInputLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_price_textInputLayout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_quantity_edittext"
+                            android:inputType="number"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/update_userOwner_textInputLayout"
+                        android:hint="@string/forms_userOwner_field"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/update_quantity_textInputLayout"
+                        style="@style/OrgOutlinedTextInputLayout"
+                        android:visibility="gone"
+                        >
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/update_userOwner_edittext"
+                            android:inputType="text"
+                            android:layout_height="wrap_content"
+                            android:layout_width="match_parent"
+                            style="@style/OutlinedTextInputEditText"
+                            />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/update_button"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/update_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/update_success_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/update_success_image"
+                android:contentDescription="@string/update_success_image_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/light_success_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/colorSuccess"
+                />
+
+            <TextView
+                android:id="@+id/update_success_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/update_success_message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_success_image"
+                style="@style/SuccessTextView"
+                />
+
+            <Button
+                android:id="@+id/update_success_return_button"
+                android:contentDescription="@string/update_back_button_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/update_back_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_success_textview"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/update_loading_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:visibility="visible"
+            >
+
+            <ProgressBar
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                tools:visibility="gone"
+                />
+
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/update_failure_layout"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            tools:visibility="gone"
+            >
+
+            <ImageView
+                android:id="@+id/update_failure_imageview"
+                android:contentDescription="@string/update_failure_image_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/response_failure"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError"
+                />
+
+            <TextView
+                android:id="@+id/update_failure_textview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_failure_imageview"
+                style="@style/ErrorTextView"
+                tools:text="@string/update_failure_message"
+                />
+
+            <Button
+                android:id="@+id/update_failure_return_button"
+                android:contentDescription="@string/update_back_button_description"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/update_back_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/update_failure_textview"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

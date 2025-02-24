@@ -1,0 +1,35 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Orgs" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/colorOnPrimaryDark</item>
+        <item name="colorPrimaryContainer">@color/colorPrimaryContainerDark</item>
+        <item name="colorOnPrimaryContainer">@color/colorOnPrimaryContainerDark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondaryDark</item>
+        <item name="colorOnSecondary">@color/colorOnSecondaryDark</item>
+        <item name="colorSecondaryContainer">@color/colorSecondaryContainerDark</item>
+        <item name="colorOnSecondaryContainer">@color/colorOnSecondaryContainerDark</item>
+
+        <item name="colorTertiary">@color/colorTertiaryDark</item>
+        <item name="colorOnTertiary">@color/colorOnTertiaryDark</item>
+        <item name="colorTertiaryContainer">@color/colorTertiaryContainerDark</item>
+        <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainerDark</item>
+
+        <item name="colorError">@color/colorErrorDark</item>
+        <item name="colorOnError">@color/colorOnErrorDark</item>
+        <item name="colorErrorContainer">@color/colorErrorContainerDark</item>
+        <item name="colorOnErrorContainer">@color/colorOnErrorContainerDark</item>
+
+        <item name="colorSurface">@color/colorSurfaceDark</item>
+        <item name="colorOnSurface">@color/colorOnSurfaceDark</item>
+        <item name="colorSurfaceVariant">@color/colorSurfaceVariantDark</item>
+        <item name="colorOnSurfaceVariant">@color/colorOnSurfaceVariantDark</item>
+        <item name="colorOnSurfaceInverse">#000000</item>
+
+        <item name="android:colorBackground">@color/colorBackgroundDark</item>
+        <item name="android:textColor">@color/colorOnBackgroundDark</item>
+
+    </style>
+</resources>
