@@ -1,8 +1,16 @@
 package br.com.alura.aluvery.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -14,22 +22,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import br.com.alura.aluvery.R
 import br.com.alura.aluvery.extensions.toBrazilianCurrency
 import br.com.alura.aluvery.model.Product
 import br.com.alura.aluvery.ui.theme.AluveryTheme
+import coil.compose.AsyncImage
 import java.math.BigDecimal
 
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(
+    modifier: Modifier = Modifier,
+    product: Product,
+) {
     Surface(
+        modifier = modifier,
         shape = RoundedCornerShape(15.dp),
         elevation = 4.dp
     ) {
@@ -52,9 +63,9 @@ fun ProductItem(product: Product) {
                     )
                     .fillMaxWidth()
             ) {
-                Image(
+                AsyncImage(
                     // TODO: ajustar imagem do produto
-                    painter = painterResource(id = R.drawable.placeholder),
+                    model = product.image,
                     contentDescription = null,
                     Modifier
                         .size(imageSize)
@@ -90,7 +101,7 @@ private fun ProductItemPreview() {
     AluveryTheme {
         Surface {
             ProductItem(
-                Product(
+                product = Product(
                     name = LoremIpsum(50).values.first(),
                     price = BigDecimal("14.99")
                 )

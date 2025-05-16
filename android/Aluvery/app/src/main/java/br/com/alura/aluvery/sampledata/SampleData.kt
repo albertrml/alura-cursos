@@ -48,17 +48,20 @@ val sampleProducts: List<Product> = listOf(
     Product(
         name = "Hamburguer",
         price = BigDecimal("12.99"),
-        image = "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg"
+        image = "https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg",
+        description = "Hamburguer de carne"
     ),
     Product(
         name = "Pizza",
         price = BigDecimal("19.99"),
-        image = "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg"
+        image = "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg",
+        description = "Pizza de calabresa"
     ),
     Product(
         name = "Batata frita",
         price = BigDecimal("7.99"),
-        image = "https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg"
+        image = "https://images.pexels.com/photos/1583884/pexels-photo-1583884.jpeg",
+        description = "Batata frita com molho"
     ), *sampleDrinks.toTypedArray(), *sampleCandies.toTypedArray()
 )
 

@@ -23,7 +23,7 @@ fun App() {
     AluveryTheme {
         Surface {
             HomeScreen(
-                sampleSections
+                sections = sampleSections
             )
         }
     }
