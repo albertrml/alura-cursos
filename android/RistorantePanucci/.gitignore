@@ -1,0 +1,26 @@
+# System-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.swn
+*~
+
+# Build output
+build/
+bin/
+out/
+
+# Dependency caches
+.gradle/
+.m2/
+
+# IDE-specific files
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Other
+local.properties
+*.log

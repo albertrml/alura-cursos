@@ -5,6 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/loginFragment">
 
+    <!-- Home fragment -->
     <fragment
         android:id="@+id/homeFragment"
         android:name="br.com.alura.orgs.view.HomeFragment"
@@ -27,6 +28,8 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+
+    <!-- Insert fragment -->
     <fragment
         android:id="@+id/insertFragment"
         android:name="br.com.alura.orgs.view.InsertFragment"
@@ -39,6 +42,7 @@
             />
     </fragment>
 
+    <!-- Update fragment -->
     <fragment
         android:id="@+id/updateFragment"
         android:name="br.com.alura.orgs.view.UpdateFragment"
@@ -57,6 +61,8 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+
+    <!-- Detail fragment -->
     <fragment
         android:id="@+id/detailsFragment"
         android:name="br.com.alura.orgs.view.DetailsFragment"
@@ -74,6 +80,8 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+
+    <!-- Login fragment -->
     <fragment
         android:id="@+id/loginFragment"
         android:name="br.com.alura.orgs.view.LoginFragment"
@@ -87,6 +95,8 @@
             android:id="@+id/action_loginFragment_to_signUpFragment"
             app:destination="@id/signUpFragment" />
     </fragment>
+
+    <!-- Sign up fragment -->
     <fragment
         android:id="@+id/signUpFragment"
         android:name="br.com.alura.orgs.view.SignUpFragment"

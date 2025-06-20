@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.navigation.dynamic.features.fragment)
+    //implementation(libs.androidx.navigation.dynamic.features.fragment)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.recyclerview.selection)
     implementation(libs.androidx.room.ktx)
