@@ -15,13 +15,18 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -36,6 +41,7 @@ import br.com.alura.panucci.ui.components.BottomAppBarItem
 import br.com.alura.panucci.ui.components.PanucciBottomAppBar
 import br.com.alura.panucci.ui.components.bottomAppBarItems
 import br.com.alura.panucci.ui.theme.PanucciTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
 
@@ -52,11 +58,25 @@ class MainActivity : ComponentActivity() {
                 }
             }
             val backStackEntryState by navController.currentBackStackEntryAsState()
+            val snackbarHostState = remember { SnackbarHostState() }
+            val scope = rememberCoroutineScope()
+            val orderDoneMessage = backStackEntryState
+                ?.savedStateHandle
+                ?.getStateFlow<String?>(
+                    key = "order_done",
+                    initialValue = null
+                )
+                ?.collectAsState()
+            orderDoneMessage?.value?.let { message ->
+                scope.launch {
+                    snackbarHostState.showSnackbar(message = message)
+                }
+            }
             val currentDestination = backStackEntryState?.destination
             PanucciTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     val currentRoute = currentDestination?.route
                     val selectedItem by remember(currentDestination) {
@@ -72,6 +92,7 @@ class MainActivity : ComponentActivity() {
                         highlightListRoute,
                         menuRoute,
                         drinksRoute -> true
+
                         else -> false
                     }
                     val isShowFab = when (currentDestination?.route) {
@@ -81,7 +102,7 @@ class MainActivity : ComponentActivity() {
                     PanucciApp(
                         bottomAppBarItemSelected = selectedItem,
                         onBottomAppBarItemSelectedChange = { item ->
-                           navController.bottomAppNavigateTo(item)
+                            navController.bottomAppNavigateTo(item)
                         },
                         onFabClick = {
                             navController.navigateToCheckout()
@@ -89,6 +110,7 @@ class MainActivity : ComponentActivity() {
                         isShowTopBar = containsInBottomAppBarItems,
                         isShowBottomBar = containsInBottomAppBarItems,
                         isShowFab = isShowFab,
+                        snackbarHost = snackbarHostState,
                         content = { PanucciNavHost(navController = navController) }
                     )
                 }
@@ -106,7 +128,8 @@ fun PanucciApp(
     isShowTopBar: Boolean = false,
     isShowBottomBar: Boolean = false,
     isShowFab: Boolean = false,
-    content: @Composable () -> Unit
+    snackbarHost: SnackbarHostState = SnackbarHostState(),
+    content: @Composable () -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -138,6 +161,13 @@ fun PanucciApp(
                     )
                 }
             }
+        },
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHost){ data ->
+                Snackbar{
+                    Text(text = data.visuals.message)
+                }
+            }
         }
     ) {
         Box(
@@ -153,7 +183,7 @@ fun PanucciApp(
 private fun PanucciAppPreview() {
     PanucciTheme {
         Surface {
-            PanucciApp {}
+            PanucciApp(content = {})
         }
     }
 }
